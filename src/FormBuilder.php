@@ -5,6 +5,7 @@ namespace FormForge;
 use FormForge\Components\Button;
 use Illuminate\Support\Str;
 use FormForge\Components\Component;
+use FormForge\Enums\Template;
 
 /**
  * Collects components to render bootstrap form.
@@ -17,7 +18,7 @@ class FormBuilder
     private ?string $title;
     private string $method;
     private ?string $action;
-    private string $template = 'horizontal';
+    private string $template = Template::HORIZONTAL;
 
     private array $classes = [];
     private array $components = [];
@@ -36,11 +37,10 @@ class FormBuilder
         return new self($method, $action, $id);
     }
 
-    public function class(... $classes)
+    public function class(...$classes)
     {
-        if(!empty($classes))
-        {
-            foreach($classes as $class){
+        if (!empty($classes)) {
+            foreach ($classes as $class) {
                 $this->classes[] = $class;
             }
         }
@@ -49,14 +49,15 @@ class FormBuilder
 
     public function add(Component $component)
     {
-        if(!empty($component) && $component->show === true){
+        if (!empty($component) && $component->show === true) {
             $this->components[$component->name] = $component;
         }
         return $this;
     }
 
-    public function remove(string $name){
-        if(isset($this->components[$name])){
+    public function remove(string $name)
+    {
+        if (isset($this->components[$name])) {
             unset($this->components[$name]);
         }
         return $this;
@@ -64,13 +65,13 @@ class FormBuilder
 
     public function template(string $template)
     {
-        $this->template = empty($template) ? $this->template:$template;
+        $this->template = empty($template) ? $this->template : $template;
         return $this;
     }
 
     private function getClasses()
     {
-        return empty($this->classes) ? null:implode(' ', $this->classes);
+        return empty($this->classes) ? null : implode(' ', $this->classes);
     }
 
     public function addSubmit(string $class = 'btn-primary')
@@ -92,7 +93,7 @@ class FormBuilder
 
     public function render()
     {
-        return view('components.forms.templates.'. $this->template, [
+        return view('components.forms.templates.' . $this->template, [
             'components'  => $this->components,
             'method'    => $this->method,
             'action'    => $this->action,
