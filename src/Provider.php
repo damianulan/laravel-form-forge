@@ -4,6 +4,8 @@ namespace FormForge;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\Support\Facades\Blade;
+use FormForge\BladeComponents\TrixFieldComponent;
 
 class Provider extends ServiceProvider
 {
@@ -34,5 +36,6 @@ class Provider extends ServiceProvider
     public function registerBladeDirectives(): void
     {
 
+        Blade::component('trix-field-component', TrixFieldComponent::class);
     }
 }
