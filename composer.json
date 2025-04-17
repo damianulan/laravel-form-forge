@@ -1,5 +1,6 @@
 {
     "name": "damianulan/laravel-form-forge",
+    "type": "library",
     "description": "FormForge laravel form builder package for Laravel",
     "keywords": [
         "laravel",

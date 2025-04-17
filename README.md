@@ -1,7 +1,9 @@
 # Laravel Form Forge
 
-## Description
+### Description
 
-## Installation
+## Getting Started
 
-## Dependencies
+### Installation
+
+### Dependencies
