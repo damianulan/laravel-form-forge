@@ -112,8 +112,8 @@ class Dictionary
     {
         $options = new Collection();
 
-        $options->push(new Option(1, __("vocabulary.yes")));
-        $options->push(new Option(0, __("vocabulary.no")));
+        $options->push(new Option(1, __("formforge::forms.yes")));
+        $options->push(new Option(0, __("formforge::forms.no")));
 
         return $options;
     }
@@ -126,7 +126,7 @@ class Dictionary
         $options = new Collection();
         if (class_exists($enum)) {
             foreach ($enum::values() as $case) {
-                $options->push(new Option($case, __("fields.enums." . $case)));
+                $options->push(new Option($case, __("formforge::forms.enums." . $case)));
             }
         }
         return $options;

@@ -6,6 +6,8 @@ use FormForge\Components\Button;
 use Illuminate\Support\Str;
 use FormForge\Components\Component;
 use FormForge\Enums\Template;
+use Illuminate\Support\Facades\View as ViewFacade;
+use Illuminate\View\View;
 
 /**
  * Collects components to render bootstrap form.
@@ -76,7 +78,7 @@ class FormBuilder
 
     public function addSubmit(string $class = 'btn-primary')
     {
-        $this->submit = new Button(__('buttons.save'), 'submit', $class);
+        $this->submit = new Button(__('formforge::components.buttons.save'), 'submit', $class);
         return $this;
     }
 
@@ -91,9 +93,9 @@ class FormBuilder
         return $this->title;
     }
 
-    public function render()
+    public function render(): View
     {
-        return view('components.forms.templates.' . $this->template, [
+        return ViewFacade::make('components.forms.templates.' . $this->template, [
             'components'  => $this->components,
             'method'    => $this->method,
             'action'    => $this->action,

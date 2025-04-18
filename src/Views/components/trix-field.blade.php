@@ -18,7 +18,7 @@
         data-trix-attribute="bold"
         data-trix-key="b"
         tabindex="-1"
-        data-tippy-content="{{ __('vocabulary.typography.bold') }}"
+        data-tippy-content="{{ __('formforge::components.typography.bold') }}"
         ><i class="bi-type-bold"></i></button>
 
         <button type="button"
@@ -26,7 +26,7 @@
         data-trix-attribute="italic"
         data-trix-key="i"
         tabindex="-1"
-        data-tippy-content="{{ __('vocabulary.typography.italic') }}"
+        data-tippy-content="{{ __('formforge::components.typography.italic') }}"
         ><i class="bi-type-italic"></i></button>
 
         <button type="button"
@@ -35,37 +35,37 @@
         data-trix-action="link"
         data-trix-key="k"
         tabindex="-1"
-        data-tippy-content="{{ __('vocabulary.typography.hiperlink') }}"
+        data-tippy-content="{{ __('formforge::components.typography.hiperlink') }}"
         ><i class="bi-link-45deg"></i></button>
 
         <button type="button"
         class="btn btn-outline-secondary trix-btn trix-button--icon-quote ms-2"
         data-trix-attribute="quote"
         tabindex="-1"
-        data-tippy-content="{{ __('vocabulary.typography.quote') }}"
+        data-tippy-content="{{ __('formforge::components.typography.quote') }}"
         ><i class="bi-quote"></i></button>
 
         <button type="button"
         class="btn btn-outline-secondary trix-btn trix-button--icon-bullet-list"
         data-trix-attribute="bullet"
         tabindex="-1"
-        data-tippy-content="{{ __('vocabulary.typography.li') }}"
+        data-tippy-content="{{ __('formforge::components.typography.li') }}"
         ><i class="bi-list-ul"></i></button>
 
         <button type="button"
         class="btn btn-outline-secondary trix-btn trix-button--icon-number-list"
         data-trix-attribute="number"
         tabindex="-1"
-        data-tippy-content="{{ __('vocabulary.typography.ol') }}"
+        data-tippy-content="{{ __('formforge::components.typography.ol') }}"
         ><i class="bi-list-ol"></i></button>
     </div>
     <div class="trix-dialogs" data-trix-dialogs="">
         <div class="trix-dialog trix-dialog--link" data-trix-dialog="href" data-trix-dialog-attribute="href">
           <div class="trix-dialog__link-fields">
-            <input type="url" name="href" class="form-control trix-input trix-input--dialog" placeholder="{{ __('vocabulary.enter_address') }}" aria-label="URL" required="" data-trix-input="" disabled="disabled">
+            <input type="url" name="href" class="form-control trix-input trix-input--dialog" placeholder="{{ __('formforge::components.buttons.enter_address') }}" aria-label="URL" required="" data-trix-input="" disabled="disabled">
             <div class="trix-button-group">
-              <input type="button" class="btn trix-button trix-button--dialog" value="{{ __('vocabulary.typography.link') }}" data-trix-method="setAttribute">
-              <input type="button" class="btn trix-button trix-button--dialog" value="{{ __('vocabulary.typography.unlink') }}" data-trix-method="removeAttribute">
+              <input type="button" class="btn trix-button trix-button--dialog" value="{{ __('formforge::components.typography.link') }}" data-trix-method="setAttribute">
+              <input type="button" class="btn trix-button trix-button--dialog" value="{{ __('formforge::components.typography.unlink') }}" data-trix-method="removeAttribute">
             </div>
           </div>
         </div>
