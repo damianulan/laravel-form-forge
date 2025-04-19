@@ -3,6 +3,7 @@
 namespace FormForge\Components;
 
 use FormForge\Base\TrixField;
+use FormForge\Components\ForgeComponent;
 
 class Trix extends ForgeComponent
 {
@@ -13,8 +14,8 @@ class Trix extends ForgeComponent
 
     public function __construct(string $name, string $toolbar = 'short', ?TrixField $value = null)
     {
-        $this->name = empty($name) ? null:$name;
-        $this->value = $value ? $value->get():null;
+        $this->name = empty($name) ? null : $name;
+        $this->value = $value ? $value->get() : null;
         $this->toolbar = $toolbar;
     }
 }

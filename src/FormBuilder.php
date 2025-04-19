@@ -95,7 +95,7 @@ class FormBuilder
 
     public function render(): View
     {
-        return ViewFacade::make('components.forms.templates.' . $this->template, [
+        return ViewFacade::make('formforge::templates.' . $this->template, [
             'components'  => $this->components,
             'method'    => $this->method,
             'action'    => $this->action,

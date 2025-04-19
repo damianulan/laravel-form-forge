@@ -3,6 +3,7 @@
 namespace FormForge\Components;
 
 use Illuminate\Support\Collection;
+use FormForge\Components\ForgeComponent;
 
 class Select extends ForgeComponent
 {
@@ -14,8 +15,8 @@ class Select extends ForgeComponent
 
     public function __construct(string $name, $options, array $selected_values = [])
     {
-        $this->name = empty($name) ? null:$name;
-        if(count($selected_values)){
+        $this->name = empty($name) ? null : $name;
+        if (count($selected_values)) {
             $this->values = $selected_values;
         }
         $this->options = $options;
@@ -33,5 +34,4 @@ class Select extends ForgeComponent
         $this->empty_field = false;
         return $this;
     }
-
 }
