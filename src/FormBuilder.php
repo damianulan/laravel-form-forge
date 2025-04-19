@@ -4,7 +4,7 @@ namespace FormForge;
 
 use FormForge\Components\Button;
 use Illuminate\Support\Str;
-use FormForge\Components\Component;
+use FormForge\Components\ForgeComponent;
 use FormForge\Enums\Template;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View;
@@ -49,7 +49,7 @@ class FormBuilder
         return $this;
     }
 
-    public function add(Component $component)
+    public function add(ForgeComponent $component)
     {
         if (!empty($component) && $component->show === true) {
             $this->components[$component->name] = $component;

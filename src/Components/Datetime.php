@@ -3,6 +3,7 @@
 namespace FormForge\Components;
 
 use Illuminate\Http\Request;
+use FormForge\Components\ForgeComponent;
 
 class Datetime extends ForgeComponent
 {
@@ -17,7 +18,7 @@ class Datetime extends ForgeComponent
         $this->type = empty($type) ? null : $type;
 
         if (request()->old($name)) {
-            $this->value = date($this->getFormat(), strtotime(request()->old($name)));
+            $this->value = date($this->getFormat(), strtotime(Request::old($name)));
         }
         if (!$this->value) {
             $this->value = empty($value) ? null : date($this->getFormat(), strtotime($value));

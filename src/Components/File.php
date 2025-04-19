@@ -2,6 +2,8 @@
 
 namespace FormForge\Components;
 
+use FormForge\Components\ForgeComponent;
+
 class File extends ForgeComponent
 {
     public string $name;
@@ -11,14 +13,14 @@ class File extends ForgeComponent
 
     public function __construct(string $name, bool $hasValue)
     {
-        $this->name = empty($name) ? null:$name;
+        $this->name = empty($name) ? null : $name;
         $this->classes[] = 'form-control';
         $this->hasValue = $hasValue;
     }
 
     public function setExt(array $accepts)
     {
-        foreach($accepts as $accept){
+        foreach ($accepts as $accept) {
             $this->accept[] = $accept;
         }
         return $this;
@@ -26,7 +28,7 @@ class File extends ForgeComponent
 
     public function getExt()
     {
-        if(count($this->accept)){
+        if (count($this->accept)) {
             return implode(',', $this->accept);
         }
         return null;
