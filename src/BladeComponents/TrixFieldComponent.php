@@ -23,6 +23,6 @@ class TrixFieldComponent extends Component
      */
     public function render(): View
     {
-        return ViewFacade::make('components.alert');
+        return ViewFacade::make('formforge::components.trix-field');
     }
 }
