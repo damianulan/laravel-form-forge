@@ -4,6 +4,7 @@ namespace FormForge\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
+use FormForge\Base\TrixField;
 
 class TrixFieldCast implements CastsAttributes
 {
