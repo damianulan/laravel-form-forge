@@ -23,19 +23,15 @@ class Provider extends ServiceProvider
     public function boot(): void
     {
 
-        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'formforge');
+        $this->loadTranslationsFrom(__DIR__ . '/lang', 'formforge');
 
         $this->loadViewsFrom(__DIR__ . '/Views', 'formforge');
 
         $this->publishes([
-            __DIR__ . '/../lang' => $this->app->langPath('vendor/laravel_vendor_core'),
-        ], 'lang');
-
-
-        $this->publishes([
-            __DIR__ . '/Config/formforge.php'  => config_path('formforge.php'),
-            __DIR__ . '/Public'                 => public_path('vendor/formforge'),
+            __DIR__ . '/Config/formforge.php'   => config_path('formforge.php'),
+            //__DIR__ . '/Public'                 => public_path('vendor/formforge'),
             __DIR__ . '/Views'                  => resource_path('views/vendor/formforge'),
+            __DIR__ . '/lang'                   => $this->app->langPath('vendor/laravel_vendor_core'),
         ], 'formforge');
 
         $this->registerBladeDirectives();
