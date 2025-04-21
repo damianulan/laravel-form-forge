@@ -12,7 +12,7 @@ use Exception;
  *
  * @author Damian Ułan <damian.ulan@protonmail.com>
  */
-class Form
+abstract class Form
 {
 
     public static function reformatRequest(Request $request): Request
@@ -92,7 +92,32 @@ class Form
         return false;
     }
 
-    public static function validate(Request $request, string $model_id = null): array
+    /**
+     * Provide form components definition returning an instance of FormBuilder.
+     *
+     * @param \Illuminate\Support\Facades\Request $request
+     * @param Illuminate\Database\Eloquent\Model|null $model
+     * @return \FormForge\FormBuilder
+     */
+    abstract public static function definition(Request $request, $model = null): FormBuilder;
+
+    /**
+     * Provide laravel validation rules.
+     *
+     * @param \Illuminate\Support\Facades\Request $request
+     * @param string|null $model_id - model uuid 
+     * @return array
+     */
+    abstract public static function validation(Request $request, $model_id = null): array;
+
+    /**
+     * use this method to validate form data
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string|null              $model_id
+     * @return array
+     */
+    public static function validate(Request $request, ?string $model_id = null): array
     {
         if (is_null($model_id)) {
             $id = $request->input('id') ?? null;
