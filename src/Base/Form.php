@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Exception;
+use FormForge\FormBuilder;
 
 /**
  * Base class for full Form template.
@@ -96,7 +97,7 @@ abstract class Form
      * Provide form components definition returning an instance of FormBuilder.
      *
      * @param \Illuminate\Support\Facades\Request $request
-     * @param Illuminate\Database\Eloquent\Model|null $model
+     * @param mixed $model
      * @return \FormForge\FormBuilder
      */
     abstract public static function definition(Request $request, $model = null): FormBuilder;
@@ -108,7 +109,7 @@ abstract class Form
      * @param string|null $model_id - model uuid 
      * @return array
      */
-    abstract public static function validation(Request $request, $model_id = null): array;
+    abstract public static function validation(Request $request, ?string $model_id = null): array;
 
     /**
      * use this method to validate form data
