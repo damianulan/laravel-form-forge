@@ -164,53 +164,61 @@ class FormComponent
     /**
      * Returns date and time input instruction pregenerated with flatpickr.js.
      *
-     * @param  string   $name
-     * @param  mixed    $model
-     * @return Datetime
+     * @param string      $name
+     * @param mixed       $model
+     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @return \FormForge\Components\Datetime
      */
-    public static function datetime(string $name, $model = null): Datetime
+    public static function datetime(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $model->$name ?? null;
-        return new Datetime($name, "datetime", $value);
+        return new Datetime($name, "datetime", $value, $minDate, $maxDate);
     }
 
     /**
      * Returns a time input instruction pregenerated with flatpickr.js.
      *
-     * @param  string   $name
-     * @param  mixed    $model
-     * @return Datetime
+     * @param string      $name
+     * @param mixed       $model
+     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @return \FormForge\Components\Datetime
      */
-    public static function time(string $name, $model = null): Datetime
+    public static function time(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $model->$name ?? null;
-        return new Datetime($name, __FUNCTION__, $value);
+        return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
 
     /**
      * Returns a date input instruction pregenerated with flatpickr.js.
      *
-     * @param  string   $name
-     * @param  mixed    $model
-     * @return Datetime
+     * @param string      $name
+     * @param mixed       $model
+     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @return \FormForge\Components\Datetime
      */
-    public static function date(string $name, $model = null): Datetime
+    public static function date(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $model->$name ?? null;
-        return new Datetime($name, __FUNCTION__, $value);
+        return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
 
     /**
      * Returns a birthdate type input instruction pregenerated with flatpickr.js.
      *
-     * @param  string   $name
-     * @param  mixed    $model
-     * @return Datetime
+     * @param string      $name
+     * @param mixed       $model
+     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @return \FormForge\Components\Datetime
      */
-    public static function birthdate(string $name, $model = null): Datetime
+    public static function birthdate(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $model->$name ?? null;
-        return new Datetime($name, __FUNCTION__, $value);
+        return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
 
     /**
@@ -286,7 +294,5 @@ class FormComponent
         return new File($name, $value);
     }
 
-    public static function dynamicChecklist(string $name, $model = null)
-    {
-    }
+    public static function dynamicChecklist(string $name, $model = null) {}
 }
