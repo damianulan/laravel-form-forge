@@ -36,6 +36,18 @@ class Datetime extends ForgeComponent
         $this->placeholder(__('formforge::forms.placeholders.choose_' . $this->type));
     }
 
+    public function minDate(string $date): self
+    {
+        $this->minDate = $date;
+        return $this;
+    }
+
+    public function maxDate(string $date): self
+    {
+        $this->maxDate = $date;
+        return $this;
+    }
+
     public function getFormat(): string
     {
         $format = 'Y-m-d H:i:s';
