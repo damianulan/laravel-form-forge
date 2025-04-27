@@ -101,7 +101,7 @@ abstract class Form
      * @param mixed $model
      * @return \FormForge\FormBuilder
      */
-    abstract public static function definition(Request $request, ?Model $model = null): FormBuilder;
+    abstract public static function definition(Request $request, $model = null): FormBuilder;
 
     /**
      * Provide laravel validation rules.
