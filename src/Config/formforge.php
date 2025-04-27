@@ -1,5 +1,7 @@
 <?php
 
+use FormForge\Enums\Template;
+
 return [
 
     /*
@@ -11,5 +13,5 @@ return [
     |
     */
 
-
+    'default_template' => Template::HORIZONTAL,
 ];

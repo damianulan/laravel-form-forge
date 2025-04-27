@@ -19,7 +19,7 @@ class FormBuilder
     private ?string $title;
     private string $method;
     private ?string $action;
-    private string $template = Template::HORIZONTAL;
+    private string $template;
 
     private array $classes = [];
     private array $components = [];
@@ -31,6 +31,7 @@ class FormBuilder
         $this->method = Str::upper($method);
         $this->action = $action;
         $this->id = $id;
+        $this->template = config('formforge.default_template');
     }
 
     public static function boot(string $method, ?string $action, ?string $id = null): self
@@ -66,7 +67,8 @@ class FormBuilder
 
     public function template(string $template)
     {
-        $this->template = empty($template) ? $this->template : $template;
+        $template = Str::upper($template);
+        $this->template = Template::$template ?? $this->template;
         return $this;
     }
 
