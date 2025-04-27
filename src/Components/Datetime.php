@@ -36,6 +36,12 @@ class Datetime extends ForgeComponent
         $this->placeholder(__('formforge::forms.placeholders.choose_' . $this->type));
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $date
+     * @return self
+     */
     public function minDate(string $date): self
     {
         $this->minDate = $date;

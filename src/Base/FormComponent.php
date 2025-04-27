@@ -166,8 +166,8 @@ class FormComponent
      *
      * @param string      $name
      * @param mixed       $model
-     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s respectively
-     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
+     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
      * @return \FormForge\Components\Datetime
      */
     public static function datetime(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
@@ -181,8 +181,8 @@ class FormComponent
      *
      * @param string      $name
      * @param mixed       $model
-     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s respectively
-     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
+     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
      * @return \FormForge\Components\Datetime
      */
     public static function time(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
@@ -196,8 +196,8 @@ class FormComponent
      *
      * @param string      $name
      * @param mixed       $model
-     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s respectively
-     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
+     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
      * @return \FormForge\Components\Datetime
      */
     public static function date(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
@@ -211,8 +211,8 @@ class FormComponent
      *
      * @param string      $name
      * @param mixed       $model
-     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s respectively
-     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s respectively
+     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
+     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
      * @return \FormForge\Components\Datetime
      */
     public static function birthdate(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime

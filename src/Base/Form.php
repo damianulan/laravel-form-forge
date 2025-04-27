@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Exception;
 use FormForge\FormBuilder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Base class for full Form template.
@@ -100,7 +101,7 @@ abstract class Form
      * @param mixed $model
      * @return \FormForge\FormBuilder
      */
-    abstract public static function definition(Request $request, $model = null): FormBuilder;
+    abstract public static function definition(Request $request, ?Model $model = null): FormBuilder;
 
     /**
      * Provide laravel validation rules.
