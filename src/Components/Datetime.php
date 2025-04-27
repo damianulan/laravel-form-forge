@@ -11,11 +11,15 @@ class Datetime extends ForgeComponent
     public string $name;
     public string $type;
     public ?string $value = null;
+    public ?string $minDate = null;
+    public ?string $maxDate = null;
 
-    public function __construct(string $name, string $type, ?string $value)
+    public function __construct(string $name, string $type, ?string $value, ?string $minDate = null, ?string $maxDate = null)
     {
         $this->name = empty($name) ? null : $name;
         $this->type = empty($type) ? null : $type;
+        $this->minDate = empty($minDate) ? null : $minDate;
+        $this->maxDate = empty($maxDate) ? null : $maxDate;
 
         if (request()->old($name)) {
             $this->value = date($this->getFormat(), strtotime(request()->old($name)));
