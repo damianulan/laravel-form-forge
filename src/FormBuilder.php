@@ -6,7 +6,6 @@ use FormForge\Components\Button;
 use Illuminate\Support\Str;
 use FormForge\Components\ForgeComponent;
 use FormForge\Enums\Template;
-use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View;
 
 /**
@@ -95,7 +94,7 @@ class FormBuilder
 
     public function render(): View
     {
-        return ViewFacade::make('formforge::templates.' . $this->template, [
+        return view('formforge::templates.' . $this->template, [
             'components'  => $this->components,
             'method'    => $this->method,
             'action'    => $this->action,

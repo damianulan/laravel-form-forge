@@ -3,7 +3,6 @@
 namespace FormForge\Components;
 
 use Exception;
-use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View;
 
 class Button
@@ -25,7 +24,7 @@ class Button
 
     public function render(): View
     {
-        return ViewFacade::make('formforge::components.button', [
+        return view('formforge::components.button', [
             'component' => $this,
         ]);
     }

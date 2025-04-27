@@ -4,7 +4,6 @@ namespace FormForge\BladeComponents;
 
 use Illuminate\View\Component;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\View as ViewFacade;
 
 class TrixFieldComponent extends Component
 {
@@ -23,6 +22,6 @@ class TrixFieldComponent extends Component
      */
     public function render(): View
     {
-        return ViewFacade::make('formforge::components.trix-field');
+        return view('formforge::components.trix-field');
     }
 }

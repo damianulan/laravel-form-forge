@@ -4,7 +4,6 @@ namespace FormForge\Components;
 
 use Illuminate\Support\Str;
 use Closure;
-use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View;
 
 /**
@@ -43,7 +42,7 @@ class ForgeComponent
     public function render(): View
     {
         $template = $this->template ?? Str::lower((new \ReflectionClass($this))->getShortName());
-        return ViewFacade::make('formforge::components.' . $template, [
+        return view('formforge::components.' . $template, [
             'component' => $this,
             'classes' => $this->getClasses(),
         ]);
@@ -126,7 +125,7 @@ class ForgeComponent
     public function getLabel(): ?View
     {
         if (!empty($this->label) && !empty($this->name)) {
-            return ViewFacade::make('formforge::label', [
+            return view('formforge::label', [
                 'label' => $this->label,
                 'name' => $this->name,
                 'required' => $this->required,
