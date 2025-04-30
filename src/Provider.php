@@ -28,10 +28,22 @@ class Provider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/Views', 'formforge');
 
         $this->publishes([
+            __DIR__ . '/lang'                   => $this->app->langPath('vendor/formforge'),
+        ], 'formforge-langs');
+
+        $this->publishes([
+            __DIR__ . '/Config/formforge.php'   => config_path('formforge.php'),
+        ], 'formforge-config');
+
+        $this->publishes([
+            __DIR__ . '/Views'                  => resource_path('views/vendor/formforge'),
+        ], 'formforge-views');
+
+        $this->publishes([
             __DIR__ . '/Config/formforge.php'   => config_path('formforge.php'),
             //__DIR__ . '/Public'                 => public_path('vendor/formforge'),
             __DIR__ . '/Views'                  => resource_path('views/vendor/formforge'),
-            __DIR__ . '/lang'                   => $this->app->langPath('vendor/laravel_vendor_core'),
+            __DIR__ . '/lang'                   => $this->app->langPath('vendor/formforge'),
         ], 'formforge');
 
         $this->registerBladeDirectives();
