@@ -2,7 +2,9 @@
 
 namespace FormForge\Enums;
 
-class Template
+use FormForge\Enums\Enum;
+
+class Template extends Enum
 {
     const HORIZONTAL = 'horizontal';
 }
