@@ -121,12 +121,16 @@ class Dictionary
 
     /**
      * Enum equivalents should be translated in fields.php
+     *
+     * @param mixed $enum_class - enum class namespace
+     * @return \Illuminate\Support\Collection
      */
-    public static function fromEnum($enum): Collection
+    public static function fromEnum($enum_class): Collection
     {
         $options = new Collection();
-        if (class_exists($enum) && $enum instanceof Enum) {
-            foreach ($enum::values() as $case) {
+        $instance = new $enum_class();
+        if (class_exists($enum_class) && $instance instanceof Enum) {
+            foreach ($enum_class::values() as $case) {
                 $options->push(new Option($case, __("formforge::forms.enums." . $case)));
             }
         }
