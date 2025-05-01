@@ -9,6 +9,7 @@ use FormForge\Enums\Template;
 use Illuminate\View\View;
 use FormForge\Exceptions\FormUnauthorized;
 use Illuminate\Http\Request;
+use FormForge\Base\Form;
 
 /**
  * Collects components to render bootstrap form.
@@ -68,9 +69,9 @@ class FormBuilder
      * Form constructor
      *
      * @param \Illuminate\Http\Request $request
-     * @param string                              $method
-     * @param string|null                         $action
-     * @param string|null                         $id
+     * @param string                              $method - as of 'POST', 'PUT', 'GET', 'DELETE' etc.
+     * @param string|null                         $action - leave empty if you want to use the form in AJAX 
+     * @param string|null                         $id - form html id
      * @return \FormForge\FormBuilder
      */
     public function __construct(Request $request, string $method, ?string $action, ?string $id = null)
@@ -86,10 +87,10 @@ class FormBuilder
     /**
      * Form constructor
      *
-     * @param \Illuminate\HttpRequest $request
-     * @param string                              $method
-     * @param string|null                         $action
-     * @param string|null                         $id
+     * @param \Illuminate\Http\Request $request
+     * @param string                              $method - as of 'POST', 'PUT', 'GET', 'DELETE' etc.
+     * @param string|null                         $action - leave empty if you want to use the form in AJAX 
+     * @param string|null                         $id - form html id
      * @return \FormForge\FormBuilder
      */
     public static function boot(Request $request, string $method, ?string $action, ?string $id = null): self
@@ -97,15 +98,28 @@ class FormBuilder
         return new self($request, $method, $action, $id);
     }
 
-    private function authorize()
+    private function authorize(): void
     {
         $user = $this->request->user() ?? null;
         if (!$user) {
             $this->throwUnauthorized();
         }
+
+        // backtrace callable Form source
+        // in order to locate authorization method
         $trace = debug_backtrace();
-        $class = $trace[1]['class'];
-        dd($class);
+        $namespace = $trace[3]['class'];
+
+        // check source
+        $instance = new $namespace();
+        if (! ($instance instanceof Form)) {
+            $this->throwUnauthorized();
+        }
+
+        $authorized = $namespace::authorize($this->request);
+        if (!$authorized) {
+            $this->throwUnauthorized();
+        }
     }
 
     /**

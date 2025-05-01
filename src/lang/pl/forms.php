@@ -11,11 +11,15 @@ return [
         'choose_datetime' => 'Wybierz datę oraz godzinę',
     ],
 
+    'exception' => [
+        'unauthorized' => 'Nie posiadasz wystarczających uprawnień do wyświetlenia tego formularza. Jeśli uważasz, że to błąd, skontaktuj się z administratorem systemu.',
+    ],
+
     'yes' => 'Tak',
     'no' => 'Nie',
 
     'enums' => [
 
         // here bring your own enums for Dictionary::fromEnum() usages
-    ]
+    ],
 ];

@@ -2,11 +2,17 @@
 
 namespace FormForge\Exceptions;
 
-use Exception;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class FormUnauthorized extends Exception
+class FormUnauthorized extends HttpException
 {
-    protected $message = 'FormForge: Form authorization failed. Permission denied.';
+    protected $message;
 
     protected $code = 403;
+
+    public function __construct()
+    {
+        $this->message = __('formforge::forms.exception.unauthorized');
+        parent::__construct($this->code, $this->message, null, [], $this->code);
+    }
 }
