@@ -7,8 +7,8 @@ use Illuminate\Support\Str;
 use FormForge\Components\ForgeComponent;
 use FormForge\Enums\Template;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\Request;
 use FormForge\Exceptions\FormUnauthorized;
+use Illuminate\Http\Request;
 
 /**
  * Collects components to render bootstrap form.
@@ -60,14 +60,14 @@ class FormBuilder
     public ?Button $submit = null;
 
     /**
-     * @var \Illuminate\Support\Facades\Request
+     * @var \Illuminate\Http\Request
      */
     private Request $request;
 
     /**
      * Form constructor
      *
-     * @param \Illuminate\Support\Facades\Request $request
+     * @param \Illuminate\Http\Request $request
      * @param string                              $method
      * @param string|null                         $action
      * @param string|null                         $id
@@ -86,7 +86,7 @@ class FormBuilder
     /**
      * Form constructor
      *
-     * @param \Illuminate\Support\Facades\Request $request
+     * @param \Illuminate\HttpRequest $request
      * @param string                              $method
      * @param string|null                         $action
      * @param string|null                         $id
