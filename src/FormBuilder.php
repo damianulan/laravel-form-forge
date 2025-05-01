@@ -66,7 +66,7 @@ class FormBuilder
     private Request $request;
 
     /**
-     * Form constructor
+     * Form internal constructor - in order to call FormBuilder instance use FormBuilder::boot() method instead.
      *
      * @param \Illuminate\Http\Request $request
      * @param string                              $method - as of 'POST', 'PUT', 'GET', 'DELETE' etc.
@@ -189,7 +189,7 @@ class FormBuilder
      * When clicked, it executes form validation and submits the form.
      *
      * @param string $class
-     * @return self
+     * @return \FormForge\FormBuilder
      */
     public function addSubmit(string $class = 'btn-primary'): self
     {
@@ -201,7 +201,7 @@ class FormBuilder
      * Add form header.
      *
      * @param string $title
-     * @return self
+     * @return \FormForge\FormBuilder
      */
     public function addTitle(string $title): self
     {
