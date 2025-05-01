@@ -14,4 +14,6 @@ return [
     */
 
     'default_template' => Template::HORIZONTAL,
+
+    'date_format' => 'Y-m-d',
 ];

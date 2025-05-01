@@ -17,6 +17,17 @@ use Illuminate\Database\Eloquent\Model;
 abstract class Form
 {
 
+    public static function authorize(Request $request): bool
+    {
+        return true;
+    }
+
+    /**
+     * Check and fix request data for date and float values.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Request
+     */
     public static function reformatRequest(Request $request): Request
     {
         foreach ($request->all() as $property => $value) {
@@ -73,9 +84,16 @@ abstract class Form
 
     private static function formatDate(string $value)
     {
-        return date('Y-m-d', strtotime($value));
+        return date(config('formforge.date_format'), strtotime($value));
     }
 
+    /**
+     * It is possible that form accepts EU float values with comma as decimal separator.
+     * This method translates it to US format.
+     *
+     * @param string|null $value
+     * @return bool
+     */
     private static function isEUFloat(?string $value)
     {
         if ($value) {

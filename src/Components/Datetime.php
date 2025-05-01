@@ -56,9 +56,9 @@ class Datetime extends ForgeComponent
 
     public function getFormat(): string
     {
-        $format = 'Y-m-d H:i:s';
+        $format = config('formforge.date_format') . ' H:i:s';
         if ($this->type === 'date' || $this->type === 'birthdate') {
-            $format = 'Y-m-d';
+            $format = config('formforge.date_format');
         } elseif ($this->type === 'time') {
             $format = 'H:i:s';
         }
