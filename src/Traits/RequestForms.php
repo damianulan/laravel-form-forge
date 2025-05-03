@@ -23,7 +23,7 @@ trait RequestForms
      *
      * @var string
      */
-    protected $storagePath = config('formforge.defaults.file_storage_path');
+    protected $storagePath = 'uploads';
 
     /**
      * Retrieve model data from request

@@ -19,7 +19,5 @@ return [
 
     'defaults' => [
         'template' => env('FORMFORGE_TEMPLATE', Template::HORIZONTAL),
-        'file_storage_path' => 'uploads',
-
     ],
 ];
