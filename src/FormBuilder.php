@@ -15,6 +15,9 @@ use FormForge\Base\Form;
  * Collects components to render bootstrap form.
  *
  * @author Damian Ułan <damian.ulan@protonmail.com>
+ * @copyright 2025 damianulan
+ * @license MIT
+ * @package FormForge
  */
 class FormBuilder
 {
@@ -80,7 +83,7 @@ class FormBuilder
         $this->method = Str::upper($method);
         $this->action = $action;
         $this->id = $id;
-        $this->template = config('formforge.default_template');
+        $this->template = config('formforge.defaults.template');
         $this->authorize();
     }
 
@@ -90,7 +93,7 @@ class FormBuilder
      * @param \Illuminate\Http\Request $request
      * @param string                              $method - as of 'POST', 'PUT', 'GET', 'DELETE' etc.
      * @param string|null                         $action - leave empty if you want to use the form in AJAX 
-     * @param string|null                         $id - form html id
+     * @param string|null                         $id - form's html id
      * @return \FormForge\FormBuilder
      */
     public static function boot(Request $request, string $method, ?string $action, ?string $id = null): self
@@ -98,6 +101,11 @@ class FormBuilder
         return new self($request, $method, $action, $id);
     }
 
+    /**
+     * Core function handling form authorization checks.
+     *
+     * @return void
+     */
     private function authorize(): void
     {
         $user = $this->request->user() ?? null;

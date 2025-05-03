@@ -9,6 +9,9 @@ return [
         'choose_birthdate' => 'Wybierz datę',
         'choose_time' => 'Wybierz godzinę',
         'choose_datetime' => 'Wybierz datę oraz godzinę',
+
+        'enter_number' => 'Wprowadź liczbę...',
+        'enter_float' => 'Wprowadź liczbę do dwóch miejsc dziesiętnych...',
     ],
 
     'exception' => [

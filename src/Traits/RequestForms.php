@@ -6,8 +6,32 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Use this trait in your model to be able to automatically fill it based on request data.
+ *
+ * @author Damian Ułan <damian.ulan@protonmail.com>
+ * @copyright 2025 damianulan
+ * @license MIT
+ * @package FormForge
+ */
 trait RequestForms
 {
+
+    /**
+     * default storage path for files uploaded with request.
+     * can be overriden in model.
+     *
+     * @var string
+     */
+    protected $storagePath = config('formforge.defaults.file_storage_path');
+
+    /**
+     * Retrieve model data from request
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param mixed                    $id
+     * @return static
+     */
     public static function fillFromRequest(Request $request, $id = null): static
     {
         $instance = null;
@@ -20,13 +44,15 @@ trait RequestForms
             if (in_array($property, $instance->fillable)) {
                 // FILE
                 if ($value instanceof UploadedFile) {
-                    $file = $request->file($property);
-                    if ($file && isset($instance->storagePath)) {
-                        $name = $file->hashName();
-                        $stored = $file->storeAs("public/$instance->storagePath", $name);
-                        if ($stored) {
-                            $publicPath = $instance->storagePath . '/' . $name;
-                            $instance->$property = $publicPath;
+                    if (config('formforge.handling_files')) {
+                        $file = $request->file($property);
+                        if ($file && isset($instance->storagePath)) {
+                            $name = $file->hashName();
+                            $stored = $file->storeAs("public/$instance->storagePath", $name);
+                            if ($stored) {
+                                $publicPath = $instance->storagePath . '/' . $name;
+                                $instance->$property = $publicPath;
+                            }
                         }
                     }
                 } else {

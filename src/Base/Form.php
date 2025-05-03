@@ -13,10 +13,19 @@ use Illuminate\Database\Eloquent\Model;
  * Base class for full Form template.
  *
  * @author Damian Ułan <damian.ulan@protonmail.com>
+ * @copyright 2025 damianulan
+ * @license MIT
+ * @package FormForge
  */
 abstract class Form
 {
 
+    /**
+     * If you need you can set up conditions, that user must meet to use this Form.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return bool
+     */
     public static function authorize(Request $request): bool
     {
         return true;

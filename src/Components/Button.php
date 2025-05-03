@@ -11,6 +11,13 @@ class Button
     public string $class;
     public string $title;
 
+    /**
+     * Add a button to the form.
+     *
+     * @param string $title
+     * @param string $type
+     * @param string $class
+     */
     public function __construct(string $title, string $type = 'button', string $class = 'btn-primary')
     {
         $allowed_types = ['button', 'submit', 'reset'];
@@ -22,6 +29,11 @@ class Button
         $this->title = $title;
     }
 
+    /**
+     * render button view with all components.
+     *
+     * @return \Illuminate\View\View
+     */
     public function render(): View
     {
         return view('formforge::components.button', [

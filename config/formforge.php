@@ -13,7 +13,13 @@ return [
     |
     */
 
-    'default_template' => Template::HORIZONTAL,
+    'date_format' => env('FORMFORGE_DATE_FORMAT', 'Y-m-d'),
 
-    'date_format' => 'Y-m-d',
+    'handling_files' => env('FORMFORGE_HANDLING_FILES', true),
+
+    'defaults' => [
+        'template' => env('FORMFORGE_TEMPLATE', Template::HORIZONTAL),
+        'file_storage_path' => 'uploads',
+
+    ],
 ];

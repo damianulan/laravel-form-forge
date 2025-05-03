@@ -13,7 +13,14 @@ class Select extends ForgeComponent
     public bool $multiple = false;
     public bool $empty_field = true;
 
-    public function __construct(string $name, $options, array $selected_values = [])
+    /**
+     * Simple select component instance.
+     *
+     * @param string                         $name
+     * @param \Illuminate\Support\Collection $options
+     * @param array                          $selected_values
+     */
+    public function __construct(string $name, Collection $options, array $selected_values = [])
     {
         $this->name = empty($name) ? null : $name;
         if (count($selected_values)) {

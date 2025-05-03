@@ -17,6 +17,15 @@ class Dictionary
         "null" => "PLAIN",
     ];
 
+    /**
+     * Get data for select directly from model.
+     *
+     * @param string $model
+     * @param string $column
+     * @param string $method
+     * @param array  $exclude
+     * @return \Illuminate\Support\Collection
+     */
     public static function fromModel(
         string $model,
         string $column,
@@ -63,6 +72,13 @@ class Dictionary
         return $options;
     }
 
+    /**
+     * Create select from array values.
+     *
+     * @param array  $values
+     * @param string $lang_component - use if your array values are lang keys.
+     * @return \Illuminate\Support\Collection
+     */
     public static function fromUnassocArray(
         array $values,
         string $lang_component = ""
@@ -109,6 +125,11 @@ class Dictionary
         return null;
     }
 
+    /**
+     * Simple true/false select
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public static function yesNo(): Collection
     {
         $options = new Collection();

@@ -14,6 +14,15 @@ class Datetime extends ForgeComponent
     public ?string $minDate = null;
     public ?string $maxDate = null;
 
+    /**
+     * Create a date/time/datetime input.
+     *
+     * @param string      $name
+     * @param string      $type
+     * @param string|null $value
+     * @param string|null $minDate
+     * @param string|null $maxDate
+     */
     public function __construct(string $name, string $type, ?string $value, ?string $minDate = null, ?string $maxDate = null)
     {
         $this->name = empty($name) ? null : $name;
@@ -37,7 +46,7 @@ class Datetime extends ForgeComponent
     }
 
     /**
-     * Undocumented function
+     * Set minimum accessible date for the input.
      *
      * @param string $date
      * @return self
@@ -48,6 +57,12 @@ class Datetime extends ForgeComponent
         return $this;
     }
 
+    /**
+     * Set maximum accessible date for the input.
+     *
+     * @param string $date
+     * @return self
+     */
     public function maxDate(string $date): self
     {
         $this->maxDate = $date;

@@ -42,7 +42,7 @@ class Input extends ForgeComponent
     public function numeric()
     {
         $this->numeric = true;
-        $this->placeholder('Wprowadź liczbę...');
+        $this->placeholder('formforge::forms.placeholders.enter_number');
         return $this;
     }
 
@@ -50,7 +50,7 @@ class Input extends ForgeComponent
     {
         $this->numeric = true;
         $this->numeric_type = __FUNCTION__;
-        $this->placeholder('Wprowadź liczbę do dwóch miejsc dziesiętnych...');
+        $this->placeholder('formforge::forms.placeholders.enter_float');
         return $this;
     }
 }
