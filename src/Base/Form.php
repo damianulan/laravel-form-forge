@@ -124,7 +124,7 @@ abstract class Form
     /**
      * Provide form components definition returning an instance of FormBuilder.
      *
-     * @param \Illuminate\Support\Facades\Request $request
+     * @param \Illuminate\Http\Request $request
      * @param mixed $model
      * @return \FormForge\FormBuilder
      */
@@ -133,7 +133,7 @@ abstract class Form
     /**
      * Provide laravel validation rules.
      *
-     * @param \Illuminate\Support\Facades\Request $request
+     * @param \Illuminate\Http\Request $request
      * @param string|null $model_id - model uuid 
      * @return array
      */
