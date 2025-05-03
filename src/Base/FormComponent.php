@@ -111,8 +111,13 @@ class FormComponent
             $value = $value->value;
         }
         if (!is_null($selected_value)) {
-            $value = $selected_value;
+            if (!is_array($selected_value)) {
+                $value = $selected_value;
+            } else {
+                $value = reset($selected_value);
+            }
         }
+
         return new Select($name, $options, [$value]);
     }
 
