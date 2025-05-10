@@ -2,13 +2,29 @@
 
 namespace FormForge\Base;
 
-use Illuminate\Foundation\Http\FormRequest as Request;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest as BaseFormRequest;
 use FormForge\Base\Form;
 
-class FormRequest extends Request
+class FormRequest extends BaseFormRequest
 {
 
     public Form $form;
+
+    public static function make(Request $request, Form $form): FormRequest
+    {
+        $new = self::create([
+            $request->getUri(),
+            $request->getMethod(),
+            $request->all(),
+            $request->cookies->all(),
+            $request->allFiles(),
+            $request->server->all(),
+            $request->getContent()
+        ]);
+        $new->form = $form;
+        return $new;
+    }
 
     /**
      * Determine if the user is authorized to make this request.

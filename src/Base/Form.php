@@ -35,10 +35,10 @@ abstract class Form
     /**
      * Check and fix request data for date and float values.
      *
-     * @param \FormForge\Base\FormRequest $request
+     * @param \Illuminate\Http\Request $request
      * @return \FormForge\Base\FormRequest
      */
-    public static function reformatRequest(FormRequest $request): FormRequest
+    public static function reformatRequest(Request $request): FormRequest
     {
         foreach ($request->all() as $property => $value) {
             if (is_string($value) && self::isDate($value)) {
@@ -54,6 +54,9 @@ abstract class Form
             }
             $request->merge([$property => $value]);
         }
+
+        $form = new static();
+        $request = FormRequest::make($request, $form);
 
         return $request;
     }
