@@ -13,7 +13,7 @@ class FormRequest extends BaseFormRequest
 
     public static function make(Request $request, Form $form): FormRequest
     {
-        $new = self::create([
+        $new = self::create(
             $request->getUri(),
             $request->getMethod(),
             $request->all(),
@@ -21,7 +21,7 @@ class FormRequest extends BaseFormRequest
             $request->allFiles(),
             $request->server->all(),
             $request->getContent()
-        ]);
+        );
         $new->form = $form;
         return $new;
     }
