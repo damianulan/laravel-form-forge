@@ -5,14 +5,10 @@ namespace FormForge\Base;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Validator as ValidatorInstance;
-
 use Carbon\Carbon;
 use Exception;
 use FormForge\FormBuilder;
-use Illuminate\Database\Eloquent\Model;
-use FormForge\Base\FormRequest;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Http\RedirectResponse;
 
 /**
  * Base class for full Form template.
@@ -40,9 +36,9 @@ abstract class Form
      * Check and fix request data for date and float values.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \FormForge\Base\FormRequest
+     * @return \Illuminate\Http\Request
      */
-    public static function reformatRequest(Request $request): FormRequest
+    public static function reformatRequest(Request $request): Request
     {
         foreach ($request->all() as $property => $value) {
             if (is_string($value) && self::isDate($value)) {
@@ -58,9 +54,6 @@ abstract class Form
             }
             $request->merge([$property => $value]);
         }
-
-        $form = new static();
-        $request = FormRequest::make($request, $form);
 
         return $request;
     }
@@ -184,17 +177,15 @@ abstract class Form
     /**
      * @param \Illuminate\Http\Request $request
      * @param string|null              $model_id
-     * @return \Illuminate\Http\RedirectResponse|bool
+     * @return void
      */
-    public static function validate(Request $request, ?string $model_id = null): RedirectResponse|bool
+    public static function validate(Request $request, ?string $model_id = null)
     {
         $validator = static::validator($request, $model_id);
 
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            abort(Redirect::back()->withErrors($validator)->withInput());
         }
-
-        return true;
     }
 
     /**
