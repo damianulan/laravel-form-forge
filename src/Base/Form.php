@@ -11,6 +11,8 @@ use Exception;
 use FormForge\FormBuilder;
 use Illuminate\Database\Eloquent\Model;
 use FormForge\Base\FormRequest;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\RedirectResponse;
 
 /**
  * Base class for full Form template.
@@ -145,6 +147,16 @@ abstract class Form
      */
     abstract public static function validation(Request $request, ?string $model_id = null): array;
 
+    protected static function messages(): array
+    {
+        return [];
+    }
+
+    protected static function attributes(): array
+    {
+        return [];
+    }
+
     /**
      * use this method to validate form data
      *
@@ -154,14 +166,8 @@ abstract class Form
      */
     public static function validateJson(Request $request, ?string $model_id = null): array
     {
-        if (is_null($model_id)) {
-            $id = $request->input('id') ?? null;
-            if ($id) {
-                $model_id = $id;
-            }
-        }
 
-        $validator = self::validate($request, $model_id);
+        $validator = self::validator($request, $model_id);
 
         if ($validator->fails()) {
             return [
@@ -175,7 +181,28 @@ abstract class Form
         ];
     }
 
-    public static function validate(Request $request, ?string $model_id = null): ValidatorInstance
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param string|null              $model_id
+     * @return \Illuminate\Http\RedirectResponse|bool
+     */
+    public static function validate(Request $request, ?string $model_id = null): RedirectResponse|bool
+    {
+        $validator = static::validator($request, $model_id);
+
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+        return true;
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param string|null              $model_id
+     * @return \Illuminate\Validation\Validator
+     */
+    public static function validator(Request $request, ?string $model_id = null): ValidatorInstance
     {
         if (is_null($model_id)) {
             $id = $request->input('id') ?? null;
@@ -184,6 +211,6 @@ abstract class Form
             }
         }
 
-        return Validator::make($request->all(), static::validation($request, $model_id));
+        return Validator::make($request->all(), static::validation($request, $model_id), static::messages(), static::attributes());
     }
 }
