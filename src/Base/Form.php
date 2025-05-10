@@ -3,7 +3,9 @@
 namespace FormForge\Base;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+//use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator;
+
 use Carbon\Carbon;
 use Exception;
 use FormForge\FormBuilder;
@@ -150,7 +152,7 @@ abstract class Form
      * @param string|null              $model_id
      * @return array
      */
-    public static function validate(Request $request, ?string $model_id = null): array
+    public static function validateJson(Request $request, ?string $model_id = null): array
     {
         if (is_null($model_id)) {
             $id = $request->input('id') ?? null;
@@ -159,7 +161,7 @@ abstract class Form
             }
         }
 
-        $validator = Validator::make($request->all(), static::validation($request, $model_id));
+        $validator = self::validate($request, $model_id);
 
         if ($validator->fails()) {
             return [
@@ -171,5 +173,17 @@ abstract class Form
             'status' => 'ok',
             'messages' => $validator->messages(),
         ];
+    }
+
+    public static function validate(Request $request, ?string $model_id = null): Validator
+    {
+        if (is_null($model_id)) {
+            $id = $request->input('id') ?? null;
+            if ($id) {
+                $model_id = $id;
+            }
+        }
+
+        return Validator::make($request->all(), static::validation($request, $model_id));
     }
 }
