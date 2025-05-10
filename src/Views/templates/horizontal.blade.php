@@ -9,7 +9,7 @@
         @if (isset($component->type) && $component->type === 'hidden')
             {{ $component->render() }}
         @else
-            <div class="row pb-3">
+            <div class="row align-items-center pb-3">
                 <div class="col-md-4">
                     <div class="d-flex">
                         <div class="form-label">
