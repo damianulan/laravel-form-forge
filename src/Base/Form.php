@@ -22,6 +22,13 @@ abstract class Form
 {
 
     /**
+     * custom route to redirect back to after form validation
+     *
+     * @var mixed
+     */
+    protected static $back = null;
+
+    /**
      * If you need you can set up conditions, that user must meet to use this Form.
      *
      * @param \Illuminate\Http\Request $request
@@ -193,6 +200,9 @@ abstract class Form
         $validator = static::validator($request, $model_id);
 
         if ($validator->fails()) {
+            if (static::$back) {
+                abort(Redirect::to(static::$back)->withErrors($validator)->withInput());
+            }
             abort(Redirect::back()->withErrors($validator)->withInput());
         }
     }
