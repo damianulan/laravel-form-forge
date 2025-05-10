@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Exception;
 use FormForge\FormBuilder;
 use Illuminate\Database\Eloquent\Model;
+use FormForge\Base\FormRequest;
 
 /**
  * Base class for full Form template.
@@ -34,10 +35,10 @@ abstract class Form
     /**
      * Check and fix request data for date and float values.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Request
+     * @param \FormForge\Base\FormRequest $request
+     * @return \FormForge\Base\FormRequest
      */
-    public static function reformatRequest(Request $request): Request
+    public static function reformatRequest(FormRequest $request): FormRequest
     {
         foreach ($request->all() as $property => $value) {
             if (is_string($value) && self::isDate($value)) {
