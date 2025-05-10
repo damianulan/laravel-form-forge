@@ -68,6 +68,7 @@ abstract class Form
                     $value = null;
                 }
             }
+            $request->merge([$property => $value]);
         }
 
         return $request;
