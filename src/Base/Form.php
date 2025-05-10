@@ -61,12 +61,13 @@ abstract class Form
                 }
             } elseif (is_string($value) && self::isEUFloat($value)) {
                 $value = str_replace(',', '.', $value);
+            } elseif (in_array($value, ['on', 'off'])) {
+                $value = $value === 'on' ? true : false;
             } else {
                 if (empty($value)) {
                     $value = null;
                 }
             }
-            $request->merge([$property => $value]);
         }
 
         return $request;
