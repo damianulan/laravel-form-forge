@@ -249,4 +249,14 @@ class FormBuilder
     {
         throw new FormUnauthorized();
     }
+
+    /**
+     * Get all form components.
+     *
+     * @return array
+     */
+    public function getComponents(): array
+    {
+        return $this->components;
+    }
 }

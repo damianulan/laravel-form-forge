@@ -147,7 +147,16 @@ abstract class Form
 
     protected static function attributes(): array
     {
-        return [];
+        $attributes = [];
+
+        $builder = static::definition(request());
+        if ($builder) {
+            foreach ($builder->getComponents() as $component) {
+                $attributes[$component->name] = $component->label;
+            }
+        }
+
+        return $attributes;
     }
 
     /**
