@@ -3,8 +3,8 @@
 namespace FormForge\Base;
 
 use Illuminate\Http\Request;
-//use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator as ValidatorInstance;
 
 use Carbon\Carbon;
 use Exception;
@@ -175,7 +175,7 @@ abstract class Form
         ];
     }
 
-    public static function validate(Request $request, ?string $model_id = null): Validator
+    public static function validate(Request $request, ?string $model_id = null): ValidatorInstance
     {
         if (is_null($model_id)) {
             $id = $request->input('id') ?? null;
