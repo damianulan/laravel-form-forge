@@ -189,4 +189,17 @@ class ForgeComponent
         $this->autocomplete = $type;
         return $this;
     }
+
+    /**
+     * Set additional conditions that need to be met for component to be shown in the form.
+     *
+     * @param mixed $callback
+     * @return static
+     */
+    public function condition($callback): static
+    {
+        $return = $callback();
+        $this->show = (bool) $return;
+        return $this;
+    }
 }
