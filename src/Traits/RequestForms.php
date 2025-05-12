@@ -66,6 +66,12 @@ trait RequestForms
 
                     $instance->$property = $value;
                 }
+
+                if (isset($instance->casts) && isset($instance->casts[$property])) {
+                    if ($instance->casts[$property] === 'boolean') {
+                        $instance->$property = (bool)$value;
+                    }
+                }
             }
         }
 
