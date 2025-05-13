@@ -22,7 +22,7 @@ abstract class Form
 {
 
     /**
-     * custom route to redirect back to after form validation
+     * custom route key to redirect back to after form validation
      *
      * @var string|null
      */
@@ -156,11 +156,21 @@ abstract class Form
      */
     abstract public static function validation(Request $request, ?string $model_id = null): array;
 
+    /**
+     * Custom laravel validation messages.
+     *
+     * @return array
+     */
     protected static function messages(): array
     {
         return [];
     }
 
+    /**
+     * Custom laravel validation attributes.
+     *
+     * @return array
+     */
     protected static function attributes(): array
     {
         $attributes = [];
@@ -176,7 +186,7 @@ abstract class Form
     }
 
     /**
-     * use this method to validate form data
+     * Use this method to validate form data. It returns an array with result and message stack.
      *
      * @param \Illuminate\Http\Request $request
      * @param string|null              $model_id
@@ -200,6 +210,9 @@ abstract class Form
     }
 
     /**
+     * Use this method to validate form data. When bumped into error it automatically redirects back.
+     * Override $backRoute and $backParams to customize redirection target.
+     * 
      * @param \Illuminate\Http\Request $request
      * @param string|null              $model_id
      * @return void
@@ -218,6 +231,8 @@ abstract class Form
     }
 
     /**
+     * Returns a raw validator instance. Best for custom logic.
+     * 
      * @param \Illuminate\Http\Request $request
      * @param string|null              $model_id
      * @return \Illuminate\Validation\Validator
