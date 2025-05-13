@@ -30,6 +30,7 @@ class ExemplaryForm extends Form
         }
 
         return FormBuilder::boot($request, $method, $route, 'form_html_id')
+            ->template(Template::HORIZONTAL) // modify form layout template
             ->class('custom-form-classes')
             ->add(FormComponent::hidden('id', $model))
             ->add(FormComponent::select('template_id', $model, Dictionary::fromModel(Model::class, 'attribute'))->required()) // form element branded as required
@@ -158,8 +159,9 @@ Coming soon.
 
 ### What's coming next?
 
-- JS package support
-- dedicated S
+- JS package form support
+- dedicated Sass styles
+- more layout template variants
 
 ### Dependencies
 
