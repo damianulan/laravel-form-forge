@@ -2,7 +2,7 @@
     $nominal = $method==='GET' ? 'GET':'POST';
 @endphp
 
-<form id="{{ $id ? $id:'' }}" action="{{ $action ? $action:'' }}" method="{{ $nominal }}" class="col-md-12 form-{{ $template }}{{ $classes ? ' '.$classes:''  }}" enctype="multipart/form-data">
+<form id="{{ $id ? $id:'' }}" action="{{ $action ? $action:'' }}" method="{{ $nominal }}" class="col-md-12 formforge-form formforge-{{ $template }}{{ $classes ? ' '.$classes:''  }}" enctype="multipart/form-data">
     @method($method)
     @csrf
     @foreach ($components as $component)

@@ -11,7 +11,7 @@
     id="{{ $id }}"
     value="{!! $value !!}"
 />
-<trix-toolbar class="trix-toolbar" id="trix-toolbar-{{ $toolbar }}">
+<trix-toolbar class="trix-toolbar formforge-trix-toolbar" id="trix-toolbar-{{ $toolbar }}">
     <div class="trix-button-row">
         <button type="button"
         class="btn btn-outline-secondary trix-btn trix-button--icon-bold"

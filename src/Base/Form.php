@@ -108,11 +108,6 @@ abstract class Form
         return false;
     }
 
-    private static function formatDate(string $value)
-    {
-        return date(config('formforge.date_format'), strtotime($value));
-    }
-
     /**
      * It is possible that form accepts EU float values with comma as decimal separator.
      * This method translates it to US format.
