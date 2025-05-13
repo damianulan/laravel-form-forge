@@ -88,7 +88,7 @@ protected static function attributes(): array
 }
 ```
 
-Then in your controller try generate new form builder instance into your view:
+Then in your controller, generate new form builder instance into your view:
 
 ```php
 public function create(Request $request)
