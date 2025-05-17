@@ -25,6 +25,7 @@ class Input extends ForgeComponent
             $this->value = request()->old($name);
         }
         $this->classes[] = 'form-control';
+        $this->classes[] = 'formforge-control';
     }
 
     public function maxlength(int $value)

@@ -59,6 +59,11 @@ class FormBuilder
     private array $components = [];
 
     /**
+     * @var array
+     */
+    private array $buttons = [];
+
+    /**
      * @var \FormForge\Components\Button|null
      */
     public ?Button $submit = null;
@@ -154,8 +159,20 @@ class FormBuilder
      */
     public function add(ForgeComponent $component): self
     {
-        if (!empty($component) && $component->show === true) {
+        if ($component && $component->show === true) {
             $this->components[$component->name] = $component;
+        }
+        return $this;
+    }
+
+    public function addButton(Button $button): self
+    {
+        if ($button) {
+            if ($button->isSubmit()) {
+                $this->submit = $button;
+            } else {
+                $this->buttons[$button->title] = $button;
+            }
         }
         return $this;
     }
@@ -182,8 +199,16 @@ class FormBuilder
      */
     public function template(string $template): self
     {
-        $template = Str::upper($template);
-        $this->template = Template::$template ?? $this->template;
+        $instance = null;
+        try {
+            $instance = Template::from($template);
+        } catch (\Throwable $e) {
+            if (config('app.debug')) {
+                throw $e;
+            }
+        }
+
+        $this->template = $instance ?? $this->template;
         return $this;
     }
 
@@ -201,7 +226,7 @@ class FormBuilder
      */
     public function addSubmit(string $class = 'btn-primary'): self
     {
-        $this->submit = new Button(__('formforge::components.buttons.save'), 'submit', $class);
+        $this->submit = new Button(__('formforge::components.buttons.save'), 'submit', null, $class);
         return $this;
     }
 
@@ -242,6 +267,7 @@ class FormBuilder
             'id'        => $this->id,
             'template'  => $this->template,
             'submit'    => $this->submit,
+            'buttons'   => $this->buttons,
         ]);
     }
 

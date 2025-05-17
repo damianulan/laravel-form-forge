@@ -5,12 +5,12 @@
 <form id="{{ $id ? $id:'' }}" action="{{ $action ? $action:'' }}" method="{{ $nominal }}" class="col-md-12 formforge-form formforge-{{ $template }}{{ $classes ? ' '.$classes:''  }}" enctype="multipart/form-data">
     @method($method)
     @csrf
-    @foreach ($components as $component)
-        @if (isset($component->type) && $component->type === 'hidden')
-            {{ $component->render() }}
-        @else
-            <div class="row form-group align-items-center">
-                <div class="col-md-4">
+    <div class="row align-items-center">
+        @foreach ($components as $component)
+            @if (isset($component->type) && $component->type === 'hidden')
+                {{ $component->render() }}
+            @else
+                <div class="col-md-6 col-xs-12 form-group">
                     <div class="d-flex">
                         <div class="form-label">
                             {{ $component->getLabel() }}
@@ -19,14 +19,15 @@
                             {!! $component->getInfos() !!}
                         </div>
                     </div>
+                    <div class="d-block">
+                        {{ $component->render() }}
+                    </div>
                 </div>
-                <div class="col-md-8">
-                    {{ $component->render() }}
-                </div>
-            </div>
-        @endif
 
-    @endforeach
+            @endif
+
+        @endforeach
+    </div>
     @if ($submit || !empty($buttons))
         <div class="row">
             <div class="action-btns">

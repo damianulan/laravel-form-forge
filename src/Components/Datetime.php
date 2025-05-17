@@ -38,6 +38,7 @@ class Datetime extends ForgeComponent
         }
 
         $this->classes[] = 'form-control';
+        $this->classes[] = 'formforge-control';
 
         if ($this->type) {
             $this->classes[] = $this->type . 'picker';

@@ -4,6 +4,9 @@ return [
 
     'buttons' => [
         'save' => 'Save',
+        'reset' => 'Reset',
+        'delete' => 'Delete',
+        'back' => 'Cancel',
         'choose_file' => 'Choose file',
         'enter_address' => 'Enter address',
     ],
