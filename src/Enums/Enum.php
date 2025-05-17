@@ -3,14 +3,14 @@
 namespace FormForge\Enums;
 
 /**
- * This is custom 
+ * This is custom, more powerful enum class implementation.
  *
  * @author Damian Ułan <damian.ulan@protonmail.com>
  * @copyright 2025 damianulan
  * @license MIT
  * @package FormForge
  */
-abstract class Enum implements \BackedEnum
+abstract class Enum implements BackedEnum
 {
     /**
      * Cache of constants for each enum class.
@@ -120,24 +120,11 @@ abstract class Enum implements \BackedEnum
         return static::class === get_class($enum) && $this->value === $enum->value();
     }
 
-    /**
-     * Mimics BackedEnum::from — returns enum or throws.
-     *
-     * @param string|int $value
-     * @return static
-     * @throws InvalidArgumentException
-     */
     public static function from(string|int $value): static
     {
         return new static($value);
     }
 
-    /**
-     * Mimics BackedEnum::tryFrom — returns enum or null.
-     *
-     * @param string|int $value
-     * @return static|null
-     */
     public static function tryFrom(string|int $value): ?static
     {
         try {
