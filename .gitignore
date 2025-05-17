@@ -7,3 +7,5 @@
 .phpunit.result.cache
 composer.phar
 composer.lock
+package-lock.json
+/node-modules

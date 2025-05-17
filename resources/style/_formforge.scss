@@ -1,0 +1,139 @@
+@import "variables";
+@import "flatpickr";
+@import "chosen/chosen";
+@import "trix";
+@import "tippy";
+
+form.formforge-form {
+    select,
+    input {
+        display: block;
+        width: 100%;
+    }
+
+    *:focus,
+    *:focus-visible {
+        outline: none;
+    }
+
+    .form-control,
+    select,
+    input[type="search"] {
+        font-size: $form-font-size;
+        border: 1px solid $input-border-color;
+        padding: $input-padding;
+        line-height: $input-line-height;
+        background-color: $input-background;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        border-radius: $input-border-radius;
+        color: $input-color;
+    }
+
+    .form-control:focus,
+    select:focus,
+    input[type="search"]:focus {
+        border: 1px solid $input-border-color-focus;
+        box-shadow: $input-box-shadow-focus;
+    }
+
+    .form-group {
+        margin-bottom: $form-group-margin;
+    }
+
+    .valid-feedback,
+    .invalid-feedback {
+        font-size: $feedback-font-size;
+    }
+
+    i.info-box {
+        font-size: $info-box-font-size;
+        cursor: pointer;
+        color: $info-box-color;
+    }
+
+    .tippy-info {
+        display: block;
+        cursor: pointer;
+        color: $tippy-info-color;
+    }
+
+    .form-label {
+        label.formforge-label {
+            font-size: 0.85rem;
+            margin: 0;
+
+            &.required::after {
+                font-family: $font-family-icons;
+                content: $label-required-content;
+                color: $danger;
+                font-size: $label-required-font-size;
+                vertical-align: text-top;
+            }
+        }
+    }
+
+    .action-btns {
+        position: relative;
+        display: flex;
+        padding-top: 1rem;
+    }
+
+    .action-btns > * {
+        margin-left: 0.5rem;
+    }
+
+    .action-btns > *:first-child {
+        margin-left: auto;
+    }
+
+    .form-info {
+        margin-left: auto;
+        align-self: center;
+    }
+
+    .form-info span.info-box {
+        font-size: 1rem;
+        cursor: pointer;
+        color: $info;
+    }
+
+    .action-btns .btn {
+        margin-left: auto;
+    }
+
+    .form-check.form-switch .form-check-input {
+        width: $form-switch-width;
+        height: $form-switch-height;
+    }
+
+    .form-check.form-switch .form-check-input:not(:checked) {
+        background: $check-background;
+        border-color: $check-border-color;
+    }
+
+    .form-check.form-switch .form-check-input:focus {
+        box-shadow: none;
+    }
+
+    .form-check:not(.form-switch) .form-check-input {
+        width: $form-check-width;
+        height: $form-check-height;
+    }
+
+    .form-check:not(.form-switch) input[type="radio"] {
+        width: $form-check-width;
+        height: $form-check-height;
+    }
+
+    input[type="file"]::-webkit-file-upload-button,
+    input[type="file"]::file-selector-button {
+        display: none;
+    }
+
+    .input-group .input-snippet {
+        width: 100%;
+        text-align: end;
+        font-size: $input-snippet-font-size;
+        margin-top: 0.3rem;
+    }
+}

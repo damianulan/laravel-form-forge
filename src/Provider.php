@@ -44,6 +44,7 @@ class Provider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../config/formforge.php'   => config_path('formforge.php'),
+            __DIR__ . '/../resources/style'        => resource_path('vendor/formforge/style'),
         ], 'formforge');
 
         $this->registerBladeDirectives();

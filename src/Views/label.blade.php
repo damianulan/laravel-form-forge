@@ -1,1 +1,1 @@
-<label for="id_{{ $name }}" class="col-form-label{{ $required ? ' required':'' }}">{{ $label }}</label>
+<label for="id_{{ $name }}" class="col-form-label form-forge-label{{ $required ? ' required':'' }}">{{ $label }}</label>

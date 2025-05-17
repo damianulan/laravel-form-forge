@@ -1,0 +1,54 @@
+$prefix: "formforge-";
+$bs-prefix: "bs-";
+
+// body
+$white: #fff !default;
+$dark: #111 !default;
+$primary: #91c499 !default;
+$secondary: #808f85 !default;
+$body-bg: $white !default;
+$body-color: $dark !default;
+$danger: #e74c3c !default;
+$success: #2ecc71 !default;
+$info: #3498db !default;
+$warning: #f39c12 !default;
+$gray-600: null !default;
+
+// misc
+
+// forms
+$input-search-label-color: $dark !default;
+$input-background: $body-bg !default;
+$input-border-color: lighten($primary, 10%) !default;
+$input-border-color-focus: lighten($primary, 30%) !default;
+$input-border-radius: var(--#{$bs-prefix}border-radius) !default;
+$input-box-shadow-focus: 0 3px 10px -1px rgb(0 0 0 / 10%) !default;
+$input-padding: 0.5rem 0.7rem !default;
+$input-color: $secondary !default;
+$input-line-height: 1.25 !default;
+
+$check-border-color: rgba($secondary, 0.6) !default;
+$check-background: transparent !default;
+$chosen-search-padding: 4px 5px 4px 20px !default;
+$chosen-choices-padding: 0.3rem 0.7rem 0.15rem 0.7rem !default;
+$chosen-highlighted-background: linear-gradient(
+    $primary 20%,
+    $secondary 90%
+) !default;
+$tippy-info-color: $secondary !default;
+$info-box-color: $secondary !default;
+$form-switch-width: 3em !default;
+$form-switch-height: 1.3em !default;
+$form-check-width: 1.2em !default;
+$form-check-height: 1.2em !default;
+
+$form-group-margin: 1.5rem !default;
+
+// fonts
+$form-font-size: 0.85rem !default;
+$font-family-icons: "bootstrap-icons" !default;
+$label-required-content: "\f151" !default;
+$label-required-font-size: 0.5rem !default;
+$feedback-font-size: 0.8rem !default;
+$info-box-font-size: 0.85rem !default;
+$input-snippet-font-size: 0.7rem !default;
