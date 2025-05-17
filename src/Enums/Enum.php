@@ -121,6 +121,33 @@ abstract class Enum implements \BackedEnum
     }
 
     /**
+     * Mimics BackedEnum::from — returns enum or throws.
+     *
+     * @param string|int $value
+     * @return static
+     * @throws InvalidArgumentException
+     */
+    public static function from(string|int $value): static
+    {
+        return new static($value);
+    }
+
+    /**
+     * Mimics BackedEnum::tryFrom — returns enum or null.
+     *
+     * @param string|int $value
+     * @return static|null
+     */
+    public static function tryFrom(string|int $value): ?static
+    {
+        try {
+            return new static($value);
+        } catch (InvalidArgumentException) {
+            return null;
+        }
+    }
+
+    /**
      * Returns the string representation of the enum value.
      *
      * @return string
