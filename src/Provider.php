@@ -43,6 +43,10 @@ class Provider extends ServiceProvider
         ], 'formforge-views');
 
         $this->publishes([
+            __DIR__ . '/../resources/style'        => resource_path('vendor/formforge/style'),
+        ], 'formforge-resources');
+
+        $this->publishes([
             __DIR__ . '/../config/formforge.php'   => config_path('formforge.php'),
             __DIR__ . '/../resources/style'        => resource_path('vendor/formforge/style'),
         ], 'formforge');
