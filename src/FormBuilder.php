@@ -199,8 +199,16 @@ class FormBuilder
      */
     public function template(string $template): self
     {
-        $template = Str::upper($template);
-        $this->template = Template::$template ?? $this->template;
+        $instance = null;
+        try {
+            $instance = Template::from($template);
+        } catch (\Throwable $e) {
+            if (config('app.debug')) {
+                throw $e;
+            }
+        }
+
+        $this->template = $instance ?? $this->template;
         return $this;
     }
 

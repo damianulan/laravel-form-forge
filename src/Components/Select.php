@@ -32,7 +32,7 @@ class Select extends ForgeComponent
     public function multiple()
     {
         $this->multiple = true;
-        $this->classes[] = 'select-multiple';
+        $this->classes[] = 'formforge-control select-multiple';
         return $this;
     }
 

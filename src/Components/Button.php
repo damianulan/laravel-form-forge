@@ -12,6 +12,7 @@ class Button
     public string $class;
     public ?string $href;
     public string $title;
+    public bool $disabled = false;
 
 
     /**
@@ -111,6 +112,17 @@ class Button
     public function isSubmit(): bool
     {
         return $this->type === 'submit';
+    }
+
+    /**
+     * Marks a Component as disabled.
+     *
+     * @return self
+     */
+    public function disabled(): self
+    {
+        $this->disabled = true;
+        return $this;
     }
 
     /**

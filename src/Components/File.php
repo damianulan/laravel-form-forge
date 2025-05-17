@@ -15,6 +15,7 @@ class File extends ForgeComponent
     {
         $this->name = empty($name) ? null : $name;
         $this->classes[] = 'form-control';
+        $this->classes[] = 'formforge-control';
         $this->hasValue = $hasValue;
     }
 

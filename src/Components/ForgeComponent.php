@@ -63,7 +63,7 @@ class ForgeComponent
     }
 
     /**
-     * Marks an Component as disabled.
+     * Marks a Component as disabled.
      *
      * @return static
      */
@@ -146,6 +146,7 @@ class ForgeComponent
 
     private function getClasses()
     {
+        $this->classes = array_unique($this->classes);
         return empty($this->classes) ? null : implode(' ', $this->classes);
     }
 
