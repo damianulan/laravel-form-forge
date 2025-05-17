@@ -161,7 +161,6 @@ Coming soon.
 
 - JS package form support
 - dedicated Sass styles
-- more layout template variants
 
 ### Dependencies
 

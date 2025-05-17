@@ -32,7 +32,7 @@ abstract class Enum
      * @param string|int $value
      * @throws InvalidArgumentException if the value is not valid for the enum.
      */
-    public function __construct(string|int|null $value)
+    public function __construct($value)
     {
         if (!is_null($value)) {
             if (!in_array($value, static::values(), true)) {
