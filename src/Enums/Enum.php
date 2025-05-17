@@ -35,7 +35,7 @@ abstract class Enum
     public function __construct(string|int $value)
     {
         if (!in_array($value, static::values(), true)) {
-            throw new InvalidArgumentException("Invalid enum value: " . $value);
+            throw new \InvalidArgumentException("Invalid enum value: " . $value);
         }
         $this->value = $value;
     }
@@ -91,7 +91,7 @@ abstract class Enum
     {
         $class = static::class;
         if (!isset(self::$cache[$class])) {
-            $reflection = new ReflectionClass($class);
+            $reflection = new \ReflectionClass($class);
             self::$cache[$class] = $reflection->getConstants();
         }
 
@@ -142,7 +142,7 @@ abstract class Enum
     {
         try {
             return new static($value);
-        } catch (InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             return null;
         }
     }
