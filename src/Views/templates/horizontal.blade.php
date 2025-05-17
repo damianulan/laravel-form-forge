@@ -27,10 +27,17 @@
         @endif
 
     @endforeach
-    @if ($submit)
+    @if ($submit || !empty($buttons))
         <div class="row">
             <div class="action-btns">
-               {{ $submit->render() }}
+                @if(!empty($buttons))
+                    @foreach($buttons as $button)
+                        {{ $button->render() }}
+                    @endforeach
+                @endif
+                @if($submit)
+                    {{ $submit->render() }}
+                @endif
             </div>
         </div>
     @endif

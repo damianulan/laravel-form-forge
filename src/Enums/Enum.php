@@ -10,7 +10,7 @@ namespace FormForge\Enums;
  * @license MIT
  * @package FormForge
  */
-class Enum
+abstract class Enum
 {
     public static function values()
     {

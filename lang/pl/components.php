@@ -4,6 +4,9 @@ return [
 
     'buttons' => [
         'save' => 'Zapisz',
+        'reset' => 'Resetuj',
+        'delete' => 'Usuń',
+        'back' => 'Powrót',
         'choose_file' => 'Wybierz plik',
         'enter_address' => 'Wprowadź adres linku',
     ],
