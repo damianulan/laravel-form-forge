@@ -1,0 +1,34 @@
+<?php
+
+namespace {{ namespace }};
+
+use FormForge\Base\Form;
+use Illuminate\Http\Request;
+use FormForge\FormBuilder;
+use FormForge\Base\FormComponent;
+
+class {{ class }} extends Form
+{
+    public static function definition(Request $request, $model = null): FormBuilder
+    {
+        $route = route('/');
+        $method = 'POST';
+
+        // edit form
+        if (!is_null($model)) {
+            $method = 'PUT';
+            $route = route('/', $model->id); // modify route when updating
+        }
+
+        return FormBuilder::boot($request, $method, $route, 'form_edit')
+            ->add()
+            ->addSubmit();
+    }
+
+    public static function validation(Request $request, $model_id = null): array
+    {
+        return [
+            // include laravel validation rules
+        ];
+    }
+}

@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\Support\Facades\Blade;
 use FormForge\BladeComponents\TrixFieldComponent;
+use FormForge\Commands\FormMakeCommand;
 
 /**
  * Undocumented class
@@ -47,9 +48,16 @@ class Provider extends ServiceProvider
         ], 'formforge-resources');
 
         $this->publishes([
+            __DIR__ . '/../stubs'                  => base_path('stubs'),
             __DIR__ . '/../config/formforge.php'   => config_path('formforge.php'),
             __DIR__ . '/../resources/style'        => resource_path('vendor/formforge/style'),
         ], 'formforge');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                FormMakeCommand::class,
+            ]);
+        }
 
         $this->registerBladeDirectives();
     }
