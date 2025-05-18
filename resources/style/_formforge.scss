@@ -66,10 +66,6 @@ form.formforge-form {
     }
   }
 
-  &.form-horizontal .form-label {
-    margin: 0;
-  }
-
   .action-btns {
     position: relative;
     display: flex;
@@ -99,28 +95,49 @@ form.formforge-form {
     margin-left: auto;
   }
 
-  .form-check.form-switch .form-check-input {
-    width: $form-switch-width;
-    height: $form-switch-height;
-  }
+  .form-check {
+    &.form-switch {
+      .form-check-input {
+        width: $form-switch-width;
+        height: $form-switch-height;
+      }
 
-  .form-check.form-switch .form-check-input:not(:checked) {
-    background-color: $check-background-color;
-    border-color: $check-border-color;
-  }
+      .form-check-input:not(:checked) {
+        background: $switch-background;
+        border-color: $switch-border-color;
+      }
 
-  .form-check.form-switch .form-check-input:focus {
-    box-shadow: none;
-  }
+      .form-check-input:checked {
+        background: $switch-checked-background;
+        border-color: $switch-border-color;
+      }
 
-  .form-check:not(.form-switch) .form-check-input {
-    width: $form-check-width;
-    height: $form-check-height;
-  }
+      .form-check-input:focus {
+        box-shadow: none;
+      }
+    }
 
-  .form-check:not(.form-switch) input[type="radio"] {
-    width: $form-check-width;
-    height: $form-check-height;
+    &:not(.form-switch) {
+      .form-check-input {
+        width: $form-check-width;
+        height: $form-check-height;
+      }
+
+      .form-check-input:not(:checked) {
+        background: $check-background;
+        border-color: $check-border-color;
+      }
+
+      .form-check-input:checked {
+        background: $check-checked-background;
+        border-color: $check-border-color;
+      }
+
+      input[type="radio"] {
+        width: $form-check-width;
+        height: $form-check-height;
+      }
+    }
   }
 
   input[type="file"]::-webkit-file-upload-button,
@@ -133,5 +150,9 @@ form.formforge-form {
     text-align: end;
     font-size: $input-snippet-font-size;
     margin-top: 0.3rem;
+  }
+
+  &.formforge-horizontal .form-label {
+    margin: 0;
   }
 }
