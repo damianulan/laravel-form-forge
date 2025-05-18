@@ -38,7 +38,10 @@
     }
   },
   "scripts": {
-    "post-update-cmd": [
+    "post-package-install": [
+      "@php artisan vendor:publish --tag=formforge"
+    ],
+    "post-package-update": [
       "@php artisan vendor:publish --tag=formforge-resources --force"
     ],
     "test": "vendor/bin/phpunit"
