@@ -103,12 +103,12 @@ form.formforge-form {
       }
 
       .form-check-input:not(:checked) {
-        background: $switch-background;
+        background-color: $switch-background;
         border-color: $switch-border-color;
       }
 
       .form-check-input:checked {
-        background: $switch-checked-background;
+        background-color: $switch-checked-background;
         border-color: $switch-border-color;
       }
 
@@ -124,12 +124,12 @@ form.formforge-form {
       }
 
       .form-check-input:not(:checked) {
-        background: $check-background;
+        background-color: $check-background;
         border-color: $check-border-color;
       }
 
       .form-check-input:checked {
-        background: $check-checked-background;
+        background-color: $check-checked-background;
         border-color: $check-border-color;
       }
 

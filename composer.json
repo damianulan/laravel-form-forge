@@ -38,6 +38,9 @@
     }
   },
   "scripts": {
+    "post-update-cmd": [
+      "@php artisan vendor:publish --tag=formforge-resources --force"
+    ],
     "test": "vendor/bin/phpunit"
   },
   "extra": {
