@@ -45,12 +45,6 @@ form.formforge-form {
     font-size: $feedback-font-size;
   }
 
-  i.info-box {
-    font-size: $info-box-font-size;
-    cursor: pointer;
-    color: $info-box-color;
-  }
-
   .tippy-info {
     display: block;
     cursor: pointer;
@@ -59,7 +53,7 @@ form.formforge-form {
 
   .form-label {
     label.formforge-label {
-      font-size: 0.85rem;
+      font-size: $label-font-size;
       margin: 0;
 
       &.required::after {
@@ -70,6 +64,10 @@ form.formforge-form {
         vertical-align: text-top;
       }
     }
+  }
+
+  &.form-horizontal .form-label {
+    margin: 0;
   }
 
   .action-btns {
@@ -92,9 +90,9 @@ form.formforge-form {
   }
 
   .form-info span.info-box {
-    font-size: 1rem;
+    font-size: $info-box-font-size;
     cursor: pointer;
-    color: $info;
+    color: $info-box-color;
   }
 
   .action-btns .btn {
