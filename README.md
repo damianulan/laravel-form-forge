@@ -39,7 +39,7 @@ class ExemplaryForm extends Form
             ->add(FormComponent::datetime('deadline', $model)->info())
             ->add(FormComponent::decimal('expected', $model)->info('Here give explanation under questionmark icon'))
             ->add(FormComponent::switch('draft', $model)->default(false))
-            ->addTitle($title)
+            ->addTitle($title) // optional
             ->addSubmit(); // completely optional - when using ajax you'd want to
     }
 
@@ -102,6 +102,7 @@ public function create(Request $request)
 Then, in your blade template you can simply render the form:
 
 ```php
+{{ $form->title() }} // optional
 {{ $form->render() }}
 ```
 
@@ -153,6 +154,27 @@ php artisan vendor:publish --tag=formforge-langs
 php artisan vendor:publish --tag=formforge-views
 ```
 
+### Resources
+
+After publishing vendor assets, resource files will be available in `resources/vendor/formforge` directory. In order for package to work properly, please include `@import` base style file `_formforge.scss` in your projects main scss file and then rerun your npm build process.
+Check out `_variables.scss` file to see what variables are available for customization.
+
+### Upgrading
+
+When upgrading to new version, remember to manually update package resources. Please run after `composer update` command, when upgrading this package, in order to overwrite package resources:
+
+```
+php artisan vendor:publish --tag=formforge-resources --force
+```
+
+Or add this option to your `post-update-cmd` script list in `composer.json` file.
+
+```json
+"post-update-cmd": [
+    "@php artisan vendor:publish --tag=formforge-resources --force"
+],
+```
+
 ### Testing
 
 Coming soon.
@@ -160,7 +182,7 @@ Coming soon.
 ### What's coming next?
 
 - JS package form support
-- dedicated Sass styles
+- automatic testing
 
 ### Dependencies
 

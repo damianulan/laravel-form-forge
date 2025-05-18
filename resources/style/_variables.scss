@@ -14,8 +14,6 @@ $info: #3498db !default;
 $warning: #f39c12 !default;
 $gray-600: null !default;
 
-// misc
-
 // forms
 $input-search-label-color: $dark !default;
 $input-background: $body-bg !default;
@@ -39,7 +37,7 @@ $chosen-choices-padding: 0.3rem 0.7rem 0.15rem 0.7rem !default;
 $chosen-highlighted-background: linear-gradient(
   $primary 20%,
   $secondary 90%
-) !default;
+) !default; // highlighted/hovered select options
 $tippy-info-color: $secondary !default;
 $info-box-color: $secondary !default;
 $form-switch-width: 3em !default;
