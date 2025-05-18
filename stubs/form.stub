@@ -9,6 +9,13 @@ use FormForge\Base\FormComponent;
 
 class {{ class }} extends Form
 {
+    /**
+     * Provide form components definition returning an instance of FormBuilder.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $model
+     * @return \FormForge\FormBuilder
+     */
     public static function definition(Request $request, $model = null): FormBuilder
     {
         $route = route('/');
@@ -21,10 +28,17 @@ class {{ class }} extends Form
         }
 
         return FormBuilder::boot($request, $method, $route, 'form_edit')
-            ->add()
+            //->add()
             ->addSubmit();
     }
 
+    /**
+     * Provide laravel validation rules.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string|null $model_id - model uuid 
+     * @return array
+     */
     public static function validation(Request $request, $model_id = null): array
     {
         return [
