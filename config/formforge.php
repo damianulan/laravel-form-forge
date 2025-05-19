@@ -11,6 +11,10 @@ return [
     |
     */
 
+    /**
+     * This template will be used as default for all forms. 
+     * Use ->template() method in your FormBuilder to change it.
+     */
     'default' => env('FORMFORGE_TEMPLATE', 'horizontal'),
 
     'templates' => [
