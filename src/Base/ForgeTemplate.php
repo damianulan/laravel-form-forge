@@ -26,12 +26,11 @@ class ForgeTemplate
     public static function get(string $template): string
     {
         $templates = config('formforge.templates');
-        $result = '';
 
         if (!in_array($template, array_keys($templates))) {
             throw new TemplateNotExists();
-        }
+        };
 
-        return $result;
+        return $template;
     }
 }
