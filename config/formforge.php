@@ -1,7 +1,5 @@
 <?php
 
-use FormForge\Enums\Template;
-
 return [
 
     /*
@@ -13,6 +11,13 @@ return [
     |
     */
 
+    'default' => env('FORMFORGE_TEMPLATE', 'horizontal'),
+
+    'templates' => [
+        'horizontal' => [],
+        '2columns' => []
+    ],
+
     /**
      * Declare the default date format, that will be used in date fields.
      */
@@ -23,7 +28,4 @@ return [
      */
     'handling_files' => env('FORMFORGE_HANDLING_FILES', true),
 
-    'defaults' => [
-        'template' => env('FORMFORGE_TEMPLATE', Template::HORIZONTAL),
-    ],
 ];

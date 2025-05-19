@@ -11,7 +11,7 @@
     @enderror
     @if($component->hasValue)
     <div class="input-snippet text-muted">
-        Wybierając nadpiszesz istniejący już plik.
+        {{ __('formforge::components.file.override_info') }}
     </div>
     @endif
 </div>

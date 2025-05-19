@@ -21,4 +21,8 @@ return [
         'link' => 'Link',
         'unlink' => 'Unlink',
     ],
+
+    'file' => [
+        'override_info' => 'When choosing a new file, the existing file will be overwritten.',
+    ],
 ];

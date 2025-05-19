@@ -26,7 +26,7 @@ class ExemplaryForm extends Form
         }
 
         return FormBuilder::boot($request, $method, $route, 'form_html_id')
-            ->template(Template::HORIZONTAL) // modify form layout template -- it is 'horizontal' by default
+            ->template('horizontal') // modify form layout template -- it is 'horizontal' by default
             ->class('custom-form-classes')
             ->add(FormComponent::hidden('id', $model))
             ->add(FormComponent::select('template_id', $model, Dictionary::fromModel(Model::class, 'attribute'))->required()) // form element branded as required

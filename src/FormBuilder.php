@@ -5,11 +5,11 @@ namespace FormForge;
 use FormForge\Components\Button;
 use Illuminate\Support\Str;
 use FormForge\Components\ForgeComponent;
-use FormForge\Enums\Template;
 use Illuminate\View\View;
 use FormForge\Exceptions\FormUnauthorized;
 use Illuminate\Http\Request;
 use FormForge\Base\Form;
+use FormForge\Base\ForgeTemplate;
 
 /**
  * Collects components to render bootstrap form.
@@ -88,7 +88,7 @@ class FormBuilder
         $this->method = Str::upper($method);
         $this->action = $action;
         $this->id = $id;
-        $this->template = config('formforge.defaults.template');
+        $this->template = ForgeTemplate::get(config('formforge.default'));
         $this->authorize();
     }
 
@@ -199,14 +199,7 @@ class FormBuilder
      */
     public function template(string $template): self
     {
-        $instance = null;
-        try {
-            $instance = Template::from($template);
-        } catch (\Throwable $e) {
-            if (config('app.debug')) {
-                throw $e;
-            }
-        }
+        $instance = ForgeTemplate::get($template);
 
         $this->template = $instance ?? $this->template;
         return $this;

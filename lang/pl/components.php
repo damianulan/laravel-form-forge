@@ -21,4 +21,8 @@ return [
         'link' => 'Linkuj',
         'unlink' => 'Odlinkuj',
     ],
+
+    'file' => [
+        'override_info' => 'Wybierając nadpiszesz istniejący już plik.',
+    ],
 ];
