@@ -12,7 +12,7 @@ class FormValidationSuccess
     /**
      * Create a new event instance.
      */
-    public function __construct(public string $form, public array $messages)
+    public function __construct(public string $form, public $messages)
     {
         //
     }
