@@ -17,51 +17,29 @@ Then modify your form by adding components you need.
 ... finally it should look like this:
 
 ```php
-use FormForge\Base\Form;
-use FormForge\FormBuilder;
-use FormForge\Base\FormComponent;
-use FormForge\Components\Dictionary;
-use Illuminate\Http\Request;
-
-class ExemplaryForm extends Form
+// Form definition - $model should be an Eloquent model instance
+public static function definition(Request $request, $model = null): FormBuilder
 {
-
-    // Form definition - $model should be an Eloquent model instance
-    public static function definition(Request $request, $model = null): FormBuilder
-    {
-        $route = null;
-        $method = 'POST';
-        $title = 'Form title when creating';
-        if (!is_null($model)) {
-            $method = 'PUT';
-            $title = 'Form title when editing';
-        }
-
-        return FormBuilder::boot($request, $method, $route, 'form_html_id')
-            ->template('horizontal') // modify form layout template -- it is 'horizontal' by default
-            ->class('custom-form-classes')
-            ->add(FormComponent::hidden('id', $model))
-            ->add(FormComponent::select('template_id', $model, Dictionary::fromModel(Model::class, 'attribute'))->required()) // form element branded as required
-            ->add(FormComponent::text('name', $model)->label('Name field label')->required())
-            ->add(FormComponent::trix('description', $model))
-            ->add(FormComponent::datetime('deadline', $model)->info())
-            ->add(FormComponent::decimal('expected', $model)->info('Here give explanation under questionmark icon'))
-            ->add(FormComponent::switch('draft', $model)->default(false))
-            ->addTitle($title) // optional
-            ->addSubmit(); // completely optional - when using ajax you'd want to
+    $route = null;
+    $method = 'POST';
+    $title = 'Form title when creating';
+    if (!is_null($model)) {
+        $method = 'PUT';
+        $title = 'Form title when editing';
     }
 
-    // add validation rules
-    public static function validation(Request $request, $model_id = null): array
-    {
-        return [
-            'template_id' => 'required',
-            'name' => 'max:120|required',
-            'deadline' => 'nullable',
-            'description' => 'max:512|nullable',
-            'draft' => 'boolean',
-        ];
-    }
+    return FormBuilder::boot($request, $method, $route, 'form_html_id')
+        ->template('horizontal') // modify form layout template -- it is 'horizontal' by default
+        ->class('custom-form-classes')
+        ->add(FormComponent::hidden('id', $model))
+        ->add(FormComponent::select('template_id', $model, Dictionary::fromModel(Model::class, 'attribute'))->required()) // form element branded as required
+        ->add(FormComponent::text('name', $model)->label('Name field label')->required())
+        ->add(FormComponent::trix('description', $model))
+        ->add(FormComponent::datetime('deadline', $model)->info())
+        ->add(FormComponent::decimal('expected', $model)->info('Here give explanation under questionmark icon'))
+        ->add(FormComponent::switch('draft', $model)->default(false))
+        ->addTitle($title) // optional
+        ->addSubmit(); // completely optional - when using ajax you'd want to
 }
 ```
 
@@ -88,7 +66,7 @@ public function update(Request $request, $id, CampaignEditForm $form)
 }
 ```
 
-See [EXAMPLES.md](docs/EXAMPLES.md) documentation for more examples containing full process of form creation.
+See [EXAMPLES](docs/EXAMPLES.md) documentation for more examples containing full process of form creation.
 
 ## Getting Started
 
@@ -131,6 +109,13 @@ php artisan vendor:publish --tag=formforge-resources --force
 ### Testing
 
 Coming soon.
+
+### Localization
+
+Currently package supports following languages:
+
+- English (en)
+- Polish (pl)
 
 ### What's coming next?
 
