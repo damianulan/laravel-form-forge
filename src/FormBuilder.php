@@ -10,6 +10,8 @@ use FormForge\Exceptions\FormUnauthorized;
 use Illuminate\Http\Request;
 use FormForge\Base\Form;
 use FormForge\Base\ForgeTemplate;
+use FormForge\Events\FormRendered;
+use FormForge\Events\FormRendering;
 
 /**
  * Collects components to render bootstrap form.
@@ -74,6 +76,13 @@ class FormBuilder
     private Request $request;
 
     /**
+     * Form origin namespace
+     *
+     * @var string
+     */
+    private string $form;
+
+    /**
      * Form internal constructor - in order to call FormBuilder instance use FormBuilder::boot() method instead.
      *
      * @param \Illuminate\Http\Request $request
@@ -129,6 +138,8 @@ class FormBuilder
             $this->throwUnauthorized();
         }
 
+        $this->form = $namespace;
+
         $authorized = $namespace::authorize($this->request);
         if (!$authorized) {
             $this->throwUnauthorized();
@@ -165,6 +176,12 @@ class FormBuilder
         return $this;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param \FormForge\Components\Button $button
+     * @return \FormForge\FormBuilder
+     */
     public function addButton(Button $button): self
     {
         if ($button) {
@@ -252,6 +269,7 @@ class FormBuilder
      */
     public function render(): View
     {
+        FormRendering::dispatch($this->form, $this->method, $this->components);
         return view('formforge::templates.' . $this->template, [
             'components'  => $this->components,
             'method'    => $this->method,
@@ -261,9 +279,16 @@ class FormBuilder
             'template'  => $this->template,
             'submit'    => $this->submit,
             'buttons'   => $this->buttons,
+            'form'      => $this->form,
+            'event'     => FormRendered::class,
         ]);
     }
 
+    /**
+     * Throwing FormUnauthorized exception.
+     *
+     * @throws \FormForge\Exceptions\FormUnauthorized
+     */
     private function throwUnauthorized()
     {
         throw new FormUnauthorized();
@@ -277,5 +302,15 @@ class FormBuilder
     public function getComponents(): array
     {
         return $this->components;
+    }
+
+    /**
+     * Get form class namespac, from where this form builder was called.
+     *
+     * @return string
+     */
+    public function getFormName(): string
+    {
+        return $this->form;
     }
 }

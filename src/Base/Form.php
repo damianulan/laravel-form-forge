@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Exception;
 use FormForge\FormBuilder;
 use Illuminate\Support\Facades\Redirect;
+use FormForge\Events\FormValidationFail;
+use FormForge\Events\FormValidationSuccess;
 
 /**
  * Base class for full Form template.
@@ -193,11 +195,14 @@ abstract class Form
         $validator = self::validator($request, $model_id);
 
         if ($validator->fails()) {
+            FormValidationFail::dispatch(static::class, $validator->messages());
             return [
                 'status' => 'error',
                 'messages' => $validator->messages(),
             ];
         }
+        FormValidationSuccess::dispatch(static::class, $validator->messages());
+
         return [
             'status' => 'ok',
             'messages' => $validator->messages(),
@@ -219,9 +224,13 @@ abstract class Form
         if ($validator->fails()) {
             if (static::$backRoute) {
                 $to = route(static::$backRoute, static::$backParams);
+                FormValidationFail::dispatch(static::class, $validator->messages());
                 abort(Redirect::to($to)->withErrors($validator)->withInput());
             }
+            FormValidationFail::dispatch(static::class, $validator->messages());
             abort(Redirect::back()->withErrors($validator)->withInput());
+        } else {
+            FormValidationSuccess::dispatch(static::class, $validator->messages());
         }
     }
 

@@ -2,6 +2,7 @@
     $nominal = $method==='GET' ? 'GET':'POST';
 @endphp
 
+@include('formforge::pre')
 <form id="{{ $id ? $id:'' }}" action="{{ $action ? $action:'' }}" method="{{ $nominal }}" class="col-md-12 formforge-form formforge-{{ $template }}{{ $classes ? ' '.$classes:''  }}" enctype="multipart/form-data">
     @method($method)
     @csrf
@@ -42,3 +43,4 @@
         </div>
     @endif
 </form>
+@include('formforge::post')

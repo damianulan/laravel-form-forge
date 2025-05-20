@@ -125,7 +125,7 @@ class ForgeComponent
     public function getLabel(): ?View
     {
         if (!empty($this->label) && !empty($this->name)) {
-            return view('formforge::label', [
+            return view('formforge::components.label', [
                 'label' => $this->label,
                 'name' => $this->name,
                 'required' => $this->required,
