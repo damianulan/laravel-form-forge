@@ -93,8 +93,6 @@ php artisan vendor:publish --tag=formforge-langs
 php artisan vendor:publish --tag=formforge-views
 ```
 
-### Components
-
 ### Resources
 
 After publishing vendor assets, resource files will be available in `resources/vendor/formforge` directory. In order for package to work properly, please include `@import` base style file `_formforge.scss` in your projects main scss file and then rerun your npm build process.
