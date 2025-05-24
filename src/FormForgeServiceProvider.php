@@ -9,13 +9,12 @@ use FormForge\BladeComponents\TrixFieldComponent;
 use FormForge\Commands\FormMakeCommand;
 
 /**
- * Undocumented class
- *
  * @author Damian Ułan <damian.ulan@protonmail.com>
  * @copyright 2025 damianulan
+ * @package FormForge
  * @license MIT
  */
-class Provider extends ServiceProvider
+class FormForgeServiceProvider extends ServiceProvider
 {
     /**
      * Register the application services.

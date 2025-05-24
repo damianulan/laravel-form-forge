@@ -56,7 +56,7 @@ public function update(Request $request, $id, CampaignEditForm $form)
     $form::validate($request, $id);
 
     // automatically fills model from request
-    // assign RequestForms trait to your model
+    // !! assign RequestForms trait to your model !!
     $model = Model::fillFromRequest($request, $id);
 
     if ($model && $model->update()) {
@@ -93,6 +93,8 @@ php artisan vendor:publish --tag=formforge-langs
 php artisan vendor:publish --tag=formforge-views
 ```
 
+### Components
+
 ### Resources
 
 After publishing vendor assets, resource files will be available in `resources/vendor/formforge` directory. In order for package to work properly, please include `@import` base style file `_formforge.scss` in your projects main scss file and then rerun your npm build process.
@@ -106,10 +108,6 @@ When upgrading to new version, remember to manually update package resources. Pl
 php artisan vendor:publish --tag=formforge-resources --force
 ```
 
-### Testing
-
-Coming soon.
-
 ### Localization
 
 Currently package supports following languages:
@@ -120,7 +118,6 @@ Currently package supports following languages:
 ### What's coming next?
 
 - JS package form support
-- automatic testing
 
 ### Dependencies
 

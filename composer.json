@@ -43,7 +43,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "FormForge\\Provider"
+        "FormForge\\FormForgeServiceProvider"
       ],
       "aliases": {
         "FormForge": "FormForge\\Facades\\FormForge"
