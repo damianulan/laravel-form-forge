@@ -1,3 +1,11 @@
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
 $prefix: "formforge-";
 $bs-prefix: "bs-";
 
@@ -17,8 +25,8 @@ $gray-600: null !default;
 // forms
 $input-search-label-color: $dark !default;
 $input-background: $body-bg !default;
-$input-border-color: lighten($primary, 10%) !default;
-$input-border-color-focus: lighten($primary, 30%) !default;
+$input-border-color: tint($primary, 10%) !default;
+$input-border-color-focus: tint($primary, 30%) !default;
 $input-border-radius: var(--#{$bs-prefix}border-radius) !default;
 $input-box-shadow-focus: 0 3px 10px -1px rgb(0 0 0 / 10%) !default;
 $input-padding: 0.5rem 0.7rem !default;

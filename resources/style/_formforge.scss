@@ -16,7 +16,7 @@ form.formforge-form {
     outline: none;
   }
 
-  .form-control,
+  .formforge-control,
   select,
   input[type="search"] {
     font-size: $form-font-size;
@@ -29,10 +29,10 @@ form.formforge-form {
     color: $input-color;
   }
 
-  .form-control:focus,
+  .formforge-control:focus,
   select:focus,
   input[type="search"]:focus {
-    border: 1px solid $input-border-color-focus;
+    border: 1px solid $input-border-color-focus !important;
     box-shadow: $input-box-shadow-focus;
   }
 
@@ -155,4 +155,14 @@ form.formforge-form {
   &.formforge-horizontal .form-label {
     margin: 0;
   }
+}
+
+input,
+select {
+  border-radius: var(--bs-border-radius);
+}
+
+input[type="search"] {
+  outline-offset: 0;
+  border: 1px solid $input-border-color;
 }
