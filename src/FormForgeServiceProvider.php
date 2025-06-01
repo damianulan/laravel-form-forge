@@ -30,8 +30,8 @@ class FormForgeServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Blade::if('setting', function ($key) {
-            return setting($key);
+        Blade::directive('formForgeScripts', function () {
+            return view('formforge::scripts');
         });
 
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'formforge');
