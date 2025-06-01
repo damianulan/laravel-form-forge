@@ -22,6 +22,7 @@ class FormForgeServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/formforge.php', 'formforge');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
     }
 
     /**
@@ -29,6 +30,9 @@ class FormForgeServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Blade::if('setting', function ($key) {
+            return setting($key);
+        });
 
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'formforge');
 

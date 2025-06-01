@@ -1,0 +1,1 @@
+<script src="{{ url('scripts/formforge.js') }}"></script>
