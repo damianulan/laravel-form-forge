@@ -113,9 +113,22 @@ Currently package supports following languages:
 - English (en)
 - Polish (pl)
 
+### Components
+
+- [Text](docs/components/TEXT.md)
+- [Numeric](docs/components/NUMERIC.md)
+- [Password](docs/components/PASSWORD.md)
+- [Hidden](docs/components/HIDDEN.md)
+- [Selects](docs/components/SELECT.md)
+- [Formatted text](docs/components/TRIX.md)
+- [Dates](docs/components/DATES.md)
+- [Checkboxes & radios](docs/components/CHECKBOXES.md)
+- [File](docs/components/FILE.md)
+
 ### What's coming next?
 
 - JS package form support
+- new custom dynamic form components
 
 ### Dependencies
 

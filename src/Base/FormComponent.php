@@ -212,21 +212,6 @@ class FormComponent
     }
 
     /**
-     * Returns a birthdate type input instruction pregenerated with flatpickr.js.
-     *
-     * @param string      $name
-     * @param mixed       $model
-     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
-     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
-     * @return \FormForge\Components\Datetime
-     */
-    public static function birthdate(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
-    {
-        $value = $model->$name ?? null;
-        return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
-    }
-
-    /**
      * Returns a date range type input instruction pregenerated with flatpickr.js.
      *
      * @param  string   $name
@@ -242,6 +227,21 @@ class FormComponent
             "to" => $model->$to ?? null,
         ];
         return new Daterange($name, "date", $values);
+    }
+
+    /**
+     * Returns a birthdate type input instruction pregenerated with flatpickr.js.
+     *
+     * @param string      $name
+     * @param mixed       $model
+     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
+     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
+     * @return \FormForge\Components\Datetime
+     */
+    public static function birthdate(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
+    {
+        $value = $model->$name ?? null;
+        return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
 
     /**
@@ -286,9 +286,10 @@ class FormComponent
     /**
      * Returns a file import type input instruction.
      *
+     * @deprecated do not use - not correctly tested yet.
      * @param  string   $name
      * @param  mixed    $model
-     * @return Checkbox
+     * @return File
      */
     public static function file(string $name, $model = null): File
     {
@@ -298,6 +299,4 @@ class FormComponent
         }
         return new File($name, $value);
     }
-
-    public static function dynamicChecklist(string $name, $model = null) {}
 }
