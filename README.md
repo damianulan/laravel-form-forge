@@ -1,5 +1,7 @@
 # Laravel FormForge
 
+[![Static Badge](https://img.shields.io/badge/made_with-Laravel-red?style=for-the-badge)](https://laravel.com/docs/11.x/releases) &nbsp; [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE) &nbsp; [![Static Badge](https://img.shields.io/badge/maintainer-damianulan-blue?style=for-the-badge)](https://damianulan.me)
+
 ### Description
 
 Form forge is a form builder package for Laravel. It allows you to create forms with a simple and intuitive interface. FormForge provides Model autofill and laravel validation support.
@@ -98,6 +100,13 @@ php artisan vendor:publish --tag=formforge-views
 After publishing vendor assets, resource files will be available in `resources/vendor/formforge` directory. In order for package to work properly, please include `@import` base style file `_formforge.scss` in your projects main scss file and then rerun your npm build process.
 Check out `_variables.scss` file to see what variables are available for customization.
 
+To properly include package scripts, just add `@formForgeScripts` to your footer before main js bundle file.
+
+```html
+@formForgeScripts
+<script src="{{ asset('themes/js/app.js') }}"></script>
+```
+
 ### Upgrading
 
 When upgrading to new version, remember to manually update package resources. Please run after `composer update` command, when upgrading this package, in order to overwrite package resources:
@@ -127,7 +136,6 @@ Currently package supports following languages:
 
 ### What's coming next?
 
-- JS package form support
 - new custom dynamic form components
 
 ### Dependencies
@@ -136,10 +144,6 @@ Currently package supports following languages:
 - PHP ^8.3
 - Bootstrap ^5.3
 - Bootstrap Icons ^1.10 - icons' support
-- flatpickr ^4.6 - datepicker inputs
-- chosen.js ^1.8 - select inputs
-- tippy.js ^6.3 - tooltips
-- trix ^2.0 - rich text editors
 - jQuery ^3.6
 
 ### Contact & Contributing
