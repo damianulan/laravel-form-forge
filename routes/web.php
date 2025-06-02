@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/js/formforge.js', function () {
+    $path = __DIR__ . '/../resources/js/formforge.js';
     return response()
-        ->view('formforge::js-content')
-        ->header('Content-Type', 'application/javascript');
-});
+        ->file($path, [
+            'Content-Type' => 'application/javascript'
+        ]);
+})->middleware('web');
