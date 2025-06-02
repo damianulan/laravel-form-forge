@@ -9,6 +9,8 @@ return [
         'choose_birthdate' => 'Wybierz datę',
         'choose_time' => 'Wybierz godzinę',
         'choose_datetime' => 'Wybierz datę oraz godzinę',
+        'select_choose' => 'Wybierz...',
+        'search_no_results' => 'Brak wyników dla wyszukiwanej frazy.',
 
         'enter_number' => 'Wprowadź liczbę...',
         'enter_float' => 'Wprowadź liczbę do dwóch miejsc dziesiętnych...',

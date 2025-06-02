@@ -9,6 +9,8 @@ return [
         'choose_birthdate' => 'Choose date',
         'choose_time' => 'Pick an hour',
         'choose_datetime' => 'Choose date and time',
+        'select_choose' => 'Choose...',
+        'search_no_results' => 'No results for the searched phrase.',
 
         'enter_number' => 'Enter number...',
         'enter_float' => 'Enter number with two decimal places...',
