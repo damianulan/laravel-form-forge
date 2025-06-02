@@ -30,10 +30,6 @@ class FormForgeServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Blade::directive('formForgeScripts', function () {
-            return view('formforge::scripts');
-        });
-
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'formforge');
 
         $this->loadViewsFrom(__DIR__ . '/Views', 'formforge');
@@ -71,7 +67,10 @@ class FormForgeServiceProvider extends ServiceProvider
 
     public function registerBladeDirectives(): void
     {
-
         Blade::component('trix-field-component', TrixFieldComponent::class);
+
+        Blade::directive('formForgeScripts', function () {
+            return view('formforge::scripts');
+        });
     }
 }
