@@ -21,14 +21,14 @@ class Dictionary
      * Get data for select directly from model.
      *
      * @param string $model
-     * @param string $column
+     * @param string $attribute
      * @param string $method
      * @param array  $exclude
      * @return \Illuminate\Support\Collection
      */
     public static function fromModel(
         string $model,
-        string $column,
+        string $attribute,
         string $method = "all",
         array $exclude = []
     ): Collection {
@@ -56,13 +56,9 @@ class Dictionary
                     }
                 }
                 foreach ($records as $record) {
-                    if (method_exists($model, $column)) {
+                    if (isset($record->$attribute)) {
                         $options->push(
-                            new Option($record->id, $record->$column())
-                        );
-                    } else {
-                        $options->push(
-                            new Option($record->id, $record->$column)
+                            new Option($record->id, $record->$attribute)
                         );
                     }
                 }

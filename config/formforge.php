@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | FormForge Default Options v1.0
+    | FormForge Default Options v1.1
     |--------------------------------------------------------------------------
     |
     | These are default options that will be used in module.
