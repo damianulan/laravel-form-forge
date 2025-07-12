@@ -124,15 +124,13 @@ Currently package supports following languages:
 
 ### Components
 
-- [Text](docs/components/TEXT.md)
-- [Numeric](docs/components/NUMERIC.md)
-- [Password](docs/components/PASSWORD.md)
-- [Hidden](docs/components/HIDDEN.md)
+- [Inputs](docs/components/INPUTS.md)
 - [Selects](docs/components/SELECT.md)
 - [Formatted text](docs/components/TRIX.md)
 - [Dates](docs/components/DATES.md)
 - [Checkboxes & radios](docs/components/CHECKBOXES.md)
 - [File](docs/components/FILE.md)
+- [Common methods](docs/components/COMPONENTS.md)
 
 ### What's coming next?
 
