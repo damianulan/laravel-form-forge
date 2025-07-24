@@ -2,26 +2,23 @@
 
 namespace FormForge\Components;
 
-use Exception;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\URL;
+use Illuminate\View\View;
 
 class Button
 {
     public ?string $type;
-    public string $class;
-    public ?string $href;
-    public string $title;
-    public bool $disabled = false;
 
+    public string $class;
+
+    public ?string $href;
+
+    public string $title;
+
+    public bool $disabled = false;
 
     /**
      * Generate a delete button. Provide href or use ".btn-delete" class to specify behavior in JS.
-     *
-     * @param string|null $title
-     * @param string|null $href
-     * @param string      $classes
-     * @return self
      */
     public static function delete(?string $title = null, ?string $href = null, string $classes = 'btn-danger'): self
     {
@@ -39,10 +36,6 @@ class Button
 
     /**
      * Generate a redirect back button.
-     *
-     * @param string|null $title
-     * @param string      $classes
-     * @return self
      */
     public static function back(?string $title = null, string $classes = 'btn-secondary'): self
     {
@@ -50,36 +43,31 @@ class Button
             $title = __('formforge::components.buttons.back');
         }
         $href = URL::previous();
+
         return new self($title, 'a', $href, $classes);
     }
 
     /**
      * Generate a reset button.
-     *
-     * @param string|null $title
-     * @param string      $classes
-     * @return self
      */
     public static function reset(?string $title = null, string $classes = 'btn-secondary'): self
     {
         if (empty($title)) {
             $title = __('formforge::components.buttons.reset');
         }
+
         return new self($title, 'reset', null, $classes);
     }
 
     /**
      * Generate a submit button.
-     *
-     * @param string|null $title
-     * @param string      $classes
-     * @return self
      */
     public static function submit(?string $title = null, string $classes = 'btn-primary'): self
     {
         if (empty($title)) {
             $title = __('formforge::components.buttons.save');
         }
+
         return new self($title, 'submit', null, $classes);
     }
 
@@ -87,10 +75,7 @@ class Button
      * Add a button to the form.
      * Allowed types: a, button, submit, reset
      *
-     * @param string $title
-     * @param string $type
-     * @param string|null $href - only when type is 'a'
-     * @param string $classes
+     * @param  string|null  $href  - only when type is 'a'
      */
     public function __construct(string $title, string $type = 'button', ?string $href = null, string $classes = 'btn-primary')
     {
@@ -105,7 +90,7 @@ class Button
         }
         $this->href = $href;
 
-        $this->class = 'btn formforge-btn ' . $classes;
+        $this->class = 'btn formforge-btn '.$classes;
         $this->title = $title;
     }
 
@@ -116,19 +101,16 @@ class Button
 
     /**
      * Marks a Component as disabled.
-     *
-     * @return self
      */
     public function disabled(): self
     {
         $this->disabled = true;
+
         return $this;
     }
 
     /**
      * render button view with all components.
-     *
-     * @return \Illuminate\View\View
      */
     public function render(): View
     {

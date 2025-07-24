@@ -26,5 +26,5 @@ return [
     'enums' => [
 
         // here bring your own enums for Dictionary::fromEnum() usages
-    ]
+    ],
 ];

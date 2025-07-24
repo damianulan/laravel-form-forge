@@ -2,12 +2,12 @@
 
 namespace FormForge\Components;
 
-use FormForge\Components\ForgeComponent;
-
 class Checkbox extends ForgeComponent
 {
     public string $name;
+
     public string $type;
+
     public ?bool $checked = null;
 
     public function __construct(string $name, string $type, ?bool $checked = null)
@@ -22,6 +22,7 @@ class Checkbox extends ForgeComponent
         if (is_null($this->checked)) {
             $this->checked = $checked;
         }
+
         return $this;
     }
 }

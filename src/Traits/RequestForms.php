@@ -12,11 +12,9 @@ use Illuminate\Support\Facades\Auth;
  * @author Damian Ułan <damian.ulan@protonmail.com>
  * @copyright 2025 damianulan
  * @license MIT
- * @package FormForge
  */
 trait RequestForms
 {
-
     /**
      * default storage path for files uploaded with request.
      * can be overriden in model.
@@ -28,15 +26,13 @@ trait RequestForms
     /**
      * Retrieve model data from request
      *
-     * @param \Illuminate\Http\Request $request
-     * @param mixed                    $id
-     * @return static
+     * @param  mixed  $id
      */
     public static function fillFromRequest(Request $request, $id = null): static
     {
         $instance = null;
         if (is_null($id)) {
-            $instance = new static();
+            $instance = new static;
         } else {
             $instance = static::find($id);
         }
@@ -50,17 +46,17 @@ trait RequestForms
                             $name = $file->hashName();
                             $stored = $file->storeAs("public/$instance->storagePath", $name);
                             if ($stored) {
-                                $publicPath = $instance->storagePath . '/' . $name;
+                                $publicPath = $instance->storagePath.'/'.$name;
                                 $instance->$property = $publicPath;
                             }
                         }
                     }
                 } else {
                     // ALL ELSE
-                    if (!is_array($value)) {
+                    if (! is_array($value)) {
                         $value = trim($value);
                         if (empty($value)) {
-                            $value = NULL;
+                            $value = null;
                         }
                     }
 
@@ -69,7 +65,7 @@ trait RequestForms
 
                 if (isset($instance->casts) && isset($instance->casts[$property])) {
                     if ($instance->casts[$property] === 'boolean') {
-                        $instance->$property = (bool)$value;
+                        $instance->$property = (bool) $value;
                     }
                 }
             }

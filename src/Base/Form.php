@@ -2,15 +2,15 @@
 
 namespace FormForge\Base;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Validator as ValidatorInstance;
 use Carbon\Carbon;
 use Exception;
-use FormForge\FormBuilder;
-use Illuminate\Support\Facades\Redirect;
 use FormForge\Events\FormValidationFail;
 use FormForge\Events\FormValidationSuccess;
+use FormForge\FormBuilder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator as ValidatorInstance;
 
 /**
  * Base class for full Form template.
@@ -18,30 +18,21 @@ use FormForge\Events\FormValidationSuccess;
  * @author Damian Ułan <damian.ulan@protonmail.com>
  * @copyright 2025 damianulan
  * @license MIT
- * @package FormForge
  */
 abstract class Form
 {
-
     /**
      * custom route key to redirect back to after form validation
-     *
-     * @var string|null
      */
     protected static ?string $backRoute = null;
 
     /**
      * custom route params to redirect back to after form validation
-     *
-     * @var array
      */
     protected static array $backParams = [];
 
     /**
      * If you need you can set up conditions, that user must meet to use this Form.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return bool
      */
     public static function authorize(Request $request): bool
     {
@@ -50,9 +41,6 @@ abstract class Form
 
     /**
      * Check and fix request data for date and float values.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Request
      */
     public static function reformatRequest(Request $request): Request
     {
@@ -93,6 +81,7 @@ abstract class Form
                 $value .= ' 23:59:59';
             }
         }
+
         return $value;
     }
 
@@ -104,9 +93,10 @@ abstract class Form
         } catch (Exception $ex) {
         }
         $timestamp = strtotime($value);
-        if (!empty($value) && $timestamp !== false && $timestamp > 0 && $timestamp !== $value && $date) {
+        if (! empty($value) && $timestamp !== false && $timestamp > 0 && $timestamp !== $value && $date) {
             return true;
         }
+
         return false;
     }
 
@@ -114,7 +104,6 @@ abstract class Form
      * It is possible that form accepts EU float values with comma as decimal separator.
      * This method translates it to US format.
      *
-     * @param string|null $value
      * @return bool
      */
     private static function isEUFloat(?string $value)
@@ -132,31 +121,26 @@ abstract class Form
                 return $all_numeric;
             }
         }
+
         return false;
     }
 
     /**
      * Provide form components definition returning an instance of FormBuilder.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param mixed $model
-     * @return \FormForge\FormBuilder
+     * @param  mixed  $model
      */
     abstract public static function definition(Request $request, $model = null): FormBuilder;
 
     /**
      * Provide laravel validation rules.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param string|null $model_id - model uuid 
-     * @return array
+     * @param  string|null  $model_id  - model uuid
      */
     abstract public static function validation(Request $request, ?string $model_id = null): array;
 
     /**
      * Custom laravel validation messages.
-     *
-     * @return array
      */
     protected static function messages(): array
     {
@@ -165,8 +149,6 @@ abstract class Form
 
     /**
      * Custom laravel validation attributes.
-     *
-     * @return array
      */
     protected static function attributes(): array
     {
@@ -184,10 +166,6 @@ abstract class Form
 
     /**
      * Use this method to validate form data. It returns an array with result and message stack.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param string|null              $model_id
-     * @return array
      */
     public static function validateJson(Request $request, ?string $model_id = null): array
     {
@@ -196,6 +174,7 @@ abstract class Form
 
         if ($validator->fails()) {
             FormValidationFail::dispatch(static::class, $validator->messages());
+
             return [
                 'status' => 'error',
                 'messages' => $validator->messages(),
@@ -212,9 +191,7 @@ abstract class Form
     /**
      * Use this method to validate form data. When bumped into error it automatically redirects back.
      * Override $backRoute and $backParams to customize redirection target.
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @param string|null              $model_id
+     *
      * @return void
      */
     public static function validate(Request $request, ?string $model_id = null)
@@ -236,10 +213,6 @@ abstract class Form
 
     /**
      * Returns a raw validator instance. Best for custom logic.
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @param string|null              $model_id
-     * @return \Illuminate\Validation\Validator
      */
     public static function validator(Request $request, ?string $model_id = null): ValidatorInstance
     {

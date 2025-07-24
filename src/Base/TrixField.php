@@ -11,12 +11,13 @@ class TrixField
     /**
      * Set value of the trix field
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return void
      */
     public function setValue($value)
     {
         $this->value = Purifier::clean($value);
+
         return $this;
     }
 

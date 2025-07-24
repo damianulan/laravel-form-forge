@@ -3,22 +3,21 @@
 namespace FormForge\Components;
 
 use Illuminate\Support\Collection;
-use FormForge\Components\ForgeComponent;
 
 class Select extends ForgeComponent
 {
     public string $name;
+
     public array $values = [];
+
     public Collection $options;
+
     public bool $multiple = false;
+
     public bool $empty_field = true;
 
     /**
      * Simple select component instance.
-     *
-     * @param string                         $name
-     * @param \Illuminate\Support\Collection $options
-     * @param array                          $selected_values
      */
     public function __construct(string $name, Collection $options, array $selected_values = [])
     {
@@ -33,12 +32,14 @@ class Select extends ForgeComponent
     {
         $this->multiple = true;
         $this->classes[] = 'formforge-control select-multiple';
+
         return $this;
     }
 
     public function noEmpty()
     {
         $this->empty_field = false;
+
         return $this;
     }
 }

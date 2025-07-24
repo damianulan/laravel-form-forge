@@ -2,12 +2,12 @@
 
 namespace FormForge\Base;
 
-use FormForge\Components\Input;
 use FormForge\Components\Checkbox;
-use FormForge\Components\Select;
-use FormForge\Components\Datetime;
 use FormForge\Components\Daterange;
+use FormForge\Components\Datetime;
 use FormForge\Components\File;
+use FormForge\Components\Input;
+use FormForge\Components\Select;
 use FormForge\Components\Trix;
 use Illuminate\Support\Collection;
 
@@ -21,62 +21,56 @@ class FormComponent
     /**
      * Returns input instruction for simple text type.
      *
-     * @param  string $name
      * @param  mixed  $model
-     * @return Input
      */
     public static function text(string $name, $model = null): Input
     {
         $value = $model->$name ?? null;
-        return new Input($name, "text", $value);
+
+        return new Input($name, 'text', $value);
     }
 
     /**
      * Returns numeric input instruction for text type requiring only numbers as input.
      *
-     * @param  string $name
      * @param  mixed  $model
-     * @return Input
      */
     public static function numeric(string $name, $model = null): Input
     {
         $value = $model->$name ?? null;
-        return (new Input($name, "text", $value))->numeric();
+
+        return (new Input($name, 'text', $value))->numeric();
     }
 
     /**
      * Returns numeric input instruction for text type requiring numbers with two floating points as number.
      *
-     * @param  string $name
      * @param  mixed  $model
-     * @return Input
      */
     public static function decimal(string $name, $model = null): Input
     {
         $value = $model->$name ?? null;
-        return (new Input($name, "text", $value))->decimal();
+
+        return (new Input($name, 'text', $value))->decimal();
     }
 
     /**
      * Returns input instruction for password type.
      *
-     * @param  string $name
      * @param  mixed  $model
-     * @return Input
      */
     public static function password(string $name, $model = null): Input
     {
         $value = $model->$name ?? null;
-        return new Input($name, "password", $value);
+
+        return new Input($name, 'password', $value);
     }
 
     /**
      * Returns hidden input instruction for any type.
      *
-     * @param  string $name
      * @param  mixed  $model
      * @param  mixed  $val
-     * @return Input
      */
     public static function hidden(
         string $name,
@@ -84,20 +78,18 @@ class FormComponent
         $val = null
     ): Input {
         $value = $model->$name ?? null;
-        if (!$value && $val) {
+        if (! $value && $val) {
             $value = $val;
         }
-        return new Input($name, "hidden", $value);
+
+        return new Input($name, 'hidden', $value);
     }
 
     /**
      * Returns single select type instruction pregenerated with chosen.js.
      *
-     * @param  string          $name
-     * @param  mixed           $model
-     * @param  Collection|null $options
-     * @param  mixed           $selected_value
-     * @return Select
+     * @param  mixed  $model
+     * @param  mixed  $selected_value
      */
     public static function select(
         string $name,
@@ -110,8 +102,8 @@ class FormComponent
         if (is_object($value)) {
             $value = $value->value;
         }
-        if (!is_null($selected_value)) {
-            if (!is_array($selected_value)) {
+        if (! is_null($selected_value)) {
+            if (! is_array($selected_value)) {
                 $value = $selected_value;
             } else {
                 $value = reset($selected_value);
@@ -124,12 +116,9 @@ class FormComponent
     /**
      * Returns multiple select type instruction pregenerated with chosen.js.
      *
-     * @param  string          $name
-     * @param  mixed           $model
-     * @param  Collection|null $options
-     * @param  mixed           $relation - method name for model relationships you want to use
-     * @param  array           $selected_values
-     * @return Select
+     * @param  mixed  $model
+     * @param  mixed  $relation  - method name for model relationships you want to use
+     * @param  array  $selected_values
      */
     public static function multiselect(
         string $name,
@@ -146,157 +135,148 @@ class FormComponent
         if (count($selected_values)) {
             $values = $selected_values;
         }
+
         return (new Select($name, $options, $values))->multiple();
     }
 
     /**
      * Returns rich edited textarea type instruction pregenerated with trix.js.
      *
-     * @param  string $name
      * @param  mixed  $model
-     * @param  string $toolbar
-     * @return Trix
      */
     public static function trix(
         string $name,
         $model = null,
-        string $toolbar = "short"
+        string $toolbar = 'short'
     ): Trix {
         $value = $model->$name ?? null;
+
         return new Trix($name, $toolbar, $value);
     }
 
     /**
      * Returns date and time input instruction pregenerated with flatpickr.js.
      *
-     * @param string      $name
-     * @param mixed       $model
-     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
-     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
-     * @return \FormForge\Components\Datetime
+     * @param  mixed  $model
+     * @param  string|null  $minDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
+     * @param  string|null  $maxDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      */
     public static function datetime(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $model->$name ?? null;
-        return new Datetime($name, "datetime", $value, $minDate, $maxDate);
+
+        return new Datetime($name, 'datetime', $value, $minDate, $maxDate);
     }
 
     /**
      * Returns a time input instruction pregenerated with flatpickr.js.
      *
-     * @param string      $name
-     * @param mixed       $model
-     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
-     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
-     * @return \FormForge\Components\Datetime
+     * @param  mixed  $model
+     * @param  string|null  $minDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
+     * @param  string|null  $maxDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      */
     public static function time(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $model->$name ?? null;
+
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
 
     /**
      * Returns a date input instruction pregenerated with flatpickr.js.
      *
-     * @param string      $name
-     * @param mixed       $model
-     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
-     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
-     * @return \FormForge\Components\Datetime
+     * @param  mixed  $model
+     * @param  string|null  $minDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
+     * @param  string|null  $maxDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      */
     public static function date(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $model->$name ?? null;
+
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
 
     /**
      * Returns a date range type input instruction pregenerated with flatpickr.js.
      *
-     * @param  string   $name
-     * @param  mixed    $model
-     * @return Daterange
+     * @param  mixed  $model
      */
     public static function daterange(string $name, $model = null): Daterange
     {
-        $from = $name . "_from";
-        $to = $name . "_to";
+        $from = $name.'_from';
+        $to = $name.'_to';
         $values = [
-            "from" => $model->$from ?? null,
-            "to" => $model->$to ?? null,
+            'from' => $model->$from ?? null,
+            'to' => $model->$to ?? null,
         ];
-        return new Daterange($name, "date", $values);
+
+        return new Daterange($name, 'date', $values);
     }
 
     /**
      * Returns a birthdate type input instruction pregenerated with flatpickr.js.
      *
-     * @param string      $name
-     * @param mixed       $model
-     * @param string|null $minDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
-     * @param string|null $maxDate - format: Y-m-d or Y-m-d H:i:s or H:i:s
-     * @return \FormForge\Components\Datetime
+     * @param  mixed  $model
+     * @param  string|null  $minDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
+     * @param  string|null  $maxDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      */
     public static function birthdate(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $model->$name ?? null;
+
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
 
     /**
      * Returns a boolean radio type input instruction.
      *
-     * @param  string   $name
-     * @param  mixed    $model
-     * @return Checkbox
+     * @param  mixed  $model
      */
     public static function radio(string $name, $model = null): Checkbox
     {
         $value = $model->$name ?? null;
-        return new Checkbox($name, "radio", $value);
+
+        return new Checkbox($name, 'radio', $value);
     }
 
     /**
      * Returns a boolean checkbox type input instruction.
      *
-     * @param  string   $name
-     * @param  mixed    $model
-     * @return Checkbox
+     * @param  mixed  $model
      */
     public static function checkbox(string $name, $model = null): Checkbox
     {
         $value = $model->$name ?? null;
-        return new Checkbox($name, "checkbox", $value);
+
+        return new Checkbox($name, 'checkbox', $value);
     }
 
     /**
      * Returns a boolean switch type input instruction.
      *
-     * @param  string   $name
-     * @param  mixed    $model
-     * @return Checkbox
+     * @param  mixed  $model
      */
     public static function switch(string $name, $model = null): Checkbox
     {
         $value = $model->$name ?? null;
-        return new Checkbox($name, "switch", $value);
+
+        return new Checkbox($name, 'switch', $value);
     }
 
     /**
      * Returns a file import type input instruction.
      *
      * @deprecated do not use - not correctly tested yet.
-     * @param  string   $name
-     * @param  mixed    $model
-     * @return File
+     *
+     * @param  mixed  $model
      */
     public static function file(string $name, $model = null): File
     {
         $value = false;
-        if (isset($model->$name) && !empty($model->$name)) {
+        if (isset($model->$name) && ! empty($model->$name)) {
             $value = true;
         }
+
         return new File($name, $value);
     }
 }

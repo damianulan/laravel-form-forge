@@ -5,6 +5,7 @@ namespace FormForge\Components;
 class Option
 {
     public $value;
+
     public $content;
 
     public bool $disabled = false;
@@ -18,6 +19,7 @@ class Option
     public function disable()
     {
         $this->disabled = true;
+
         return $this;
     }
 }

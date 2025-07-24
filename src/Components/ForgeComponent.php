@@ -2,8 +2,8 @@
 
 namespace FormForge\Components;
 
-use Illuminate\Support\Str;
 use Closure;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 /**
@@ -14,35 +14,42 @@ use Illuminate\View\View;
  */
 class ForgeComponent
 {
-
     public string $name;
+
     public string $type;
+
     public ?string $value = null;
+
     public ?string $template = null;
 
     public ?string $label = null;
+
     public ?string $placeholder = null;
 
     public array $classes = [];
 
     public bool $required = false;
+
     public bool $disabled = false;
+
     public bool $readonly = false;
+
     public bool $show = true;
+
     public string $autocomplete = '';
 
     public array $infos = [];
+
     public array $dangers = [];
 
     /**
      * Renders the html representation of the Component.
-     *
-     * @return View
      */
     public function render(): View
     {
         $template = $this->template ?? Str::lower((new \ReflectionClass($this))->getShortName());
-        return view('formforge::components.' . $template, [
+
+        return view('formforge::components.'.$template, [
             'component' => $this,
             'classes' => $this->getClasses(),
         ]);
@@ -50,70 +57,64 @@ class ForgeComponent
 
     /**
      * Labels an Component as a required. This is not validation, only invokes visual effect.
-     *
-     * @return static
      */
     public function required(?Closure $callback = null): static
     {
         $this->required = true;
-        if (!is_null($callback)) {
-            $this->required = (bool)$callback();
+        if (! is_null($callback)) {
+            $this->required = (bool) $callback();
         }
+
         return $this;
     }
 
     /**
      * Marks a Component as disabled.
-     *
-     * @return static
      */
     public function disabled(): static
     {
         $this->disabled = true;
+
         return $this;
     }
 
     /**
      * Marks an Component as disabled.
-     *
-     * @return static
      */
     public function readonly(): static
     {
         $this->readonly = true;
+
         return $this;
     }
 
     /**
      * Sets html placeholder.
-     *
-     * @return static
      */
     public function placeholder(string $text): static
     {
         $this->placeholder = empty($text) ? null : $text;
+
         return $this;
     }
 
     /**
      * Sets html default value.
-     *
-     * @return static
      */
     public function value(string $value): static
     {
         $this->value = $value;
+
         return $this;
     }
 
     /**
      * Sets label text for an Component.
-     *
-     * @return static
      */
     public function label(string $text): static
     {
         $this->label = $text;
+
         return $this;
     }
 
@@ -124,41 +125,42 @@ class ForgeComponent
      */
     public function getLabel(): ?View
     {
-        if (!empty($this->label) && !empty($this->name)) {
+        if (! empty($this->label) && ! empty($this->name)) {
             return view('formforge::components.label', [
                 'label' => $this->label,
                 'name' => $this->name,
                 'required' => $this->required,
             ]);
         }
+
         return null;
     }
 
     public function class(...$classes)
     {
-        if (!empty($classes)) {
+        if (! empty($classes)) {
             foreach ($classes as $class) {
                 $this->classes[] = $class;
             }
         }
+
         return $this;
     }
 
     private function getClasses()
     {
         $this->classes = array_unique($this->classes);
+
         return empty($this->classes) ? null : implode(' ', $this->classes);
     }
 
     /**
      * Generates tippy.js tooltip description for the field.
-     *
-     * @param  string $text
-     * @return static
      */
     public function info(string $text): static
     {
         $this->infos[] = $text;
+
         return $this;
     }
 
@@ -169,38 +171,38 @@ class ForgeComponent
      */
     public function getInfos()
     {
-        if (!empty($this->infos)) {
+        if (! empty($this->infos)) {
             $output = '';
             foreach ($this->infos as $info) {
-                $output .= '<span class="info-box" data-tippy-content="' . $info . '"><i class="bi-info-circle-fill"></i></span>';
+                $output .= '<span class="info-box" data-tippy-content="'.$info.'"><i class="bi-info-circle-fill"></i></span>';
             }
+
             return $output;
         }
+
         return null;
     }
 
     /**
      * Sets html autocomplete setting
-     *
-     * @param  string $type
-     * @return static
      */
     public function autocomplete(string $type): static
     {
         $this->autocomplete = $type;
+
         return $this;
     }
 
     /**
      * Set additional conditions that need to be met for component to be shown in the form.
      *
-     * @param mixed $callback
-     * @return static
+     * @param  mixed  $callback
      */
     public function condition($callback): static
     {
         $return = $callback();
         $this->show = (bool) $return;
+
         return $this;
     }
 }

@@ -2,18 +2,20 @@
 
 namespace FormForge\Components;
 
-use FormForge\Components\ForgeComponent;
-
 class Input extends ForgeComponent
 {
     public string $name;
+
     public string $type;
+
     public ?string $value = null;
 
     public ?int $maxlength = null;
+
     public ?int $minlength = null;
 
     public bool $numeric = false;
+
     public string $numeric_type = 'integer';
 
     public function __construct(string $name, string $type, ?string $value)
@@ -31,12 +33,14 @@ class Input extends ForgeComponent
     public function maxlength(int $value)
     {
         $this->maxlength = $value;
+
         return $this;
     }
 
     public function minlength(int $value)
     {
         $this->minlength = $value;
+
         return $this;
     }
 
@@ -44,6 +48,7 @@ class Input extends ForgeComponent
     {
         $this->numeric = true;
         $this->placeholder(__('formforge::forms.placeholders.enter_number'));
+
         return $this;
     }
 
@@ -52,6 +57,7 @@ class Input extends ForgeComponent
         $this->numeric = true;
         $this->numeric_type = __FUNCTION__;
         $this->placeholder(__('formforge::forms.placeholders.enter_float'));
+
         return $this;
     }
 }

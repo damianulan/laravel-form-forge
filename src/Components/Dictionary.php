@@ -2,8 +2,8 @@
 
 namespace FormForge\Components;
 
-use Illuminate\Support\Collection;
 use FormForge\Enums\Enum;
+use Illuminate\Support\Collection;
 
 class Dictionary
 {
@@ -11,32 +11,26 @@ class Dictionary
      * Declare array collections of options accessible to the public.
      */
     public $mail_encryption_methods = [
-        "tls" => "TLS",
-        "ssl" => "SSL",
-        "starttls" => "STARTTLS",
-        "null" => "PLAIN",
+        'tls' => 'TLS',
+        'ssl' => 'SSL',
+        'starttls' => 'STARTTLS',
+        'null' => 'PLAIN',
     ];
 
     /**
      * Get data for select directly from model.
-     *
-     * @param string $model
-     * @param string $attribute
-     * @param string $method
-     * @param array  $exclude
-     * @return \Illuminate\Support\Collection
      */
     public static function fromModel(
         string $model,
         string $attribute,
-        string $method = "all",
+        string $method = 'all',
         array $exclude = []
     ): Collection {
-        $options = new Collection();
+        $options = new Collection;
 
         if (class_exists($model)) {
             $records = $model::$method();
-            if (!empty($records)) {
+            if (! empty($records)) {
                 if (count($exclude)) {
                     foreach ($exclude as $condition) {
                         $records = $records->filter(function (
@@ -46,11 +40,12 @@ class Dictionary
                             foreach ($condition as $prop => $value) {
                                 if (
                                     isset($record->$prop) &&
-                                    $record->$prop === $value
+                                    $value === $record->$prop
                                 ) {
                                     return false;
                                 }
                             }
+
                             return true;
                         });
                     }
@@ -71,21 +66,19 @@ class Dictionary
     /**
      * Create select from array values.
      *
-     * @param array  $values
-     * @param string $lang_component - use if your array values are lang keys.
-     * @return \Illuminate\Support\Collection
+     * @param  string  $lang_component  - use if your array values are lang keys.
      */
     public static function fromUnassocArray(
         array $values,
-        string $lang_component = ""
+        string $lang_component = ''
     ): Collection {
-        $options = new Collection();
+        $options = new Collection;
 
-        if (!empty($values)) {
+        if (! empty($values)) {
             foreach ($values as $value) {
                 $content = ucfirst($value);
-                if (!empty($lang_component)) {
-                    $content = __($lang_component . "." . $value);
+                if (! empty($lang_component)) {
+                    $content = __($lang_component.'.'.$value);
                 }
                 $options->push(new Option($value, $content));
             }
@@ -95,13 +88,13 @@ class Dictionary
     }
 
     /**
-     * @param array $values Here database value as an array's key.
+     * @param  array  $values  Here database value as an array's key.
      */
     public static function fromAssocArray(array $values): Collection
     {
-        $options = new Collection();
+        $options = new Collection;
 
-        if (!empty($values)) {
+        if (! empty($values)) {
             foreach ($values as $value => $content) {
                 $options->push(new Option($value, $content));
             }
@@ -112,7 +105,7 @@ class Dictionary
 
     public static function fromCatalog(string $index): ?Collection
     {
-        $instance = new self();
+        $instance = new self;
 
         if (isset($instance->$index)) {
             return self::fromAssocArray($instance->$index);
@@ -123,15 +116,13 @@ class Dictionary
 
     /**
      * Simple true/false select
-     *
-     * @return \Illuminate\Support\Collection
      */
     public static function yesNo(): Collection
     {
-        $options = new Collection();
+        $options = new Collection;
 
-        $options->push(new Option(1, __("formforge::forms.yes")));
-        $options->push(new Option(0, __("formforge::forms.no")));
+        $options->push(new Option(1, __('formforge::forms.yes')));
+        $options->push(new Option(0, __('formforge::forms.no')));
 
         return $options;
     }
@@ -139,18 +130,18 @@ class Dictionary
     /**
      * Enum equivalents should be translated in fields.php
      *
-     * @param mixed $enum_class - enum class namespace
-     * @return \Illuminate\Support\Collection
+     * @param  mixed  $enum_class  - enum class namespace
      */
     public static function fromEnum($enum_class): Collection
     {
-        $options = new Collection();
-        $instance = new $enum_class();
+        $options = new Collection;
+        $instance = new $enum_class;
         if (class_exists($enum_class) && $instance instanceof Enum) {
             foreach ($enum_class::values() as $case) {
-                $options->push(new Option($case, __("formforge::forms.enums." . $case)));
+                $options->push(new Option($case, __('formforge::forms.enums.'.$case)));
             }
         }
+
         return $options;
     }
 }

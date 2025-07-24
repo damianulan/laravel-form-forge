@@ -2,13 +2,14 @@
 
 namespace FormForge\Components;
 
-use FormForge\Components\ForgeComponent;
-
 class File extends ForgeComponent
 {
     public string $name;
+
     private array $accept = [];
+
     public bool $multiple = false;
+
     public bool $hasValue = false;
 
     public function __construct(string $name, bool $hasValue)
@@ -24,6 +25,7 @@ class File extends ForgeComponent
         foreach ($accepts as $accept) {
             $this->accept[] = $accept;
         }
+
         return $this;
     }
 
@@ -32,12 +34,14 @@ class File extends ForgeComponent
         if (count($this->accept)) {
             return implode(',', $this->accept);
         }
+
         return null;
     }
 
     public function multiple()
     {
         $this->multiple = true;
+
         return $this;
     }
 }

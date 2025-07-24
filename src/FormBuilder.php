@@ -2,16 +2,16 @@
 
 namespace FormForge;
 
-use FormForge\Components\Button;
-use Illuminate\Support\Str;
-use FormForge\Components\ForgeComponent;
-use Illuminate\View\View;
-use FormForge\Exceptions\FormUnauthorized;
-use Illuminate\Http\Request;
-use FormForge\Base\Form;
 use FormForge\Base\ForgeTemplate;
+use FormForge\Base\Form;
+use FormForge\Components\Button;
+use FormForge\Components\ForgeComponent;
 use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
+use FormForge\Exceptions\FormUnauthorized;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 /**
  * Collects components to render bootstrap form.
@@ -19,76 +19,43 @@ use FormForge\Events\FormRendering;
  * @author Damian Ułan <damian.ulan@protonmail.com>
  * @copyright 2025 damianulan
  * @license MIT
- * @package FormForge
  */
 class FormBuilder
 {
     /**
      * Form id
-     *
-     * @var string|null
      */
     private ?string $id;
 
-    /**
-     * @var string|null
-     */
     private ?string $title;
 
-    /**
-     * @var string
-     */
     private string $method;
 
-    /**
-     * @var string|null
-     */
     private ?string $action;
 
-    /**
-     * @var string
-     */
     private string $template;
 
-    /**
-     * @var array
-     */
     private array $classes = [];
 
-    /**
-     * @var array
-     */
     private array $components = [];
 
-    /**
-     * @var array
-     */
     private array $buttons = [];
 
-    /**
-     * @var \FormForge\Components\Button|null
-     */
     public ?Button $submit = null;
 
-    /**
-     * @var \Illuminate\Http\Request
-     */
     private Request $request;
 
     /**
      * Form origin namespace
-     *
-     * @var string
      */
     private string $form;
 
     /**
      * Form internal constructor - in order to call FormBuilder instance use FormBuilder::boot() method instead.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param string                              $method - as of 'POST', 'PUT', 'GET', 'DELETE' etc.
-     * @param string|null                         $action - leave empty if you want to use the form in AJAX 
-     * @param string|null                         $id - form html id
+     * @param  string  $method  - as of 'POST', 'PUT', 'GET', 'DELETE' etc.
+     * @param  string|null  $action  - leave empty if you want to use the form in AJAX
+     * @param  string|null  $id  - form html id
      * @return \FormForge\FormBuilder
      */
     public function __construct(Request $request, string $method, ?string $action, ?string $id = null)
@@ -104,11 +71,9 @@ class FormBuilder
     /**
      * Form constructor
      *
-     * @param \Illuminate\Http\Request $request
-     * @param string                              $method - as of 'POST', 'PUT', 'GET', 'DELETE' etc.
-     * @param string|null                         $action - leave empty if you want to use the form in AJAX 
-     * @param string|null                         $id - form's html id
-     * @return \FormForge\FormBuilder
+     * @param  string  $method  - as of 'POST', 'PUT', 'GET', 'DELETE' etc.
+     * @param  string|null  $action  - leave empty if you want to use the form in AJAX
+     * @param  string|null  $id  - form's html id
      */
     public static function boot(Request $request, string $method, ?string $action, ?string $id = null): self
     {
@@ -117,13 +82,11 @@ class FormBuilder
 
     /**
      * Core function handling form authorization checks.
-     *
-     * @return void
      */
     private function authorize(): void
     {
         $user = $this->request->user() ?? null;
-        if (!$user) {
+        if (! $user) {
             $this->throwUnauthorized();
         }
 
@@ -133,7 +96,7 @@ class FormBuilder
         $namespace = $trace[3]['class'];
 
         // check source
-        $instance = new $namespace();
+        $instance = new $namespace;
         if (! ($instance instanceof Form)) {
             $this->throwUnauthorized();
         }
@@ -141,7 +104,7 @@ class FormBuilder
         $this->form = $namespace;
 
         $authorized = $namespace::authorize($this->request);
-        if (!$authorized) {
+        if (! $authorized) {
             $this->throwUnauthorized();
         }
     }
@@ -149,38 +112,33 @@ class FormBuilder
     /**
      * Add cutom class to the form HTML representation.
      *
-     * @param mixed ...$classes
-     * @return \FormForge\FormBuilder
+     * @param  mixed  ...$classes
      */
     public function class(...$classes): self
     {
-        if (!empty($classes)) {
+        if (! empty($classes)) {
             foreach ($classes as $class) {
                 $this->classes[] = $class;
             }
         }
+
         return $this;
     }
 
     /**
      * Add new input component to the form.
-     *
-     * @param \FormForge\Components\ForgeComponent $component
-     * @return \FormForge\FormBuilder
      */
     public function add(ForgeComponent $component): self
     {
         if ($component && $component->show === true) {
             $this->components[$component->name] = $component;
         }
+
         return $this;
     }
 
     /**
      * Undocumented function
-     *
-     * @param \FormForge\Components\Button $button
-     * @return \FormForge\FormBuilder
      */
     public function addButton(Button $button): self
     {
@@ -191,34 +149,31 @@ class FormBuilder
                 $this->buttons[$button->title] = $button;
             }
         }
+
         return $this;
     }
 
     /**
      * Remove added input component from the form.
-     *
-     * @param string $name
-     * @return \FormForge\FormBuilder
      */
     public function remove(string $name): self
     {
         if (isset($this->components[$name])) {
             unset($this->components[$name]);
         }
+
         return $this;
     }
 
     /**
      * Change default template for the form.
-     *
-     * @param string $template
-     * @return \FormForge\FormBuilder
      */
     public function template(string $template): self
     {
         $instance = ForgeTemplate::get($template);
 
         $this->template = $instance ?? $this->template;
+
         return $this;
     }
 
@@ -230,32 +185,26 @@ class FormBuilder
     /**
      * Add basic HTML form submit button.
      * When clicked, it executes form validation and submits the form.
-     *
-     * @param string $class
-     * @return \FormForge\FormBuilder
      */
     public function addSubmit(string $class = 'btn-primary'): self
     {
         $this->submit = new Button(__('formforge::components.buttons.save'), 'submit', null, $class);
+
         return $this;
     }
 
     /**
      * Add form header.
-     *
-     * @param string $title
-     * @return \FormForge\FormBuilder
      */
     public function addTitle(string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
     /**
      * get form title/header
-     *
-     * @return string|null
      */
     public function title(): ?string
     {
@@ -264,23 +213,22 @@ class FormBuilder
 
     /**
      * render form view with all components.
-     *
-     * @return \Illuminate\View\View
      */
     public function render(): View
     {
         FormRendering::dispatch($this->form, $this->method, $this->components);
-        return view('formforge::templates.' . $this->template, [
-            'components'  => $this->components,
-            'method'    => $this->method,
-            'action'    => $this->action,
-            'classes'   => $this->getClasses(),
-            'id'        => $this->id,
-            'template'  => $this->template,
-            'submit'    => $this->submit,
-            'buttons'   => $this->buttons,
-            'form'      => $this->form,
-            'event'     => FormRendered::class,
+
+        return view('formforge::templates.'.$this->template, [
+            'components' => $this->components,
+            'method' => $this->method,
+            'action' => $this->action,
+            'classes' => $this->getClasses(),
+            'id' => $this->id,
+            'template' => $this->template,
+            'submit' => $this->submit,
+            'buttons' => $this->buttons,
+            'form' => $this->form,
+            'event' => FormRendered::class,
         ]);
     }
 
@@ -291,13 +239,11 @@ class FormBuilder
      */
     private function throwUnauthorized()
     {
-        throw new FormUnauthorized();
+        throw new FormUnauthorized;
     }
 
     /**
      * Get all form components.
-     *
-     * @return array
      */
     public function getComponents(): array
     {
@@ -306,8 +252,6 @@ class FormBuilder
 
     /**
      * Get form class namespac, from where this form builder was called.
-     *
-     * @return string
      */
     public function getFormName(): string
     {
