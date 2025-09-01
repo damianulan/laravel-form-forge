@@ -10,6 +10,7 @@ use FormForge\Components\Input;
 use FormForge\Components\Select;
 use FormForge\Components\Trix;
 use FormForge\Components\Textarea;
+use FormForge\Components\Container;
 use Illuminate\Support\Collection;
 
 /**
@@ -138,6 +139,20 @@ class FormComponent
         }
 
         return (new Select($name, $options, $values))->multiple();
+    }
+
+    /**
+     * Returns simple div container with hidden input.
+     *
+     * @param string $name
+     * @param mixed  $model
+     * @return \FormForge\Components\Container
+     */
+    public static function container(string $name, $model = null): Container
+    {
+        $value = $model->$name ?? null;
+
+        return new Container($name, $value);
     }
 
     /**
