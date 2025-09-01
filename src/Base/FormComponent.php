@@ -9,6 +9,7 @@ use FormForge\Components\File;
 use FormForge\Components\Input;
 use FormForge\Components\Select;
 use FormForge\Components\Trix;
+use FormForge\Components\Textarea;
 use Illuminate\Support\Collection;
 
 /**
@@ -140,6 +141,20 @@ class FormComponent
     }
 
     /**
+     * Returns simple textarea input.
+     *
+     * @param string $name
+     * @param mixed  $model
+     * @return \FormForge\Components\Textarea
+     */
+    public static function textarea(string $name, $model = null): Textarea
+    {
+        $value = $model->$name ?? null;
+
+        return new Textarea($name, $value);
+    }
+
+    /**
      * Returns rich edited textarea type instruction pregenerated with trix.js.
      *
      * @param  mixed  $model
@@ -203,8 +218,8 @@ class FormComponent
      */
     public static function daterange(string $name, $model = null): Daterange
     {
-        $from = $name.'_from';
-        $to = $name.'_to';
+        $from = $name . '_from';
+        $to = $name . '_to';
         $values = [
             'from' => $model->$from ?? null,
             'to' => $model->$to ?? null,
