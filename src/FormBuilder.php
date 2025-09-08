@@ -128,9 +128,10 @@ class FormBuilder
     /**
      * Add new input component to the form.
      */
-    public function add(ForgeComponent $component): self
+    public function add(ForgeComponent $component, ?callable $condition = null): self
     {
-        if ($component && $component->show === true) {
+        $cond = is_null($condition) || $condition() ? true : false;
+        if ($component && $component->show === true && $cond) {
             $this->components[$component->name] = $component;
         }
 
@@ -138,7 +139,7 @@ class FormBuilder
     }
 
     /**
-     * Undocumented function
+     * Add button at the bottom of the form.
      */
     public function addButton(Button $button): self
     {
@@ -218,7 +219,7 @@ class FormBuilder
     {
         FormRendering::dispatch($this->form, $this->method, $this->components);
 
-        return view('formforge::templates.'.$this->template, [
+        return view('formforge::templates.' . $this->template, [
             'components' => $this->components,
             'method' => $this->method,
             'action' => $this->action,
