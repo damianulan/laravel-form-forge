@@ -1,13 +1,9 @@
 require("chosen-js");
-import Trix from "trix";
 import flatpickr from "flatpickr";
-import { Polish } from "flatpickr/dist/l10n/pl.js";
 import tippy from "tippy.js";
 
-window.Trix = Trix;
-
+// build flatpickr objects
 $.buildFlatpickr = function () {
-    flatpickr.localize(Polish);
     const dateTimePickerOptions = {
         allowInput: true,
         altFormat: datetime_format,
@@ -43,6 +39,7 @@ $.buildFlatpickr = function () {
         monthSelectorType: "dropdown",
     };
 
+    // find and build flatpickr objects by class
     $(document)
         .find(".datetimepicker")
         .each(function () {
@@ -104,6 +101,7 @@ $.buildFlatpickr = function () {
         });
 };
 
+// build chosen objects
 $.buildChosen = function () {
     $("select").chosen({
         disable_search_threshold: 5,
@@ -156,6 +154,7 @@ $.rebuildVendors = function () {
     buildVendors();
 };
 
+// use this to build or rebuild chosen and flatpickr and other js form objects
 function buildVendors() {
     $.buildChosen();
     $.buildFlatpickr();

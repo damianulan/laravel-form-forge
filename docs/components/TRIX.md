@@ -1,1 +1,0 @@
-# FormForge Trix Formatted Text

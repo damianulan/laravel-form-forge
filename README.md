@@ -36,7 +36,7 @@ public static function definition(Request $request, $model = null): FormBuilder
         ->add(FormComponent::hidden('id', $model))
         ->add(FormComponent::select('template_id', $model, Dictionary::fromModel(Model::class, 'attribute'))->required()) // form element branded as required
         ->add(FormComponent::text('name', $model)->label('Name field label')->required())
-        ->add(FormComponent::trix('description', $model))
+        ->add(FormComponent::textarea('description', $model))
         ->add(FormComponent::datetime('deadline', $model)->info())
         ->add(FormComponent::decimal('expected', $model)->info('Here give explanation under questionmark icon'))
         ->add(FormComponent::switch('draft', $model)->default(false))
@@ -105,6 +105,17 @@ To properly include package scripts, just add `@formForgeScripts` to your footer
 ```html
 @formForgeScripts
 <script src="{{ asset('themes/js/app.js') }}"></script>
+```
+But if you want to make some changes in package scripts, in your js bundle attach script files from `resources/vendor/formforge/js` directory. You will then need to install dependent packages like `popper.js` and `flatpickr` manually.
+
+Before declaring form forge scripts, you need to declare global variables.
+```js
+    const choose = '{{ __('Choose results') }}';
+    const no_results = '{{ __('No results found') }}';
+
+    const datetime_format = '{{ __('Y-m-d H:i:s') }}';
+    const time_format = '{{ __('Y-m-d') }}';
+    const date_format = '{{ __('H:i') }}';
 ```
 
 ### Upgrading

@@ -31,7 +31,7 @@ class ExemplaryForm extends Form
             ->add(FormComponent::hidden('id', $model))
             ->add(FormComponent::select('template_id', $model, Dictionary::fromModel(Model::class, 'attribute'))->required()) // form element branded as required
             ->add(FormComponent::text('name', $model)->label('Name field label')->required())
-            ->add(FormComponent::trix('description', $model))
+            ->add(FormComponent::textarea('description', $model))
             ->add(FormComponent::datetime('deadline', $model)->info())
             ->add(FormComponent::decimal('expected', $model)->info('Here give explanation under questionmark icon'))
             ->add(FormComponent::switch('draft', $model)->default(false))

@@ -8,7 +8,6 @@ use FormForge\Components\Datetime;
 use FormForge\Components\File;
 use FormForge\Components\Input;
 use FormForge\Components\Select;
-use FormForge\Components\Trix;
 use FormForge\Components\Textarea;
 use FormForge\Components\Container;
 use Illuminate\Support\Collection;
@@ -167,21 +166,6 @@ class FormComponent
         $value = $model->$name ?? null;
 
         return new Textarea($name, $value);
-    }
-
-    /**
-     * Returns rich edited textarea type instruction pregenerated with trix.js.
-     *
-     * @param  mixed  $model
-     */
-    public static function trix(
-        string $name,
-        $model = null,
-        string $toolbar = 'short'
-    ): Trix {
-        $value = $model->$name ?? null;
-
-        return new Trix($name, $toolbar, $value);
     }
 
     /**
