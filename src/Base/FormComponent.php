@@ -3,13 +3,13 @@
 namespace FormForge\Base;
 
 use FormForge\Components\Checkbox;
+use FormForge\Components\Container;
 use FormForge\Components\Daterange;
 use FormForge\Components\Datetime;
 use FormForge\Components\File;
 use FormForge\Components\Input;
 use FormForge\Components\Select;
 use FormForge\Components\Textarea;
-use FormForge\Components\Container;
 use Illuminate\Support\Collection;
 
 /**
@@ -143,9 +143,7 @@ class FormComponent
     /**
      * Returns simple div container with hidden input.
      *
-     * @param string $name
-     * @param mixed  $model
-     * @return \FormForge\Components\Container
+     * @param  mixed  $model
      */
     public static function container(string $name, $model = null): Container
     {
@@ -157,9 +155,7 @@ class FormComponent
     /**
      * Returns simple textarea input.
      *
-     * @param string $name
-     * @param mixed  $model
-     * @return \FormForge\Components\Textarea
+     * @param  mixed  $model
      */
     public static function textarea(string $name, $model = null): Textarea
     {
@@ -217,8 +213,8 @@ class FormComponent
      */
     public static function daterange(string $name, $model = null): Daterange
     {
-        $from = $name . '_from';
-        $to = $name . '_to';
+        $from = $name.'_from';
+        $to = $name.'_to';
         $values = [
             'from' => $model->$from ?? null,
             'to' => $model->$to ?? null,

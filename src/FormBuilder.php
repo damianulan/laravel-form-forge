@@ -6,13 +6,13 @@ use FormForge\Base\ForgeTemplate;
 use FormForge\Base\Form;
 use FormForge\Components\Button;
 use FormForge\Components\ForgeComponent;
+use FormForge\Components\ForgeSection;
 use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use FormForge\Components\ForgeSection;
 
 /**
  * Collects components to render bootstrap form.
@@ -141,12 +141,12 @@ class FormBuilder
 
     /**
      * Section of components with a header.
-     *
      */
     public function addSection(string $title, callable $callback): self
     {
         $fb = $callback(new FormBuilder($this->request, $this->method, $this->action, $this->id));
         $this->components[] = new ForgeSection($title, $fb);
+
         return $this;
     }
 
@@ -231,7 +231,7 @@ class FormBuilder
     {
         FormRendering::dispatch($this->form, $this->method, $this->components);
 
-        return view('formforge::templates.' . $this->template, [
+        return view('formforge::templates.'.$this->template, [
             'components' => $this->components,
             'method' => $this->method,
             'action' => $this->action,
