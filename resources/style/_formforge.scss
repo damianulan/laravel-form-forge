@@ -1,7 +1,6 @@
 @import "variables";
 @import "flatpickr";
 @import "chosen/chosen";
-@import "trix";
 @import "tippy";
 
 form.formforge-form {
@@ -14,6 +13,10 @@ form.formforge-form {
     *:focus,
     *:focus-visible {
         outline: none;
+    }
+
+    .formforge-component {
+        align-items: center;
     }
 
     .formforge-control,
@@ -39,7 +42,7 @@ form.formforge-form {
     }
 
     .form-group {
-        margin-bottom: $form-group-margin;
+        margin-bottom: $form-group-margin-bottom;
     }
 
     .valid-feedback,
@@ -83,8 +86,13 @@ form.formforge-form {
     }
 
     .form-info {
-        margin-left: auto;
         align-self: center;
+    }
+
+    &.formforge-horizontal {
+        .form-info {
+            margin-left: auto;
+        }
     }
 
     .form-info span.info-box {
@@ -155,8 +163,32 @@ form.formforge-form {
         margin-top: 0.3rem;
     }
 
-    &.formforge-horizontal .form-label {
+    .form-label {
         margin: 0;
+    }
+
+    .formforge-input-row {
+        display: flex;
+        margin-bottom: 0.5rem;
+    }
+
+    .formforge-section {
+        margin-bottom: $form-section-margin-bottom;
+
+        .formforge-section__title {
+            display: block;
+            color: $primary;
+        }
+
+        .formforge-section__content {
+            padding: 0.75rem 1rem;
+            border-radius: var(--bs-border-radius);
+            border: 1px solid rgba($primary, 0.5);
+
+            .formforge-component:last-child {
+                margin-bottom: 0;
+            }
+        }
     }
 }
 

@@ -1,9 +1,9 @@
 @function tint($color, $percentage) {
-  @return mix(white, $color, $percentage);
+    @return mix(white, $color, $percentage);
 }
 
 @function shade($color, $percentage) {
-  @return mix(black, $color, $percentage);
+    @return mix(black, $color, $percentage);
 }
 
 $prefix: "formforge-";
@@ -43,8 +43,8 @@ $switch-checked-background: $primary !default;
 $chosen-search-padding: 4px 5px 4px 20px !default;
 $chosen-choices-padding: 0.3rem 0.7rem 0.15rem 0.7rem !default;
 $chosen-highlighted-background: linear-gradient(
-  $primary 20%,
-  $secondary 90%
+    $primary 20%,
+    $secondary 90%
 ) !default; // highlighted/hovered select options
 $tippy-info-color: $secondary !default;
 $info-box-color: $info !default;
@@ -53,7 +53,8 @@ $form-switch-height: 1.3em !default;
 $form-check-width: 1.2em !default;
 $form-check-height: 1.2em !default;
 
-$form-group-margin: 1.5rem !default;
+$form-group-margin-bottom: 1rem !default;
+$form-section-margin-bottom: 1.25rem !default;
 
 // fonts
 $form-font-size: 0.85rem !default;

@@ -12,6 +12,7 @@ use FormForge\Exceptions\FormUnauthorized;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use FormForge\Components\ForgeSection;
 
 /**
  * Collects components to render bootstrap form.
@@ -135,6 +136,17 @@ class FormBuilder
             $this->components[$component->name] = $component;
         }
 
+        return $this;
+    }
+
+    /**
+     * Section of components with a header.
+     *
+     */
+    public function addSection(string $title, callable $callback): self
+    {
+        $fb = $callback(new FormBuilder($this->request, $this->method, $this->action, $this->id));
+        $this->components[] = new ForgeSection($title, $fb);
         return $this;
     }
 

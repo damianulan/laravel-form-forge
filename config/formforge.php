@@ -20,6 +20,7 @@ return [
     'templates' => [
         'horizontal' => [],
         '2columns' => [],
+        'vertical' => [],
     ],
 
     /**
