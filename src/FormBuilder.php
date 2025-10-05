@@ -262,7 +262,9 @@ class FormBuilder
      */
     public function getComponents(): array
     {
-        return $this->components;
+        return array_filter($this->components, function ($component) {
+            return ! ($component instanceof ForgeSection);
+        });
     }
 
     /**
