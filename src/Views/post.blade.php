@@ -1,3 +1,5 @@
 @php
-    $event::dispatch($form, $method, $components);
+    if(config('formforge.dispatches_events')){
+        $event::dispatch($form, $method, $components);
+    }
 @endphp

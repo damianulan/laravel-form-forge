@@ -229,9 +229,11 @@ class FormBuilder
      */
     public function render(): View
     {
-        FormRendering::dispatch($this->form, $this->method, $this->components);
+        if (config('formforge.dispatches_events')) {
+            FormRendering::dispatch($this->form, $this->method, $this->components);
+        }
 
-        return view('formforge::templates.'.$this->template, [
+        return view('formforge::templates.' . $this->template, [
             'components' => $this->components,
             'method' => $this->method,
             'action' => $this->action,

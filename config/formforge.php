@@ -35,4 +35,9 @@ return [
      */
     'handling_files' => env('FORMFORGE_HANDLING_FILES', true),
 
+    /**
+     * Dispatches FormForge rendering events. 
+     */
+    'dispatches_events' => true,
+
 ];
