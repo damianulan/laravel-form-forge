@@ -1,3 +1,4 @@
+@props(['component'])
 @if (isset($component->type) && $component->type === 'hidden')
     {{ $component->render() }}
 @else

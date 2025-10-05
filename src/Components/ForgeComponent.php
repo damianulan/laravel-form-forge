@@ -49,7 +49,7 @@ class ForgeComponent
     {
         $template = $this->template ?? Str::lower((new \ReflectionClass($this))->getShortName());
 
-        return view('formforge::components.'.$template, [
+        return view('formforge::components.' . $template, [
             'component' => $this,
             'classes' => $this->getClasses(),
         ]);
@@ -111,9 +111,13 @@ class ForgeComponent
     /**
      * Sets label text for an Component.
      */
-    public function label(string $text): static
+    public function label(string|callable $text): static
     {
-        $this->label = $text;
+        if (is_callable($text)) {
+            $this->label = call_user_func($text);
+        } else {
+            $this->label = $text;
+        }
 
         return $this;
     }
@@ -174,7 +178,7 @@ class ForgeComponent
         if (! empty($this->infos)) {
             $output = '';
             foreach ($this->infos as $info) {
-                $output .= '<span class="info-box" data-tippy-content="'.$info.'"><i class="bi-info-circle-fill"></i></span>';
+                $output .= '<span class="info-box" data-tippy-content="' . $info . '"><i class="bi-info-circle-fill"></i></span>';
             }
 
             return $output;
