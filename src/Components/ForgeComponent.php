@@ -26,6 +26,8 @@ class ForgeComponent
 
     public ?string $placeholder = null;
 
+    public ?string $key = null;
+
     public array $classes = [];
 
     public bool $required = false;
@@ -123,6 +125,16 @@ class ForgeComponent
     }
 
     /**
+     * Add additional key that will be visible in the form as muted text.
+     */
+    public function key(string $key): static
+    {
+        $this->key = $key;
+
+        return $this;
+    }
+
+    /**
      * Renders input label to html.
      *
      * @return string
@@ -134,6 +146,7 @@ class ForgeComponent
                 'label' => $this->label,
                 'name' => $this->name,
                 'required' => $this->required,
+                'key' => $this->key,
             ]);
         }
 
