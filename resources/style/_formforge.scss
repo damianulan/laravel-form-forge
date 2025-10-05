@@ -71,6 +71,10 @@ form.formforge-form {
         }
     }
 
+    .formforge-key {
+        pointer-events: none;
+    }
+
     .action-btns {
         position: relative;
         display: flex;
