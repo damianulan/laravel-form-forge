@@ -127,7 +127,7 @@ class ForgeComponent
     /**
      * Add additional key that will be visible in the form as muted text.
      */
-    public function key(string $key): static
+    public function key(?string $key): static
     {
         $this->key = $key;
 
