@@ -127,9 +127,13 @@ class ForgeComponent
     /**
      * Add additional key that will be visible in the form as muted text.
      */
-    public function key(?string $key): static
+    public function key(string|callable $key): static
     {
-        $this->key = $key;
+        if (is_callable($key)) {
+            $this->key = call_user_func($key);
+        } else {
+            $this->key = $key;
+        }
 
         return $this;
     }
