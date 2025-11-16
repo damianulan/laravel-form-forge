@@ -8,7 +8,7 @@ class ForgeSection
 {
     public string $title;
 
-    public array $components = [];
+    public array $components = array();
 
     public function __construct(string $title, FormBuilder $builder)
     {

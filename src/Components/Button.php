@@ -18,6 +18,29 @@ class Button
     public bool $disabled = false;
 
     /**
+     * Add a button to the form.
+     * Allowed types: a, button, submit, reset
+     *
+     * @param  string|null  $href  - only when type is 'a'
+     */
+    public function __construct(string $title, string $type = 'button', ?string $href = null, string $classes = 'btn-primary')
+    {
+        $allowed_types = array('a', 'button', 'submit', 'reset');
+        if ($href) {
+            $type = 'a';
+        }
+        $this->type = null;
+
+        if (in_array($type, $allowed_types)) {
+            $this->type = $type;
+        }
+        $this->href = $href;
+
+        $this->class = 'btn formforge-btn ' . $classes;
+        $this->title = $title;
+    }
+
+    /**
      * Generate a delete button. Provide href or use ".btn-delete" class to specify behavior in JS.
      */
     public static function delete(?string $title = null, ?string $href = null, string $classes = 'btn-danger'): self
@@ -71,32 +94,9 @@ class Button
         return new self($title, 'submit', null, $classes);
     }
 
-    /**
-     * Add a button to the form.
-     * Allowed types: a, button, submit, reset
-     *
-     * @param  string|null  $href  - only when type is 'a'
-     */
-    public function __construct(string $title, string $type = 'button', ?string $href = null, string $classes = 'btn-primary')
-    {
-        $allowed_types = ['a', 'button', 'submit', 'reset'];
-        if ($href) {
-            $type = 'a';
-        }
-        $this->type = null;
-
-        if (in_array($type, $allowed_types)) {
-            $this->type = $type;
-        }
-        $this->href = $href;
-
-        $this->class = 'btn formforge-btn '.$classes;
-        $this->title = $title;
-    }
-
     public function isSubmit(): bool
     {
-        return $this->type === 'submit';
+        return 'submit' === $this->type;
     }
 
     /**
@@ -114,8 +114,8 @@ class Button
      */
     public function render(): View
     {
-        return view('formforge::components.button', [
+        return view('formforge::components.button', array(
             'component' => $this,
-        ]);
+        ));
     }
 }

@@ -1,17 +1,17 @@
 <?php
 
-return [
+return array(
 
-    'buttons' => [
+    'buttons' => array(
         'save' => 'Save',
         'reset' => 'Reset',
         'delete' => 'Delete',
         'back' => 'Cancel',
         'choose_file' => 'Choose file',
         'enter_address' => 'Enter address',
-    ],
+    ),
 
-    'typography' => [
+    'typography' => array(
         'bold' => 'Bold',
         'italic' => 'Italic',
         'hiperlink' => 'Hyperlink',
@@ -20,9 +20,9 @@ return [
         'ol' => 'Numeric list',
         'link' => 'Link',
         'unlink' => 'Unlink',
-    ],
+    ),
 
-    'file' => [
+    'file' => array(
         'override_info' => 'When choosing a new file, the existing file will be overwritten.',
-    ],
-];
+    ),
+);

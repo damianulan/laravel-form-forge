@@ -27,7 +27,7 @@ class Datetime extends ForgeComponent
         if (request()->old($name)) {
             $this->value = date($this->getFormat(), strtotime(request()->old($name)));
         }
-        if (! $this->value) {
+        if ( ! $this->value) {
             $this->value = empty($value) ? null : date($this->getFormat(), strtotime($value));
         }
 
@@ -35,9 +35,9 @@ class Datetime extends ForgeComponent
         $this->classes[] = 'formforge-control';
 
         if ($this->type) {
-            $this->classes[] = $this->type.'picker';
+            $this->classes[] = $this->type . 'picker';
         }
-        $this->placeholder(__('formforge::forms.placeholders.choose_'.$this->type));
+        $this->placeholder(__('formforge::forms.placeholders.choose_' . $this->type));
     }
 
     /**
@@ -62,10 +62,10 @@ class Datetime extends ForgeComponent
 
     public function getFormat(): string
     {
-        $format = config('formforge.date_format').' H:i:s';
-        if ($this->type === 'date' || $this->type === 'birthdate') {
+        $format = config('formforge.date_format') . ' H:i:s';
+        if ('date' === $this->type || 'birthdate' === $this->type) {
             $format = config('formforge.date_format');
-        } elseif ($this->type === 'time') {
+        } elseif ('time' === $this->type) {
             $format = 'H:i:s';
         }
 

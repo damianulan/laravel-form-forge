@@ -29,7 +29,21 @@ abstract class Form
     /**
      * custom route params to redirect back to after form validation
      */
-    protected static array $backParams = [];
+    protected static array $backParams = array();
+
+    /**
+     * Provide form components definition returning an instance of FormBuilder.
+     *
+     * @param  mixed  $model
+     */
+    abstract public static function definition(Request $request, $model = null): FormBuilder;
+
+    /**
+     * Provide laravel validation rules.
+     *
+     * @param  string|null  $model_id  - model uuid
+     */
+    abstract public static function validation(Request $request, ?string $model_id = null): array;
 
     /**
      * If you need you can set up conditions, that user must meet to use this Form.
@@ -51,117 +65,17 @@ abstract class Form
                 }
             } elseif (is_string($value) && self::isEUFloat($value)) {
                 $value = str_replace(',', '.', $value);
-            } elseif (in_array($value, ['on', 'off'])) {
-                $value = $value === 'on' ? true : false;
+            } elseif (in_array($value, array('on', 'off'))) {
+                $value = 'on' === $value ? true : false;
             } else {
                 if (empty($value)) {
                     $value = null;
                 }
             }
-            $request->merge([$property => $value]);
+            $request->merge(array($property => $value));
         }
 
         return $request;
-    }
-
-    private static function formatDateSpan(string $property, ?string $value): ?string
-    {
-        if ($value) {
-            $type = str_contains($property, '_from') ? 'from' : 'to';
-
-            if (str_contains($value, ' ')) {
-                // if already has hour
-                $value = strtok($value);
-            }
-
-            if ($type === 'from') {
-                $value .= ' 00:00:00';
-            }
-            if ($type === 'to') {
-                $value .= ' 23:59:59';
-            }
-        }
-
-        return $value;
-    }
-
-    private static function isDate(?string $value): bool
-    {
-        $date = null;
-        try {
-            $date = Carbon::parse($value);
-        } catch (Exception $ex) {
-        }
-        $timestamp = strtotime($value);
-        if (! empty($value) && $timestamp !== false && $timestamp > 0 && $timestamp !== $value && $date) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * It is possible that form accepts EU float values with comma as decimal separator.
-     * This method translates it to US format.
-     *
-     * @return bool
-     */
-    private static function isEUFloat(?string $value)
-    {
-        if ($value) {
-            if (strpos($value, ',') !== false) {
-                $values = explode(',', $value);
-                $all_numeric = true;
-                foreach ($values as $v) {
-                    if ((int) $v != $v) {
-                        $all_numeric = false;
-                    }
-                }
-
-                return $all_numeric;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Provide form components definition returning an instance of FormBuilder.
-     *
-     * @param  mixed  $model
-     */
-    abstract public static function definition(Request $request, $model = null): FormBuilder;
-
-    /**
-     * Provide laravel validation rules.
-     *
-     * @param  string|null  $model_id  - model uuid
-     */
-    abstract public static function validation(Request $request, ?string $model_id = null): array;
-
-    /**
-     * Custom laravel validation messages.
-     */
-    protected static function messages(): array
-    {
-        return [];
-    }
-
-    /**
-     * Custom laravel validation attributes.
-     */
-    protected static function attributes(): array
-    {
-        $attributes = [];
-
-        $builder = static::definition(request());
-        if ($builder) {
-            foreach ($builder->getComponents() as $component) {
-                $attributes[$component->name] = $component->label;
-            }
-        }
-
-        return $attributes;
     }
 
     /**
@@ -175,17 +89,17 @@ abstract class Form
         if ($validator->fails()) {
             FormValidationFail::dispatch(static::class, $validator->messages());
 
-            return [
+            return array(
                 'status' => 'error',
                 'messages' => $validator->messages(),
-            ];
+            );
         }
         FormValidationSuccess::dispatch(static::class, $validator->messages());
 
-        return [
+        return array(
             'status' => 'ok',
             'messages' => $validator->messages(),
-        ];
+        );
     }
 
     /**
@@ -194,7 +108,7 @@ abstract class Form
      *
      * @return void
      */
-    public static function validate(Request $request, ?string $model_id = null)
+    public static function validate(Request $request, ?string $model_id = null): void
     {
         $validator = static::validator($request, $model_id);
 
@@ -224,5 +138,88 @@ abstract class Form
         }
 
         return Validator::make($request->all(), static::validation($request, $model_id), static::messages(), static::attributes());
+    }
+
+    /**
+     * Custom laravel validation messages.
+     */
+    protected static function messages(): array
+    {
+        return array();
+    }
+
+    /**
+     * Custom laravel validation attributes.
+     */
+    protected static function attributes(): array
+    {
+        $attributes = array();
+
+        $builder = static::definition(request());
+        if ($builder) {
+            foreach ($builder->getComponents() as $component) {
+                $attributes[$component->name] = $component->label;
+            }
+        }
+
+        return $attributes;
+    }
+
+    private static function formatDateSpan(string $property, ?string $value): ?string
+    {
+        if ($value) {
+            $type = str_contains($property, '_from') ? 'from' : 'to';
+
+            if (str_contains($value, ' ')) {
+                // if already has hour
+                $value = strtok($value);
+            }
+
+            if ('from' === $type) {
+                $value .= ' 00:00:00';
+            }
+            if ('to' === $type) {
+                $value .= ' 23:59:59';
+            }
+        }
+
+        return $value;
+    }
+
+    private static function isDate(?string $value): bool
+    {
+        $date = null;
+        try {
+            $date = Carbon::parse($value);
+        } catch (Exception $ex) {
+        }
+        $timestamp = strtotime($value);
+
+        return (bool) ( ! empty($value) && false !== $timestamp && $timestamp > 0 && $timestamp !== $value && $date);
+    }
+
+    /**
+     * It is possible that form accepts EU float values with comma as decimal separator.
+     * This method translates it to US format.
+     *
+     * @return bool
+     */
+    private static function isEUFloat(?string $value)
+    {
+        if ($value) {
+            if (str_contains($value, ',')) {
+                $values = explode(',', $value);
+                $all_numeric = true;
+                foreach ($values as $v) {
+                    if ((int) $v !== $v) {
+                        $all_numeric = false;
+                    }
+                }
+
+                return $all_numeric;
+            }
+        }
+
+        return false;
     }
 }

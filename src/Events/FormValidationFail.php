@@ -11,9 +11,8 @@ class FormValidationFail
 
     /**
      * Create a new event instance.
+     *
+     * @param  mixed  $messages
      */
-    public function __construct(public string $form, public $messages)
-    {
-        //
-    }
+    public function __construct(public string $form, public $messages) {}
 }

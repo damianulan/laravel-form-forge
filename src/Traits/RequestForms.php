@@ -32,7 +32,7 @@ trait RequestForms
     {
         $instance = null;
         if (is_null($id)) {
-            $instance = new static;
+            $instance = new static();
         } else {
             $instance = static::find($id);
         }
@@ -44,28 +44,28 @@ trait RequestForms
                         $file = $request->file($property);
                         if ($file && isset($instance->storagePath)) {
                             $name = $file->hashName();
-                            $stored = $file->storeAs("public/$instance->storagePath", $name);
+                            $stored = $file->storeAs("public/{$instance->storagePath}", $name);
                             if ($stored) {
-                                $publicPath = $instance->storagePath.'/'.$name;
-                                $instance->$property = $publicPath;
+                                $publicPath = $instance->storagePath . '/' . $name;
+                                $instance->{$property} = $publicPath;
                             }
                         }
                     }
                 } else {
                     // ALL ELSE
-                    if (! is_array($value)) {
+                    if ( ! is_array($value)) {
                         $value = trim($value);
                         if (empty($value)) {
                             $value = null;
                         }
                     }
 
-                    $instance->$property = $value;
+                    $instance->{$property} = $value;
                 }
 
-                if (isset($instance->casts) && isset($instance->casts[$property])) {
-                    if ($instance->casts[$property] === 'boolean') {
-                        $instance->$property = (bool) $value;
+                if (isset($instance->casts, $instance->casts[$property])) {
+                    if ('boolean' === $instance->casts[$property]) {
+                        $instance->{$property} = (bool) $value;
                     }
                 }
             }

@@ -6,11 +6,11 @@ class File extends ForgeComponent
 {
     public string $name;
 
-    private array $accept = [];
-
     public bool $multiple = false;
 
     public bool $hasValue = false;
+
+    private array $accept = array();
 
     public function __construct(string $name, bool $hasValue)
     {

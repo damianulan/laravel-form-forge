@@ -10,12 +10,12 @@ class Dictionary
     /**
      * Declare array collections of options accessible to the public.
      */
-    public $mail_encryption_methods = [
+    public $mail_encryption_methods = array(
         'tls' => 'TLS',
         'ssl' => 'SSL',
         'starttls' => 'STARTTLS',
         'null' => 'PLAIN',
-    ];
+    );
 
     /**
      * Get data for select directly from model.
@@ -24,13 +24,13 @@ class Dictionary
         string $model,
         string $attribute,
         string $method = 'all',
-        array $exclude = []
+        array $exclude = array()
     ): Collection {
-        $options = new Collection;
+        $options = new Collection();
 
         if (class_exists($model)) {
             $records = $model::$method();
-            if (! empty($records)) {
+            if ( ! empty($records)) {
                 if (count($exclude)) {
                     foreach ($exclude as $condition) {
                         $records = $records->filter(function (
@@ -39,8 +39,8 @@ class Dictionary
                         ) use ($condition) {
                             foreach ($condition as $prop => $value) {
                                 if (
-                                    isset($record->$prop) &&
-                                    $value === $record->$prop
+                                    isset($record->{$prop}) &&
+                                    $record->{$prop} === $value
                                 ) {
                                     return false;
                                 }
@@ -51,9 +51,9 @@ class Dictionary
                     }
                 }
                 foreach ($records as $record) {
-                    if (isset($record->$attribute)) {
+                    if (isset($record->{$attribute})) {
                         $options->push(
-                            new Option($record->id, $record->$attribute)
+                            new Option($record->id, $record->{$attribute})
                         );
                     }
                 }
@@ -72,13 +72,13 @@ class Dictionary
         array $values,
         string $lang_component = ''
     ): Collection {
-        $options = new Collection;
+        $options = new Collection();
 
-        if (! empty($values)) {
+        if ( ! empty($values)) {
             foreach ($values as $value) {
                 $content = ucfirst($value);
-                if (! empty($lang_component)) {
-                    $content = __($lang_component.'.'.$value);
+                if ( ! empty($lang_component)) {
+                    $content = __($lang_component . '.' . $value);
                 }
                 $options->push(new Option($value, $content));
             }
@@ -92,9 +92,9 @@ class Dictionary
      */
     public static function fromAssocArray(array $values): Collection
     {
-        $options = new Collection;
+        $options = new Collection();
 
-        if (! empty($values)) {
+        if ( ! empty($values)) {
             foreach ($values as $value => $content) {
                 $options->push(new Option($value, $content));
             }
@@ -105,10 +105,10 @@ class Dictionary
 
     public static function fromCatalog(string $index): ?Collection
     {
-        $instance = new self;
+        $instance = new self();
 
-        if (isset($instance->$index)) {
-            return self::fromAssocArray($instance->$index);
+        if (isset($instance->{$index})) {
+            return self::fromAssocArray($instance->{$index});
         }
 
         return null;
@@ -119,7 +119,7 @@ class Dictionary
      */
     public static function yesNo(): Collection
     {
-        $options = new Collection;
+        $options = new Collection();
 
         $options->push(new Option(1, __('formforge::forms.yes')));
         $options->push(new Option(0, __('formforge::forms.no')));
@@ -134,11 +134,11 @@ class Dictionary
      */
     public static function fromEnum($enum_class): Collection
     {
-        $options = new Collection;
-        $instance = new $enum_class;
+        $options = new Collection();
+        $instance = new $enum_class();
         if (class_exists($enum_class) && $instance instanceof Enum) {
             foreach ($enum_class::values() as $case) {
-                $options->push(new Option($case, __('formforge::forms.enums.'.$case)));
+                $options->push(new Option($case, __('formforge::forms.enums.' . $case)));
             }
         }
 
