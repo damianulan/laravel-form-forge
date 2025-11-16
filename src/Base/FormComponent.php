@@ -3,13 +3,13 @@
 namespace FormForge\Base;
 
 use FormForge\Components\Checkbox;
+use FormForge\Components\Container;
 use FormForge\Components\Daterange;
 use FormForge\Components\Datetime;
 use FormForge\Components\File;
 use FormForge\Components\Input;
 use FormForge\Components\Select;
 use FormForge\Components\Textarea;
-use FormForge\Components\Container;
 use Illuminate\Support\Collection;
 
 /**
@@ -26,7 +26,7 @@ class FormComponent
      */
     public static function text(string $name, $model = null): Input
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return new Input($name, 'text', $value);
     }
@@ -38,7 +38,7 @@ class FormComponent
      */
     public static function numeric(string $name, $model = null): Input
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return (new Input($name, 'text', $value))->numeric();
     }
@@ -50,7 +50,7 @@ class FormComponent
      */
     public static function decimal(string $name, $model = null): Input
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return (new Input($name, 'text', $value))->decimal();
     }
@@ -62,7 +62,7 @@ class FormComponent
      */
     public static function password(string $name, $model = null): Input
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return new Input($name, 'password', $value);
     }
@@ -78,8 +78,8 @@ class FormComponent
         $model = null,
         $val = null
     ): Input {
-        $value = $model->$name ?? null;
-        if (! $value && $val) {
+        $value = $model->{$name} ?? null;
+        if ( ! $value && $val) {
             $value = $val;
         }
 
@@ -98,20 +98,20 @@ class FormComponent
         ?Collection $options = null,
         $selected_value = null
     ): Select {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         if (is_object($value)) {
             $value = $value->value;
         }
-        if (! is_null($selected_value)) {
-            if (! is_array($selected_value)) {
+        if ( ! is_null($selected_value)) {
+            if ( ! is_array($selected_value)) {
                 $value = $selected_value;
             } else {
                 $value = reset($selected_value);
             }
         }
 
-        return new Select($name, $options, [$value]);
+        return new Select($name, $options, array($value));
     }
 
     /**
@@ -126,11 +126,11 @@ class FormComponent
         $model = null,
         ?Collection $options = null,
         $relation = null,
-        $selected_values = []
+        $selected_values = array()
     ): Select {
-        $values = [];
-        if ($relation && $model && $model->$relation) {
-            $values = $model->$relation->modelKeys() ?? [];
+        $values = array();
+        if ($relation && $model && $model->{$relation}) {
+            $values = $model->{$relation}->modelKeys() ?? array();
         }
 
         if (count($selected_values)) {
@@ -143,13 +143,11 @@ class FormComponent
     /**
      * Returns simple div container with hidden input.
      *
-     * @param string $name
-     * @param mixed  $model
-     * @return \FormForge\Components\Container
+     * @param  mixed  $model
      */
     public static function container(string $name, $model = null): Container
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return new Container($name, $value);
     }
@@ -157,13 +155,11 @@ class FormComponent
     /**
      * Returns simple textarea input.
      *
-     * @param string $name
-     * @param mixed  $model
-     * @return \FormForge\Components\Textarea
+     * @param  mixed  $model
      */
     public static function textarea(string $name, $model = null): Textarea
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return new Textarea($name, $value);
     }
@@ -177,7 +173,7 @@ class FormComponent
      */
     public static function datetime(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return new Datetime($name, 'datetime', $value, $minDate, $maxDate);
     }
@@ -191,7 +187,7 @@ class FormComponent
      */
     public static function time(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
@@ -205,7 +201,7 @@ class FormComponent
      */
     public static function date(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
@@ -219,10 +215,10 @@ class FormComponent
     {
         $from = $name . '_from';
         $to = $name . '_to';
-        $values = [
-            'from' => $model->$from ?? null,
-            'to' => $model->$to ?? null,
-        ];
+        $values = array(
+            'from' => $model->{$from} ?? null,
+            'to' => $model->{$to} ?? null,
+        );
 
         return new Daterange($name, 'date', $values);
     }
@@ -236,7 +232,7 @@ class FormComponent
      */
     public static function birthdate(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
@@ -248,7 +244,7 @@ class FormComponent
      */
     public static function radio(string $name, $model = null): Checkbox
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return new Checkbox($name, 'radio', $value);
     }
@@ -260,7 +256,7 @@ class FormComponent
      */
     public static function checkbox(string $name, $model = null): Checkbox
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return new Checkbox($name, 'checkbox', $value);
     }
@@ -272,7 +268,7 @@ class FormComponent
      */
     public static function switch(string $name, $model = null): Checkbox
     {
-        $value = $model->$name ?? null;
+        $value = $model->{$name} ?? null;
 
         return new Checkbox($name, 'switch', $value);
     }
@@ -287,7 +283,7 @@ class FormComponent
     public static function file(string $name, $model = null): File
     {
         $value = false;
-        if (isset($model->$name) && ! empty($model->$name)) {
+        if (isset($model->{$name}) && ! empty($model->{$name})) {
             $value = true;
         }
 

@@ -7,26 +7,11 @@
     @method($method)
     @csrf
     @foreach ($components as $component)
-        @if (isset($component->type) && $component->type === 'hidden')
-            {{ $component->render() }}
-        @else
-            <div class="row form-group align-items-center">
-                <div class="col-md-4">
-                    <div class="d-flex">
-                        <div class="form-label">
-                            {{ $component->getLabel() }}
-                        </div>
-                        <div class="form-info">
-                            {!! $component->getInfos() !!}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    {{ $component->render() }}
-                </div>
-            </div>
+        @if($component instanceof \FormForge\Components\ForgeComponent)
+            @include('formforge::templates.components.' . $template, ['component' => $component])
+        @elseif ($component instanceof \FormForge\Components\ForgeSection)
+                @include('formforge::components.section', ['component' => $component, 'template' => $template])
         @endif
-
     @endforeach
     @if ($submit || !empty($buttons))
         <div class="row">

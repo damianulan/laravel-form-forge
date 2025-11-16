@@ -137,7 +137,7 @@ Currently package supports following languages:
 
 - [Inputs](docs/components/INPUTS.md)
 - [Selects](docs/components/SELECT.md)
-- [Formatted text](docs/components/TRIX.md)
+- [Textarea](docs/components/TEXTAREA.md)
 - [Dates](docs/components/DATES.md)
 - [Checkboxes & radios](docs/components/CHECKBOXES.md)
 - [File](docs/components/FILE.md)

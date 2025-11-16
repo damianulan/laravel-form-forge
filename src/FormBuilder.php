@@ -6,6 +6,7 @@ use FormForge\Base\ForgeTemplate;
 use FormForge\Base\Form;
 use FormForge\Components\Button;
 use FormForge\Components\ForgeComponent;
+use FormForge\Components\ForgeSection;
 use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
@@ -22,6 +23,8 @@ use Illuminate\View\View;
  */
 class FormBuilder
 {
+    public ?Button $submit = null;
+
     /**
      * Form id
      */
@@ -35,13 +38,11 @@ class FormBuilder
 
     private string $template;
 
-    private array $classes = [];
+    private array $classes = array();
 
-    private array $components = [];
+    private array $components = array();
 
-    private array $buttons = [];
-
-    public ?Button $submit = null;
+    private array $buttons = array();
 
     private Request $request;
 
@@ -56,7 +57,7 @@ class FormBuilder
      * @param  string  $method  - as of 'POST', 'PUT', 'GET', 'DELETE' etc.
      * @param  string|null  $action  - leave empty if you want to use the form in AJAX
      * @param  string|null  $id  - form html id
-     * @return \FormForge\FormBuilder
+     * @return FormBuilder
      */
     public function __construct(Request $request, string $method, ?string $action, ?string $id = null)
     {
@@ -81,42 +82,13 @@ class FormBuilder
     }
 
     /**
-     * Core function handling form authorization checks.
-     */
-    private function authorize(): void
-    {
-        $user = $this->request->user() ?? null;
-        if (! $user) {
-            $this->throwUnauthorized();
-        }
-
-        // backtrace callable Form source
-        // in order to locate authorization method
-        $trace = debug_backtrace();
-        $namespace = $trace[3]['class'];
-
-        // check source
-        $instance = new $namespace;
-        if (! ($instance instanceof Form)) {
-            $this->throwUnauthorized();
-        }
-
-        $this->form = $namespace;
-
-        $authorized = $namespace::authorize($this->request);
-        if (! $authorized) {
-            $this->throwUnauthorized();
-        }
-    }
-
-    /**
      * Add cutom class to the form HTML representation.
      *
      * @param  mixed  ...$classes
      */
     public function class(...$classes): self
     {
-        if (! empty($classes)) {
+        if ( ! empty($classes)) {
             foreach ($classes as $class) {
                 $this->classes[] = $class;
             }
@@ -131,9 +103,20 @@ class FormBuilder
     public function add(ForgeComponent $component, ?callable $condition = null): self
     {
         $cond = is_null($condition) || $condition() ? true : false;
-        if ($component && $component->show === true && $cond) {
+        if ($component && true === $component->show && $cond) {
             $this->components[$component->name] = $component;
         }
+
+        return $this;
+    }
+
+    /**
+     * Section of components with a header.
+     */
+    public function addSection(string $title, callable $callback): self
+    {
+        $fb = $callback(new FormBuilder($this->request, $this->method, $this->action, $this->id));
+        $this->components[] = new ForgeSection($title, $fb);
 
         return $this;
     }
@@ -178,11 +161,6 @@ class FormBuilder
         return $this;
     }
 
-    private function getClasses()
-    {
-        return empty($this->classes) ? null : implode(' ', $this->classes);
-    }
-
     /**
      * Add basic HTML form submit button.
      * When clicked, it executes form validation and submits the form.
@@ -192,6 +170,23 @@ class FormBuilder
         $this->submit = new Button(__('formforge::components.buttons.save'), 'submit', null, $class);
 
         return $this;
+    }
+
+    /**
+     * Allows to modify your FormBuilder instance based on given condition.
+     * Callback accepts FormBuilder $builder as argument.
+     *
+     * @param  bool  $condition  - when false, callback won't be executed
+     * @param  callable  $callback  - function($builder)
+     */
+    public function onCondition(bool $condition, callable $callback): self
+    {
+        $instance = $this;
+        if ($condition) {
+            $callback($instance);
+        }
+
+        return $instance;
     }
 
     /**
@@ -217,9 +212,11 @@ class FormBuilder
      */
     public function render(): View
     {
-        FormRendering::dispatch($this->form, $this->method, $this->components);
+        if (config('formforge.dispatches_events')) {
+            FormRendering::dispatch($this->form, $this->method, $this->components);
+        }
 
-        return view('formforge::templates.' . $this->template, [
+        return view('formforge::templates.' . $this->template, array(
             'components' => $this->components,
             'method' => $this->method,
             'action' => $this->action,
@@ -230,17 +227,7 @@ class FormBuilder
             'buttons' => $this->buttons,
             'form' => $this->form,
             'event' => FormRendered::class,
-        ]);
-    }
-
-    /**
-     * Throwing FormUnauthorized exception.
-     *
-     * @throws \FormForge\Exceptions\FormUnauthorized
-     */
-    private function throwUnauthorized()
-    {
-        throw new FormUnauthorized;
+        ));
     }
 
     /**
@@ -248,7 +235,7 @@ class FormBuilder
      */
     public function getComponents(): array
     {
-        return $this->components;
+        return array_filter($this->components, fn ($component) => ! ($component instanceof ForgeSection));
     }
 
     /**
@@ -257,5 +244,49 @@ class FormBuilder
     public function getFormName(): string
     {
         return $this->form;
+    }
+
+    /**
+     * Core function handling form authorization checks.
+     */
+    private function authorize(): void
+    {
+        $user = $this->request->user() ?? null;
+        if ( ! $user) {
+            $this->throwUnauthorized();
+        }
+
+        // backtrace callable Form source
+        // in order to locate authorization method
+        $trace = debug_backtrace();
+        $namespace = $trace[3]['class'];
+
+        // check source
+        $instance = new $namespace();
+        if ( ! ($instance instanceof Form)) {
+            $this->throwUnauthorized();
+        }
+
+        $this->form = $namespace;
+
+        $authorized = $namespace::authorize($this->request);
+        if ( ! $authorized) {
+            $this->throwUnauthorized();
+        }
+    }
+
+    private function getClasses()
+    {
+        return empty($this->classes) ? null : implode(' ', $this->classes);
+    }
+
+    /**
+     * Throwing FormUnauthorized exception.
+     *
+     * @throws FormUnauthorized
+     */
+    private function throwUnauthorized(): void
+    {
+        throw new FormUnauthorized();
     }
 }

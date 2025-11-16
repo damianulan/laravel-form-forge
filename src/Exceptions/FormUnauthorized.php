@@ -13,6 +13,6 @@ class FormUnauthorized extends HttpException
     public function __construct()
     {
         $this->message = __('formforge::forms.exception.unauthorized');
-        parent::__construct($this->code, $this->message, null, [], $this->code);
+        parent::__construct($this->code, $this->message, null, array(), $this->code);
     }
 }

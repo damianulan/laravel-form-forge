@@ -1,17 +1,17 @@
 <?php
 
-return [
+return array(
 
-    'buttons' => [
+    'buttons' => array(
         'save' => 'Zapisz',
         'reset' => 'Resetuj',
         'delete' => 'Usuń',
         'back' => 'Powrót',
         'choose_file' => 'Wybierz plik',
         'enter_address' => 'Wprowadź adres linku',
-    ],
+    ),
 
-    'typography' => [
+    'typography' => array(
         'bold' => 'Pogrubienie',
         'italic' => 'Pochyła',
         'hiperlink' => 'Hiperłącze',
@@ -20,9 +20,9 @@ return [
         'ol' => 'Lista numeryczna',
         'link' => 'Linkuj',
         'unlink' => 'Odlinkuj',
-    ],
+    ),
 
-    'file' => [
+    'file' => array(
         'override_info' => 'Wybierając nadpiszesz istniejący już plik.',
-    ],
-];
+    ),
+);

@@ -32,34 +32,34 @@ class FormForgeServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . '/Views', 'formforge');
 
-        $this->publishes([
+        $this->publishes(array(
             __DIR__ . '/../lang' => $this->app->langPath('vendor/formforge'),
-        ], 'formforge-langs');
+        ), 'formforge-langs');
 
-        $this->publishes([
+        $this->publishes(array(
             __DIR__ . '/../config/formforge.php' => config_path('formforge.php'),
-        ], 'formforge-config');
+        ), 'formforge-config');
 
-        $this->publishes([
+        $this->publishes(array(
             __DIR__ . '/Views' => resource_path('views/vendor/formforge'),
-        ], 'formforge-views');
+        ), 'formforge-views');
 
-        $this->publishes([
+        $this->publishes(array(
             __DIR__ . '/../resources/style' => resource_path('vendor/formforge/style'),
             __DIR__ . '/../resources/js' => resource_path('vendor/formforge/js'),
-        ], 'formforge-resources');
+        ), 'formforge-resources');
 
-        $this->publishes([
+        $this->publishes(array(
             __DIR__ . '/../stubs' => base_path('stubs'),
             __DIR__ . '/../config/formforge.php' => config_path('formforge.php'),
             __DIR__ . '/../resources/style' => resource_path('vendor/formforge/style'),
             __DIR__ . '/../resources/js' => resource_path('vendor/formforge/js'),
-        ], 'formforge');
+        ), 'formforge');
 
         if ($this->app->runningInConsole()) {
-            $this->commands([
+            $this->commands(array(
                 FormMakeCommand::class,
-            ]);
+            ));
         }
 
         $this->registerBladeDirectives();
@@ -69,8 +69,6 @@ class FormForgeServiceProvider extends ServiceProvider
     {
         Blade::component('trix-field-component', TrixFieldComponent::class);
 
-        Blade::directive('formForgeScripts', function () {
-            return view('formforge::scripts');
-        });
+        Blade::directive('formForgeScripts', fn () => view('formforge::scripts'));
     }
 }

@@ -1,168 +1,203 @@
 @import "variables";
 @import "flatpickr";
 @import "chosen/chosen";
-@import "trix";
 @import "tippy";
 
 form.formforge-form {
-  select,
-  input {
-    display: block;
-    width: 100%;
-  }
-
-  *:focus,
-  *:focus-visible {
-    outline: none;
-  }
-
-  .formforge-control,
-  select,
-  input[type="search"] {
-    font-size: $form-font-size;
-    border: 1px solid $input-border-color;
-    padding: $input-padding;
-    line-height: $input-line-height;
-    background-color: $input-background;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    border-radius: $input-border-radius;
-    color: $input-color;
-  }
-
-  .formforge-control:focus,
-  select:focus,
-  input[type="search"]:focus {
-    border: 1px solid $input-border-color-focus !important;
-    box-shadow: $input-box-shadow-focus;
-  }
-
-  .form-group {
-    margin-bottom: $form-group-margin;
-  }
-
-  .valid-feedback,
-  .invalid-feedback {
-    font-size: $feedback-font-size;
-  }
-
-  .tippy-info {
-    display: block;
-    cursor: pointer;
-    color: $tippy-info-color;
-  }
-
-  .form-label {
-    label.formforge-label {
-      font-size: $label-font-size;
-      margin: 0;
-
-      &.required::after {
-        font-family: $font-family-icons;
-        content: $label-required-content;
-        color: $danger;
-        font-size: $label-required-font-size;
-        vertical-align: text-top;
-      }
-    }
-  }
-
-  .action-btns {
-    position: relative;
-    display: flex;
-    padding-top: 1rem;
-  }
-
-  .action-btns > * {
-    margin-left: 0.5rem;
-  }
-
-  .action-btns > *:first-child {
-    margin-left: auto;
-  }
-
-  .form-info {
-    margin-left: auto;
-    align-self: center;
-  }
-
-  .form-info span.info-box {
-    font-size: $info-box-font-size;
-    cursor: pointer;
-    color: $info-box-color;
-  }
-
-  .action-btns .btn {
-    margin-left: auto;
-  }
-
-  .form-check {
-    &.form-switch {
-      .form-check-input {
-        width: $form-switch-width;
-        height: $form-switch-height;
-      }
-
-      .form-check-input:not(:checked) {
-        background-color: $switch-background;
-        border-color: $switch-border-color;
-      }
-
-      .form-check-input:checked {
-        background-color: $switch-checked-background;
-        border-color: $switch-border-color;
-      }
-
-      .form-check-input:focus {
-        box-shadow: none;
-      }
+    select,
+    input {
+        display: block;
+        width: 100%;
     }
 
-    &:not(.form-switch) {
-      .form-check-input {
-        width: $form-check-width;
-        height: $form-check-height;
-      }
-
-      .form-check-input:not(:checked) {
-        background-color: $check-background;
-        border-color: $check-border-color;
-      }
-
-      .form-check-input:checked {
-        background-color: $check-checked-background;
-        border-color: $check-border-color;
-      }
-
-      input[type="radio"] {
-        width: $form-check-width;
-        height: $form-check-height;
-      }
+    *:focus,
+    *:focus-visible {
+        outline: none;
     }
-  }
 
-  input[type="file"]::-webkit-file-upload-button,
-  input[type="file"]::file-selector-button {
-    display: none;
-  }
+    .formforge-component {
+        align-items: center;
+    }
 
-  .input-group .input-snippet {
-    width: 100%;
-    text-align: end;
-    font-size: $input-snippet-font-size;
-    margin-top: 0.3rem;
-  }
+    .formforge-control,
+    select,
+    input[type="search"] {
+        font-size: $form-font-size;
+        border: 1px solid $input-border-color;
+        padding: $input-padding;
+        line-height: $input-line-height;
+        background-color: $input-background;
+        transition:
+            border-color 0.15s ease-in-out,
+            box-shadow 0.15s ease-in-out;
+        border-radius: $input-border-radius;
+        color: $input-color;
+    }
 
-  &.formforge-horizontal .form-label {
-    margin: 0;
-  }
+    .formforge-control:focus,
+    select:focus,
+    input[type="search"]:focus {
+        border: 1px solid $input-border-color-focus !important;
+        box-shadow: $input-box-shadow-focus;
+    }
+
+    .form-group {
+        margin-bottom: $form-group-margin-bottom;
+    }
+
+    .valid-feedback,
+    .invalid-feedback {
+        font-size: $feedback-font-size;
+    }
+
+    .tippy-info {
+        display: block;
+        cursor: pointer;
+        color: $tippy-info-color;
+    }
+
+    .form-label {
+        label.formforge-label {
+            font-size: $label-font-size;
+            margin: 0;
+
+            &.required::after {
+                font-family: $font-family-icons;
+                content: $label-required-content;
+                color: $danger;
+                font-size: $label-required-font-size;
+                vertical-align: text-top;
+            }
+        }
+    }
+
+    .formforge-key {
+        pointer-events: none;
+    }
+
+    .action-btns {
+        position: relative;
+        display: flex;
+        padding-top: 1rem;
+    }
+
+    .action-btns > * {
+        margin-left: 0.5rem;
+    }
+
+    .action-btns > *:first-child {
+        margin-left: auto;
+    }
+
+    .form-info {
+        align-self: center;
+    }
+
+    &.formforge-horizontal {
+        .form-info {
+            margin-left: auto;
+        }
+    }
+
+    .form-info span.info-box {
+        margin-left: 0.5rem;
+        font-size: $info-box-font-size;
+        cursor: pointer;
+        color: $info-box-color;
+    }
+
+    .form-check {
+        &.form-switch {
+            .form-check-input {
+                width: $form-switch-width;
+                height: $form-switch-height;
+            }
+
+            .form-check-input:not(:checked) {
+                background-color: $switch-background;
+                border-color: $switch-border-color;
+            }
+
+            .form-check-input:checked {
+                background-color: $switch-checked-background;
+                border-color: $switch-border-color;
+            }
+
+            .form-check-input:focus {
+                box-shadow: none;
+            }
+        }
+
+        &:not(.form-switch) {
+            .form-check-input {
+                width: $form-check-width;
+                height: $form-check-height;
+            }
+
+            .form-check-input:not(:checked) {
+                background-color: $check-background;
+                border-color: $check-border-color;
+            }
+
+            .form-check-input:checked {
+                background-color: $check-checked-background;
+                border-color: $check-border-color;
+            }
+
+            input[type="radio"] {
+                width: $form-check-width;
+                height: $form-check-height;
+            }
+        }
+    }
+
+    input[type="file"]::-webkit-file-upload-button,
+    input[type="file"]::file-selector-button {
+        display: none;
+    }
+
+    .input-group .input-snippet {
+        width: 100%;
+        text-align: end;
+        font-size: $input-snippet-font-size;
+        margin-top: 0.3rem;
+    }
+
+    .form-label {
+        margin: 0;
+    }
+
+    .formforge-input-row {
+        display: flex;
+        margin-bottom: 0.5rem;
+    }
+
+    .formforge-section {
+        margin-bottom: $form-section-margin-bottom;
+
+        .formforge-section__title {
+            display: block;
+            color: $primary;
+        }
+
+        .formforge-section__content {
+            padding: 0.75rem 1rem;
+            border-radius: var(--bs-border-radius);
+            border: 1px solid rgba($primary, 0.5);
+
+            .formforge-component:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
 }
 
 input,
 select {
-  border-radius: var(--bs-border-radius);
+    border-radius: var(--bs-border-radius);
 }
 
 input[type="search"] {
-  outline-offset: 0;
-  border: 1px solid $input-border-color;
+    outline-offset: 0;
+    border: 1px solid $input-border-color;
 }

@@ -11,12 +11,12 @@ class FormRendered
 
     /**
      * Create a new event instance.
+     *
+     * @param  mixed  $components
      */
     public function __construct(
         public string $form,
         public string $method,
         public $components
-    ) {
-        //
-    }
+    ) {}
 }
