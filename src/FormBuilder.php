@@ -207,6 +207,24 @@ class FormBuilder
     }
 
     /**
+     * Allows to modify your FormBuilder instance based on given condition.
+     * Callback accepts FormBuilder $builder as argument.
+     *
+     * @param bool     $condition - when false, callback won't be executed
+     * @param callable $callback - function($builder)
+     * @return self
+     */
+    public function onCondition(bool $condition, callable $callback): self
+    {
+        $instance = $this;
+        if ($condition) {
+            $callback($instance);
+        }
+
+        return $instance;
+    }
+
+    /**
      * Add form header.
      */
     public function addTitle(string $title): self
