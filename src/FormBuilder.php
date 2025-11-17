@@ -90,7 +90,7 @@ class FormBuilder
      */
     public function class(...$classes): self
     {
-        if (! empty($classes)) {
+        if ( ! empty($classes)) {
             foreach ($classes as $class) {
                 $this->classes[] = $class;
             }
@@ -195,12 +195,12 @@ class FormBuilder
      * Check permissions and conditions to show this form to a user, using callback.
      * Use only once per form builder instance.
      *
-     * @param callable $callback - should return boolean
-     * @return self
+     * @param  callable  $callback  - should return boolean
      */
     public function authorize(callable $callback): self
     {
         $this->authorized = (bool) $callback();
+
         return $this;
     }
 
@@ -250,7 +250,7 @@ class FormBuilder
      */
     public function getComponents(): array
     {
-        return array_filter($this->components, fn($component) => ! ($component instanceof ForgeSection));
+        return array_filter($this->components, fn ($component) => ! ($component instanceof ForgeSection));
     }
 
     /**
@@ -267,11 +267,11 @@ class FormBuilder
     private function validate(): void
     {
         $user = $this->request->user() ?? null;
-        if (! $user) {
+        if ( ! $user) {
             $this->throwUnauthorized();
         }
 
-        if (! $this->authorized) {
+        if ( ! $this->authorized) {
             $this->throwUnauthorized();
         }
 
@@ -282,14 +282,14 @@ class FormBuilder
 
         // check source
         $instance = new $namespace();
-        if (! ($instance instanceof Form)) {
+        if ( ! ($instance instanceof Form)) {
             $this->throwUnauthorized();
         }
 
         $this->form = $namespace;
 
         $authorized = $namespace::authorize($this->request);
-        if (! $authorized) {
+        if ( ! $authorized) {
             $this->throwUnauthorized();
         }
     }

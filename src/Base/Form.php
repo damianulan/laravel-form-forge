@@ -105,8 +105,6 @@ abstract class Form
     /**
      * Use this method to validate form data. When bumped into error it automatically redirects back.
      * Override $backRoute and $backParams to customize redirection target.
-     *
-     * @return void
      */
     public static function validate(Request $request, ?string $model_id = null): void
     {
