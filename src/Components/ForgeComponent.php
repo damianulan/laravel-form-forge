@@ -64,7 +64,7 @@ abstract class ForgeComponent
     public function required(?Closure $condition = null): static
     {
         $this->required = true;
-        if (! is_null($condition)) {
+        if ( ! is_null($condition)) {
             $this->required = (bool) $condition();
         }
 
@@ -146,7 +146,7 @@ abstract class ForgeComponent
      */
     public function getLabel(): ?View
     {
-        if (! empty($this->label) && ! empty($this->name)) {
+        if ( ! empty($this->label) && ! empty($this->name)) {
             return view('formforge::components.label', array(
                 'label' => $this->label,
                 'name' => $this->name,
@@ -160,7 +160,7 @@ abstract class ForgeComponent
 
     public function class(...$classes)
     {
-        if (! empty($classes)) {
+        if ( ! empty($classes)) {
             foreach ($classes as $class) {
                 $this->classes[] = $class;
             }
@@ -181,12 +181,10 @@ abstract class ForgeComponent
 
     /**
      * Renders input label to html.
-     *
-     * @return string
      */
     public function getInfos(): ?string
     {
-        if (! empty($this->infos)) {
+        if ( ! empty($this->infos)) {
             $output = '';
             foreach ($this->infos as $info) {
                 $output .= '<span class="info-box" data-tippy-content="' . $info . '"><i class="bi-info-circle-fill"></i></span>';

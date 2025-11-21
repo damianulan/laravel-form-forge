@@ -2,7 +2,9 @@
 
 namespace FormForge\Exceptions;
 
-class FormUnauthorized extends \Exception
+use Exception;
+
+class FormUnauthorized extends Exception
 {
     protected $message;
 

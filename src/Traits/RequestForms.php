@@ -53,7 +53,7 @@ trait RequestForms
                     }
                 } else {
                     // ALL ELSE
-                    if (! is_array($value)) {
+                    if ( ! is_array($value)) {
                         $value = trim($value);
                         if (empty($value)) {
                             $value = null;
@@ -73,7 +73,7 @@ trait RequestForms
 
         $personstamps = config('formforge.personstamps');
 
-        if ($personstamps && !empty($personstamps)) {
+        if ($personstamps && ! empty($personstamps)) {
             foreach ($personstamps as $property) {
                 if (in_array('property', $instance->fillable)) {
                     $instance->property = Auth::user()->id;

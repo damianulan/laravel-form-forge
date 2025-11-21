@@ -64,6 +64,6 @@ class FormForgeServiceProvider extends ServiceProvider
 
     public function registerBladeDirectives(): void
     {
-        Blade::directive('formForgeScripts', fn() => view('formforge::scripts'));
+        Blade::directive('formForgeScripts', fn () => view('formforge::scripts'));
     }
 }

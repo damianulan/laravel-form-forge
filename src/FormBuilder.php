@@ -95,7 +95,7 @@ class FormBuilder
      */
     public function class(...$classes): self
     {
-        if (! empty($classes)) {
+        if ( ! empty($classes)) {
             foreach ($classes as $class) {
                 $this->classes[] = $class;
             }
@@ -206,7 +206,7 @@ class FormBuilder
     public function authorize(Closure $callback): self
     {
         $this->authorized = (bool) $callback();
-        if (! $this->authorized) {
+        if ( ! $this->authorized) {
             $this->throwUnauthorized();
         }
 
@@ -276,7 +276,7 @@ class FormBuilder
     private function validate(): void
     {
         $user = $this->request->user() ?? null;
-        if (! $user) {
+        if ( ! $user) {
             $this->throwUnauthorized();
         }
 
@@ -287,7 +287,7 @@ class FormBuilder
 
         // check source
         $instance = new $namespace();
-        if (! ($instance instanceof Form)) {
+        if ( ! ($instance instanceof Form)) {
             $this->throwUnauthorized();
         }
 

@@ -45,10 +45,10 @@ return array(
      * declare columns to fill with Auth::user()->id automatically.
      * Remember to also keep them in your model's $fillable array.
      */
-    'personstamps' => [
+    'personstamps' => array(
         'created_by',
         'updated_by',
         'deleted_by',
-    ],
+    ),
 
 );

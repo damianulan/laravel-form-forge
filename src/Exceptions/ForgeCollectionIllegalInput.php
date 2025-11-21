@@ -2,7 +2,9 @@
 
 namespace FormForge\Exceptions;
 
-class ForgeCollectionIllegalInput extends \Exception
+use Exception;
+
+class ForgeCollectionIllegalInput extends Exception
 {
     public function __construct()
     {

@@ -185,7 +185,7 @@ abstract class Form
         }
         $timestamp = strtotime($value);
 
-        return (bool) (! empty($value) && false !== $timestamp && $timestamp > 0 && $timestamp !== $value && $date);
+        return (bool) ( ! empty($value) && false !== $timestamp && $timestamp > 0 && $timestamp !== $value && $date);
     }
 
     /**

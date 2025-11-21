@@ -4,7 +4,6 @@ namespace FormForge\Components;
 
 use FormForge\Enums\Enum;
 use Illuminate\Support\Collection;
-use FormForge\Components\Option;
 
 class Dictionary
 {
@@ -31,7 +30,7 @@ class Dictionary
 
         if (class_exists($model)) {
             $records = $model::$method();
-            if (! empty($records)) {
+            if ( ! empty($records)) {
                 if (count($exclude)) {
                     foreach ($exclude as $condition) {
                         $records = $records->filter(function (
@@ -75,10 +74,10 @@ class Dictionary
     ): Collection {
         $options = new Collection();
 
-        if (! empty($values)) {
+        if ( ! empty($values)) {
             foreach ($values as $value) {
                 $content = ucfirst($value);
-                if (! empty($lang_component)) {
+                if ( ! empty($lang_component)) {
                     $content = __($lang_component . '.' . $value);
                 }
                 $options->push(new Option($value, $content));
@@ -95,7 +94,7 @@ class Dictionary
     {
         $options = new Collection();
 
-        if (! empty($values)) {
+        if ( ! empty($values)) {
             foreach ($values as $value => $content) {
                 $options->push(new Option($value, $content));
             }

@@ -16,7 +16,6 @@ use IteratorAggregate;
  */
 class ComponentCollection extends Collection
 {
-
     /**
      * Push one or more items onto the end of the collection.
      *
@@ -46,7 +45,6 @@ class ComponentCollection extends Collection
      *
      * @param  TKey|null  $key
      * @param  TValue  $value
-     * @return void
      */
     public function offsetSet($key, $value): void
     {
@@ -56,19 +54,16 @@ class ComponentCollection extends Collection
 
     /**
      * Get only instances of ForgeComponent
-     *
-     * @return self
      */
     public function getComponents(): self
     {
-        return $this->filter(fn($component) => $component instanceof ForgeComponent);
+        return $this->filter(fn ($component) => $component instanceof ForgeComponent);
     }
 
     /**
      * Validate if Forge Component
      *
-     * @param mixed $input
-     * @return void
+     * @param  mixed  $input
      */
     private function validateInput($input): void
     {
@@ -83,8 +78,8 @@ class ComponentCollection extends Collection
 
     private function checkInputType($input): void
     {
-        if (! ($input instanceof ForgeComponent && $input instanceof ForgeSection)) {
-            throw new ForgeCollectionIllegalInput;
+        if ( ! ($input instanceof ForgeComponent && $input instanceof ForgeSection)) {
+            throw new ForgeCollectionIllegalInput();
         }
     }
 }

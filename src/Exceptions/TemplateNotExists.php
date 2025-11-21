@@ -2,7 +2,9 @@
 
 namespace FormForge\Exceptions;
 
-class TemplateNotExists extends \Exception
+use Exception;
+
+class TemplateNotExists extends Exception
 {
     public function __construct(string $template)
     {
