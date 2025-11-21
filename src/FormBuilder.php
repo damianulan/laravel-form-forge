@@ -12,6 +12,7 @@ use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\View;
 
 /**
@@ -23,6 +24,8 @@ use Illuminate\View\View;
  */
 class FormBuilder
 {
+    use Macroable;
+
     public ?Button $submit = null;
 
     /**
@@ -66,7 +69,7 @@ class FormBuilder
         $this->request = $request;
         $this->method = Str::upper($method);
         $this->action = $action;
-        $this->id = $id;
+        $this->id = $id ?? Str::random(10);
         $this->template = ForgeTemplate::get(config('formforge.default'));
         $this->validate();
     }
@@ -90,7 +93,7 @@ class FormBuilder
      */
     public function class(...$classes): self
     {
-        if ( ! empty($classes)) {
+        if (! empty($classes)) {
             foreach ($classes as $class) {
                 $this->classes[] = $class;
             }
@@ -118,7 +121,10 @@ class FormBuilder
     public function addSection(string $title, callable $callback): self
     {
         $fb = $callback(new FormBuilder($this->request, $this->method, $this->action, $this->id));
-        $this->components[] = new ForgeSection($title, $fb);
+
+        $section = new ForgeSection($title, $fb);
+
+        $this->components[$section->id] = $section;
 
         return $this;
     }
@@ -200,7 +206,7 @@ class FormBuilder
     public function authorize(callable $callback): self
     {
         $this->authorized = (bool) $callback();
-        if ( ! $this->authorized) {
+        if (! $this->authorized) {
             $this->throwUnauthorized();
         }
 
@@ -253,7 +259,7 @@ class FormBuilder
      */
     public function getComponents(): array
     {
-        return array_filter($this->components, fn ($component) => ! ($component instanceof ForgeSection));
+        return array_filter($this->components, fn($component) => ! ($component instanceof ForgeSection));
     }
 
     /**
@@ -270,11 +276,11 @@ class FormBuilder
     private function validate(): void
     {
         $user = $this->request->user() ?? null;
-        if ( ! $user) {
+        if (! $user) {
             $this->throwUnauthorized();
         }
 
-        if ( ! $this->authorized) {
+        if (! $this->authorized) {
             $this->throwUnauthorized();
         }
 
@@ -285,14 +291,14 @@ class FormBuilder
 
         // check source
         $instance = new $namespace();
-        if ( ! ($instance instanceof Form)) {
+        if (! ($instance instanceof Form)) {
             $this->throwUnauthorized();
         }
 
         $this->form = $namespace;
 
         $authorized = $namespace::authorize($this->request);
-        if ( ! $authorized) {
+        if (! $authorized) {
             $this->throwUnauthorized();
         }
     }
