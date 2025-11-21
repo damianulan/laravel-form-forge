@@ -3,6 +3,7 @@
 namespace FormForge\Support;
 
 use FormForge\Components\ForgeComponent;
+use FormForge\Components\ForgeSection;
 use FormForge\Exceptions\ForgeCollectionIllegalInput;
 use Illuminate\Support\Collection;
 use IteratorAggregate;
@@ -57,7 +58,7 @@ class ComponentCollection extends Collection
      */
     public function getComponents(): self
     {
-        return $this->filter(fn ($component) => $component instanceof ForgeComponent);
+        return $this->filter(fn($component) => $component instanceof ForgeComponent);
     }
 
     /**
@@ -78,7 +79,7 @@ class ComponentCollection extends Collection
 
     private function checkInputType($input): void
     {
-        if ( ! ($input instanceof ForgeComponent && $input instanceof ForgeSection)) {
+        if (! ($input instanceof ForgeComponent || $input instanceof ForgeSection)) {
             throw new ForgeCollectionIllegalInput();
         }
     }
