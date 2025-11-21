@@ -2,7 +2,6 @@
 
 namespace FormForge;
 
-use FormForge\BladeComponents\TrixFieldComponent;
 use FormForge\Commands\FormMakeCommand;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -30,7 +29,7 @@ class FormForgeServiceProvider extends ServiceProvider
     {
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'formforge');
 
-        $this->loadViewsFrom(__DIR__ . '/Views', 'formforge');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'formforge');
 
         $this->publishes(array(
             __DIR__ . '/../lang' => $this->app->langPath('vendor/formforge'),
@@ -41,7 +40,7 @@ class FormForgeServiceProvider extends ServiceProvider
         ), 'formforge-config');
 
         $this->publishes(array(
-            __DIR__ . '/Views' => resource_path('views/vendor/formforge'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/formforge'),
         ), 'formforge-views');
 
         $this->publishes(array(
@@ -56,19 +55,15 @@ class FormForgeServiceProvider extends ServiceProvider
             __DIR__ . '/../resources/js' => resource_path('vendor/formforge/js'),
         ), 'formforge');
 
-        if ($this->app->runningInConsole()) {
-            $this->commands(array(
-                FormMakeCommand::class,
-            ));
-        }
+        $this->commands(array(
+            FormMakeCommand::class,
+        ));
 
         $this->registerBladeDirectives();
     }
 
     public function registerBladeDirectives(): void
     {
-        Blade::component('trix-field-component', TrixFieldComponent::class);
-
-        Blade::directive('formForgeScripts', fn () => view('formforge::scripts'));
+        Blade::directive('formForgeScripts', fn() => view('formforge::scripts'));
     }
 }

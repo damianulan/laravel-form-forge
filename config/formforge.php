@@ -40,4 +40,15 @@ return array(
      */
     'dispatches_events' => true,
 
+    /**
+     * If you need to fill your form request model instance with personstamps,
+     * declare columns to fill with Auth::user()->id automatically.
+     * Remember to also keep them in your model's $fillable array.
+     */
+    'personstamps' => [
+        'created_by',
+        'updated_by',
+        'deleted_by',
+    ],
+
 );

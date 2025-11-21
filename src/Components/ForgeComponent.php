@@ -13,7 +13,7 @@ use ReflectionClass;
  * @author Damian Ułan <damian.ulan@protonmail.com>
  * @copyright 2024
  */
-class ForgeComponent
+abstract class ForgeComponent
 {
     public string $name;
 
@@ -61,11 +61,11 @@ class ForgeComponent
     /**
      * Labels an Component as a required. This is not validation, only invokes visual effect.
      */
-    public function required(?Closure $callback = null): static
+    public function required(?Closure $condition = null): static
     {
         $this->required = true;
-        if ( ! is_null($callback)) {
-            $this->required = (bool) $callback();
+        if (! is_null($condition)) {
+            $this->required = (bool) $condition();
         }
 
         return $this;
@@ -146,7 +146,7 @@ class ForgeComponent
      */
     public function getLabel(): ?View
     {
-        if ( ! empty($this->label) && ! empty($this->name)) {
+        if (! empty($this->label) && ! empty($this->name)) {
             return view('formforge::components.label', array(
                 'label' => $this->label,
                 'name' => $this->name,
@@ -160,7 +160,7 @@ class ForgeComponent
 
     public function class(...$classes)
     {
-        if ( ! empty($classes)) {
+        if (! empty($classes)) {
             foreach ($classes as $class) {
                 $this->classes[] = $class;
             }
@@ -184,9 +184,9 @@ class ForgeComponent
      *
      * @return string
      */
-    public function getInfos()
+    public function getInfos(): ?string
     {
-        if ( ! empty($this->infos)) {
+        if (! empty($this->infos)) {
             $output = '';
             foreach ($this->infos as $info) {
                 $output .= '<span class="info-box" data-tippy-content="' . $info . '"><i class="bi-info-circle-fill"></i></span>';
@@ -221,7 +221,7 @@ class ForgeComponent
         return $this;
     }
 
-    private function getClasses()
+    private function getClasses(): ?string
     {
         $this->classes = array_unique($this->classes);
 

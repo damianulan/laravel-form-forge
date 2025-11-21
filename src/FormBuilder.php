@@ -2,6 +2,7 @@
 
 namespace FormForge;
 
+use Closure;
 use FormForge\Base\ForgeTemplate;
 use FormForge\Base\Form;
 use FormForge\Components\Button;
@@ -10,6 +11,7 @@ use FormForge\Components\ForgeSection;
 use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
+use FormForge\Support\ComponentCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
@@ -43,7 +45,7 @@ class FormBuilder
 
     private array $classes = array();
 
-    private array $components = array();
+    private ComponentCollection $components;
 
     private array $buttons = array();
 
@@ -105,11 +107,11 @@ class FormBuilder
     /**
      * Add new input component to the form.
      */
-    public function add(ForgeComponent $component, ?callable $condition = null): self
+    public function add(ForgeComponent $component, ?Closure $condition = null): self
     {
         $cond = is_null($condition) || $condition() ? true : false;
         if ($component && true === $component->show && $cond) {
-            $this->components[$component->name] = $component;
+            $this->components->put($component->name, $component);
         }
 
         return $this;
@@ -118,13 +120,13 @@ class FormBuilder
     /**
      * Section of components with a header.
      */
-    public function addSection(string $title, callable $callback): self
+    public function addSection(string $title, Closure $callback): self
     {
         $fb = $callback(new FormBuilder($this->request, $this->method, $this->action, $this->id));
 
         $section = new ForgeSection($title, $fb);
 
-        $this->components[$section->id] = $section;
+        $this->components->put($section->getId(), $section);
 
         return $this;
     }
@@ -150,9 +152,7 @@ class FormBuilder
      */
     public function remove(string $name): self
     {
-        if (isset($this->components[$name])) {
-            unset($this->components[$name]);
-        }
+        $this->components->forget($name);
 
         return $this;
     }
@@ -185,9 +185,9 @@ class FormBuilder
      * Callback accepts FormBuilder $builder as argument.
      *
      * @param  bool  $condition  - when false, callback won't be executed
-     * @param  callable  $callback  - function($builder)
+     * @param  Closure  $callback  - function($builder)
      */
-    public function onCondition(bool $condition, callable $callback): self
+    public function onCondition(bool $condition, Closure $callback): self
     {
         $instance = $this;
         if ($condition) {
@@ -201,9 +201,9 @@ class FormBuilder
      * Check permissions and conditions to show this form to a user, using callback.
      * Use only once per form builder instance.
      *
-     * @param  callable  $callback  - should return boolean
+     * @param  Closure  $callback  - should return boolean
      */
-    public function authorize(callable $callback): self
+    public function authorize(Closure $callback): self
     {
         $this->authorized = (bool) $callback();
         if (! $this->authorized) {
@@ -257,9 +257,9 @@ class FormBuilder
     /**
      * Get all form components.
      */
-    public function getComponents(): array
+    public function getComponents(): ComponentCollection
     {
-        return array_filter($this->components, fn($component) => ! ($component instanceof ForgeSection));
+        return $this->components->getComponents();
     }
 
     /**
@@ -271,7 +271,7 @@ class FormBuilder
     }
 
     /**
-     * Core function handling form authorization checks.
+     * Detect form object
      */
     private function validate(): void
     {
@@ -280,13 +280,9 @@ class FormBuilder
             $this->throwUnauthorized();
         }
 
-        if (! $this->authorized) {
-            $this->throwUnauthorized();
-        }
-
         // backtrace callable Form source
         // in order to locate authorization method
-        $trace = debug_backtrace();
+        $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 4);
         $namespace = $trace[3]['class'];
 
         // check source
@@ -296,11 +292,6 @@ class FormBuilder
         }
 
         $this->form = $namespace;
-
-        $authorized = $namespace::authorize($this->request);
-        if (! $authorized) {
-            $this->throwUnauthorized();
-        }
     }
 
     private function getClasses()

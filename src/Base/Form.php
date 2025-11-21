@@ -46,14 +46,6 @@ abstract class Form
     abstract public static function validation(Request $request, ?string $model_id = null): array;
 
     /**
-     * If you need you can set up conditions, that user must meet to use this Form.
-     */
-    public static function authorize(Request $request): bool
-    {
-        return true;
-    }
-
-    /**
      * Check and fix request data for date and float values.
      */
     public static function reformatRequest(Request $request): Request
@@ -193,7 +185,7 @@ abstract class Form
         }
         $timestamp = strtotime($value);
 
-        return (bool) ( ! empty($value) && false !== $timestamp && $timestamp > 0 && $timestamp !== $value && $date);
+        return (bool) (! empty($value) && false !== $timestamp && $timestamp > 0 && $timestamp !== $value && $date);
     }
 
     /**
