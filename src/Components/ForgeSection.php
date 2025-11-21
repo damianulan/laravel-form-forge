@@ -16,6 +16,7 @@ class ForgeSection
 
     public function __construct(string $title, FormBuilder $builder)
     {
+        $this->components = new ComponentCollection;
         $this->id = 's_' . Str::random(10);
         $this->title = $title;
         $this->components = $builder->getComponents();
