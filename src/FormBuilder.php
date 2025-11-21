@@ -43,11 +43,11 @@ class FormBuilder
 
     private string $template;
 
-    private array $classes = array();
+    private array $classes = [];
 
     private ComponentCollection $components;
 
-    private array $buttons = array();
+    private array $buttons = [];
 
     private Request $request;
 
@@ -240,7 +240,7 @@ class FormBuilder
             FormRendering::dispatch($this->form, $this->method, $this->components);
         }
 
-        return view('formforge::templates.' . $this->template, array(
+        return view('formforge::templates.' . $this->template, [
             'components' => $this->components,
             'method' => $this->method,
             'action' => $this->action,
@@ -251,7 +251,7 @@ class FormBuilder
             'buttons' => $this->buttons,
             'form' => $this->form,
             'event' => FormRendered::class,
-        ));
+        ]);
     }
 
     /**

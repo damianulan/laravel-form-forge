@@ -10,7 +10,7 @@ class File extends ForgeComponent
 
     public bool $hasValue = false;
 
-    private array $accept = array();
+    private array $accept = [];
 
     public function __construct(string $name, bool $hasValue)
     {

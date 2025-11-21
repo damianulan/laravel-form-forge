@@ -10,12 +10,12 @@ class Dictionary
     /**
      * Declare array collections of options accessible to the public.
      */
-    public $mail_encryption_methods = array(
+    public $mail_encryption_methods = [
         'tls' => 'TLS',
         'ssl' => 'SSL',
         'starttls' => 'STARTTLS',
         'null' => 'PLAIN',
-    );
+    ];
 
     /**
      * Get data for select directly from model.
@@ -24,7 +24,7 @@ class Dictionary
         string $model,
         string $attribute,
         string $method = 'all',
-        array $exclude = array()
+        array $exclude = []
     ): Collection {
         $options = new Collection();
 

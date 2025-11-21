@@ -8,7 +8,7 @@ class Select extends ForgeComponent
 {
     public string $name;
 
-    public array $values = array();
+    public array $values = [];
 
     public Collection $options;
 
@@ -19,7 +19,7 @@ class Select extends ForgeComponent
     /**
      * Simple select component instance.
      */
-    public function __construct(string $name, Collection $options, array $selected_values = array())
+    public function __construct(string $name, Collection $options, array $selected_values = [])
     {
         $this->name = empty($name) ? null : $name;
         if (count($selected_values)) {
