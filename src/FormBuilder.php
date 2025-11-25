@@ -88,8 +88,6 @@ class FormBuilder
 
     /**
      * Add cutom class to the form HTML representation.
-     *
-     * @param  string  ...$classes
      */
     public function class(string ...$classes): self
     {
