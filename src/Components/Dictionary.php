@@ -8,16 +8,6 @@ use Illuminate\Support\Collection;
 class Dictionary
 {
     /**
-     * Declare array collections of options accessible to the public.
-     */
-    public $mail_encryption_methods = [
-        'tls' => 'TLS',
-        'ssl' => 'SSL',
-        'starttls' => 'STARTTLS',
-        'null' => 'PLAIN',
-    ];
-
-    /**
      * Get data for select directly from model.
      */
     public static function fromModel(
@@ -103,17 +93,6 @@ class Dictionary
         return $options;
     }
 
-    public static function fromCatalog(string $index): ?Collection
-    {
-        $instance = new self();
-
-        if (isset($instance->{$index})) {
-            return self::fromAssocArray($instance->{$index});
-        }
-
-        return null;
-    }
-
     /**
      * Simple true/false select
      */
@@ -136,7 +115,7 @@ class Dictionary
     {
         $options = new Collection();
         $instance = new $enum_class();
-        if (class_exists($enum_class) && $instance instanceof Enum) {
+        if (class_exists($enum_class) && $instance instanceof \Enum) {
             foreach ($enum_class::values() as $case) {
                 $options->push(new Option($case, __('formforge::forms.enums.' . $case)));
             }

@@ -14,7 +14,6 @@ use FormForge\Exceptions\FormUnauthorized;
 use FormForge\Support\ComponentCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\View;
 
 /**
@@ -26,8 +25,6 @@ use Illuminate\View\View;
  */
 class FormBuilder
 {
-    use Macroable;
-
     public ?Button $submit = null;
 
     /**
@@ -92,9 +89,9 @@ class FormBuilder
     /**
      * Add cutom class to the form HTML representation.
      *
-     * @param  mixed  ...$classes
+     * @param  string  ...$classes
      */
-    public function class(...$classes): self
+    public function class(string ...$classes): self
     {
         if ( ! empty($classes)) {
             foreach ($classes as $class) {

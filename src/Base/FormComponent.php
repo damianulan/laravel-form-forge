@@ -11,6 +11,7 @@ use FormForge\Components\Input;
 use FormForge\Components\Select;
 use FormForge\Components\Textarea;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Macroable;
 
 /**
  * FormComponent to be collected by FormBuilder. Methods return input instructions (a field) and each represents field in form.
@@ -19,6 +20,8 @@ use Illuminate\Support\Collection;
  */
 class FormComponent
 {
+    use Macroable;
+
     /**
      * Returns input instruction for simple text type.
      *

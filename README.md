@@ -137,15 +137,13 @@ Currently package supports following languages:
 
 - [Inputs](docs/components/INPUTS.md)
 - [Selects](docs/components/SELECT.md)
-- [Textarea](docs/components/TEXTAREA.md)
 - [Dates](docs/components/DATES.md)
 - [Checkboxes & radios](docs/components/CHECKBOXES.md)
 - [File](docs/components/FILE.md)
-- [Common methods](docs/components/COMPONENTS.md)
+- Textarea - simple textarea with option to manipulate cols and size. Assign a rich text editor to it by class for example on your own.
+- [Sections](docs/components/SECTIONS.md)
 
-### What's coming next?
-
-- new custom dynamic form components
+See more in [COMPONENTS](docs/components/COMPONENTS.md) documentation.
 
 ### Dependencies
 
