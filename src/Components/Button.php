@@ -25,7 +25,7 @@ class Button
      */
     public function __construct(string $title, string $type = 'button', ?string $href = null, string $classes = 'btn-primary')
     {
-        $allowed_types = ['a', 'button', 'submit', 'reset'];
+        $allowed_types = array('a', 'button', 'submit', 'reset');
         if ($href) {
             $type = 'a';
         }
@@ -114,8 +114,8 @@ class Button
      */
     public function render(): View
     {
-        return view('formforge::components.button', [
+        return view('formforge::components.button', array(
             'component' => $this,
-        ]);
+        ));
     }
 }

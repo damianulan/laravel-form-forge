@@ -29,7 +29,7 @@ abstract class ForgeComponent
 
     public ?string $key = null;
 
-    public array $classes = [];
+    public array $classes = array();
 
     public bool $required = false;
 
@@ -41,9 +41,9 @@ abstract class ForgeComponent
 
     public string $autocomplete = '';
 
-    public array $infos = [];
+    public array $infos = array();
 
-    public array $dangers = [];
+    public array $dangers = array();
 
     /**
      * Renders the html representation of the Component.
@@ -145,12 +145,12 @@ abstract class ForgeComponent
     public function getLabel(): ?View
     {
         if ( ! empty($this->label) && ! empty($this->name)) {
-            return view('formforge::components.label', [
+            return view('formforge::components.label', array(
                 'label' => $this->label,
                 'name' => $this->name,
                 'required' => $this->required,
                 'key' => $this->key,
-            ]);
+            ));
         }
 
         return null;
@@ -230,9 +230,9 @@ abstract class ForgeComponent
      */
     protected function getViewData(): array
     {
-        return [
+        return array(
             'component' => $this,
             'classes' => $this->getClasses(),
-        ];
+        );
     }
 }

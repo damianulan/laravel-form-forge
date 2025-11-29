@@ -1,8 +1,8 @@
 <?php
 
-return [
+return array(
 
-    'placeholders' => [
+    'placeholders' => array(
         'choose_daterange_from' => 'Wybierz datę od',
         'choose_daterange_to' => 'Wybierz datę do',
         'choose_date' => 'Wybierz datę',
@@ -14,17 +14,17 @@ return [
 
         'enter_number' => 'Wprowadź liczbę...',
         'enter_float' => 'Wprowadź liczbę do dwóch miejsc dziesiętnych...',
-    ],
+    ),
 
-    'exception' => [
+    'exception' => array(
         'unauthorized' => 'Nie posiadasz wystarczających uprawnień do wyświetlenia tego formularza. Jeśli uważasz, że to błąd, skontaktuj się z administratorem systemu.',
-    ],
+    ),
 
     'yes' => 'Tak',
     'no' => 'Nie',
 
-    'enums' => [
+    'enums' => array(
 
         // here bring your own enums translations for Dictionary::fromEnum() usages
-    ],
-];
+    ),
+);

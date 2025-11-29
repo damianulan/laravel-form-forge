@@ -14,7 +14,7 @@ class Dictionary
         string $model,
         string $attribute,
         string $method = 'all',
-        array $exclude = []
+        array $exclude = array()
     ): Collection {
         $options = new Collection();
 

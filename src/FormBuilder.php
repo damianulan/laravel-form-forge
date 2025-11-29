@@ -40,11 +40,11 @@ class FormBuilder
 
     private string $template;
 
-    private array $classes = [];
+    private array $classes = array();
 
     private ComponentCollection $components;
 
-    private array $buttons = [];
+    private array $buttons = array();
 
     private Request $request;
 
@@ -88,6 +88,8 @@ class FormBuilder
 
     /**
      * Add cutom class to the form HTML representation.
+     *
+     * @param  string[]  $classes
      */
     public function class(string ...$classes): self
     {
@@ -236,7 +238,7 @@ class FormBuilder
             FormRendering::dispatch($this->form, $this->method, $this->components);
         }
 
-        return view('formforge::templates.' . $this->template, [
+        return view('formforge::templates.' . $this->template, array(
             'components' => $this->components,
             'method' => $this->method,
             'action' => $this->action,
@@ -247,7 +249,7 @@ class FormBuilder
             'buttons' => $this->buttons,
             'form' => $this->form,
             'event' => FormRendered::class,
-        ]);
+        ));
     }
 
     /**

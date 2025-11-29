@@ -29,7 +29,7 @@ abstract class Form
     /**
      * custom route params to redirect back to after form validation
      */
-    protected static array $backParams = [];
+    protected static array $backParams = array();
 
     /**
      * Provide form components definition returning an instance of FormBuilder.
@@ -57,14 +57,14 @@ abstract class Form
                 }
             } elseif (is_string($value) && self::isEUFloat($value)) {
                 $value = str_replace(',', '.', $value);
-            } elseif (in_array($value, ['on', 'off'])) {
+            } elseif (in_array($value, array('on', 'off'))) {
                 $value = 'on' === $value ? true : false;
             } else {
                 if (empty($value)) {
                     $value = null;
                 }
             }
-            $request->merge([$property => $value]);
+            $request->merge(array($property => $value));
         }
 
         return $request;
@@ -81,17 +81,17 @@ abstract class Form
         if ($validator->fails()) {
             FormValidationFail::dispatch(static::class, $validator->messages());
 
-            return [
+            return array(
                 'status' => 'error',
                 'messages' => $validator->messages(),
-            ];
+            );
         }
         FormValidationSuccess::dispatch(static::class, $validator->messages());
 
-        return [
+        return array(
             'status' => 'ok',
             'messages' => $validator->messages(),
-        ];
+        );
     }
 
     /**
@@ -135,7 +135,7 @@ abstract class Form
      */
     protected static function messages(): array
     {
-        return [];
+        return array();
     }
 
     /**
@@ -143,7 +143,7 @@ abstract class Form
      */
     protected static function attributes(): array
     {
-        $attributes = [];
+        $attributes = array();
 
         $builder = static::definition(request());
         if ($builder) {
@@ -191,10 +191,8 @@ abstract class Form
     /**
      * It is possible that form accepts EU float values with comma as decimal separator.
      * This method translates it to US format.
-     *
-     * @return bool
      */
-    private static function isEUFloat(?string $value)
+    private static function isEUFloat(?string $value): bool
     {
         if ($value) {
             if (str_contains($value, ',')) {

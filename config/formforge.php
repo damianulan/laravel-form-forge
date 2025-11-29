@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array(
 
     /*
     |--------------------------------------------------------------------------
@@ -17,11 +17,11 @@ return [
      */
     'default' => env('FORMFORGE_TEMPLATE', 'horizontal'),
 
-    'templates' => [
-        'horizontal' => [],
-        '2columns' => [],
-        'vertical' => [],
-    ],
+    'templates' => array(
+        'horizontal' => array(),
+        '2columns' => array(),
+        'vertical' => array(),
+    ),
 
     /**
      * Declare the default date format, that will be used in date fields.
@@ -45,10 +45,10 @@ return [
      * declare columns to fill with Auth::user()->id automatically.
      * Remember to also keep them in your model's $fillable array.
      */
-    'personstamps' => [
+    'personstamps' => array(
         'created_by',
         'updated_by',
         'deleted_by',
-    ],
+    ),
 
-];
+);

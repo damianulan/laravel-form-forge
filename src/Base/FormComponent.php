@@ -114,7 +114,7 @@ class FormComponent
             }
         }
 
-        return new Select($name, $options, [$value]);
+        return new Select($name, $options, array($value));
     }
 
     /**
@@ -129,11 +129,11 @@ class FormComponent
         $model = null,
         ?Collection $options = null,
         $relation = null,
-        $selected_values = []
+        $selected_values = array()
     ): Select {
-        $values = [];
+        $values = array();
         if ($relation && $model && $model->{$relation}) {
-            $values = $model->{$relation}->modelKeys() ?? [];
+            $values = $model->{$relation}->modelKeys() ?? array();
         }
 
         if (count($selected_values)) {
@@ -218,10 +218,10 @@ class FormComponent
     {
         $from = $name . '_from';
         $to = $name . '_to';
-        $values = [
+        $values = array(
             'from' => $model->{$from} ?? null,
             'to' => $model->{$to} ?? null,
-        ];
+        );
 
         return new Daterange($name, 'date', $values);
     }
