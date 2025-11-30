@@ -15,35 +15,59 @@ use ReflectionClass;
  */
 abstract class ForgeComponent
 {
+    protected $attributes = [
+        'required' => false,
+        'disabled' => false,
+        'readonly' => false,
+        'show' => true,
+    ];
+
     public string $name;
 
     public string $type;
 
-    public ?string $value = null;
-
-    public ?string $template = null;
-
-    public ?string $label = null;
-
-    public ?string $placeholder = null;
-
-    public ?string $key = null;
-
     public array $classes = array();
-
-    public bool $required = false;
-
-    public bool $disabled = false;
-
-    public bool $readonly = false;
-
-    public bool $show = true;
-
-    public string $autocomplete = '';
 
     public array $infos = array();
 
     public array $dangers = array();
+
+    public function __isset(string $property): bool
+    {
+        return isset($this->attributes[$property]);
+    }
+
+    public function __unset(string $property): void
+    {
+        if ($this->hasAttribute($property)) {
+            unset($this->attributes[$property]);
+        }
+    }
+
+    public function __get(string $property)
+    {
+        return $this->getAttribute($property);
+    }
+
+    public function __set(string $property, $value): void
+    {
+        $this->setAttribute($property, $value);
+    }
+
+    public function getAttribute(string $property)
+    {
+        return $this->attributes[$property] ?? null;
+    }
+
+    public function setAttribute(string $property, $value): void
+    {
+        $this->attributes[$property] = $value;
+    }
+
+    public function hasAttribute(string $property): bool
+    {
+        return isset($this->attributes[$property]);
+    }
 
     /**
      * Renders the html representation of the Component.
