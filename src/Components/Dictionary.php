@@ -2,6 +2,7 @@
 
 namespace FormForge\Components;
 
+use Exception;
 use FormForge\Enums\Enum;
 use Illuminate\Support\Collection;
 use ReflectionClass;
@@ -140,7 +141,7 @@ class Dictionary
                     $options->push(new Option($case->value, $label));
                 }
             } else {
-                throw new \Exception('Enum class does not implement cases() method.');
+                throw new Exception('Enum class does not implement cases() method.');
             }
         }
 
