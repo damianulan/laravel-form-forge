@@ -22,9 +22,4 @@ return array(
 
     'yes' => 'Yes',
     'no' => 'No',
-
-    'enums' => array(
-
-        // here bring your own enums for Dictionary::fromEnum() usages
-    ),
 );

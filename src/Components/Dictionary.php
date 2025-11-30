@@ -107,17 +107,35 @@ class Dictionary
     }
 
     /**
-     * Enum equivalents should be translated in fields.php
+     * Matching enum-like classes or proper Enum objects with readable labels.
+     * If your enum does not implement `label` attribute, you should provide it in the second parameter.
      *
-     * @param  mixed  $enum_class  - enum class namespace
+     * @param  string|object $enum_class - enum class namespace
+     * @param  array  $readables - array of enum values with readable labels and keys matching given enum values
      */
-    public static function fromEnum($enum_class): Collection
+    public static function fromEnum(string|object $enum_class, array $readables = []): Collection
     {
         $options = new Collection();
-        $instance = new $enum_class();
-        if (class_exists($enum_class) && $instance instanceof \Enum) {
-            foreach ($enum_class::values() as $case) {
-                $options->push(new Option($case, __('formforge::forms.enums.' . $case)));
+        if(is_object($enum_class)){
+            $enum_class = get_class($enum_class);
+        }
+        if (class_exists($enum_class)) {
+            $reflection = new \ReflectionClass($enum_class);
+
+            if($reflection->hasMethod('tryFrom') && $reflection->hasMethod('cases')){
+                foreach ($enum_class::cases() as $case) {
+                    $label = null;
+                    if(isset($readables[$case->value])){
+                        $label = $readables[$case];
+                    } else {
+                        if(isset($case->label)){
+                            $label = $case->label;
+                        } else {
+                            $label = $case->value;
+                        }
+                    }
+                    $options->push(new Option($case->value, $label));
+                }
             }
         }
 

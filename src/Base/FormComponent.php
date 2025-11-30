@@ -132,12 +132,16 @@ class FormComponent
         $selected_values = array()
     ): Select {
         $values = array();
-        if ($relation && $model && $model->{$relation}) {
-            $values = $model->{$relation}->modelKeys() ?? array();
-        }
-
         if (count($selected_values)) {
             $values = $selected_values;
+        }
+
+        if ($relation && $model && $model->{$relation}) {
+            $values = $model->{$relation}->modelKeys() ?? array();
+        } else {
+            if ($model && empty($selected_values) && isset($model->{$name}) && is_array($model->{$name})) {
+                $values = $model->{$name} ?? array();
+            }
         }
 
         return (new Select($name, $options, $values))->multiple();
