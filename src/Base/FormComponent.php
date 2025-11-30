@@ -283,11 +283,10 @@ class FormComponent
     /**
      * Returns a file import type input instruction.
      *
-     * @param string $name
-     * @param mixed  $model
-     * @param array  $accepted_types - accepted mime types according to html5 spec
+     * @param  mixed  $model
+     * @param  array  $accepted_types  - accepted mime types according to html5 spec
      */
-    public static function file(string $name, $model = null, array $accepted_types = []): File
+    public static function file(string $name, $model = null, array $accepted_types = array()): File
     {
         $value = false;
         if (isset($model->{$name}) && ! empty($model->{$name})) {

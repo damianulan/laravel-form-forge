@@ -12,7 +12,7 @@ class File extends ForgeComponent
 
     private array $accept = array();
 
-    public function __construct(string $name, bool $hasValue, array $accept = [])
+    public function __construct(string $name, bool $hasValue, array $accept = array())
     {
         $this->name = empty($name) ? null : $name;
         $this->classes[] = 'form-control';

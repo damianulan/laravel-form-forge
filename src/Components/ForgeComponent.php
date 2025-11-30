@@ -15,13 +15,6 @@ use ReflectionClass;
  */
 abstract class ForgeComponent
 {
-    protected $attributes = [
-        'required' => false,
-        'disabled' => false,
-        'readonly' => false,
-        'show' => true,
-    ];
-
     public string $name;
 
     public string $type;
@@ -31,6 +24,13 @@ abstract class ForgeComponent
     public array $infos = array();
 
     public array $dangers = array();
+
+    protected $attributes = array(
+        'required' => false,
+        'disabled' => false,
+        'readonly' => false,
+        'show' => true,
+    );
 
     public function __isset(string $property): bool
     {
