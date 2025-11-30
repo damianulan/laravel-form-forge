@@ -113,6 +113,8 @@ class Dictionary
      *
      * @param  string|object  $enum_class  - enum class namespace
      * @param  array  $readables  - array of enum values with readable labels and keys matching given enum values
+     *
+     * @see damianulan/php-enumerable for perfect implementation.
      */
     public static function fromEnum(string|object $enum_class, array $readables = array()): Collection
     {
@@ -123,7 +125,7 @@ class Dictionary
         if (class_exists($enum_class)) {
             $reflection = new ReflectionClass($enum_class);
 
-            if ($reflection->hasMethod('tryFrom') && $reflection->hasMethod('cases')) {
+            if ($reflection->hasMethod('cases')) {
                 foreach ($enum_class::cases() as $case) {
                     $label = null;
                     if (isset($readables[$case->value])) {
@@ -137,6 +139,8 @@ class Dictionary
                     }
                     $options->push(new Option($case->value, $label));
                 }
+            } else {
+                throw new \Exception('Enum class does not implement cases() method.');
             }
         }
 
