@@ -13,7 +13,7 @@ use ReflectionClass;
  * @author Damian Ułan <damian.ulan@protonmail.com>
  * @copyright 2024
  */
-class ForgeComponent
+abstract class ForgeComponent
 {
     public string $name;
 
@@ -52,20 +52,20 @@ class ForgeComponent
     {
         $template = $this->template ?? Str::lower((new ReflectionClass($this))->getShortName());
 
-        return view('formforge::components.' . $template, array(
-            'component' => $this,
-            'classes' => $this->getClasses(),
-        ));
+        return view(
+            'formforge::components.' . $template,
+            $this->getViewData()
+        );
     }
 
     /**
      * Labels an Component as a required. This is not validation, only invokes visual effect.
      */
-    public function required(?Closure $callback = null): static
+    public function required(?Closure $condition = null): static
     {
         $this->required = true;
-        if ( ! is_null($callback)) {
-            $this->required = (bool) $callback();
+        if ( ! is_null($condition)) {
+            $this->required = (bool) $condition();
         }
 
         return $this;
@@ -114,10 +114,10 @@ class ForgeComponent
     /**
      * Sets label text for an Component.
      */
-    public function label(string|callable $text): static
+    public function label(string|Closure $text): static
     {
         if (is_callable($text)) {
-            $this->label = call_user_func($text);
+            $this->label = call_user_func($text, $this);
         } else {
             $this->label = $text;
         }
@@ -126,9 +126,9 @@ class ForgeComponent
     }
 
     /**
-     * Add additional key that will be visible in the form as muted text.
+     * Add additional key that will be visible in the form as muted text, just below the label.
      */
-    public function key(string|callable|null $key): static
+    public function key(string|Closure|null $key): static
     {
         if (is_callable($key)) {
             $this->key = call_user_func($key);
@@ -141,8 +141,6 @@ class ForgeComponent
 
     /**
      * Renders input label to html.
-     *
-     * @return string
      */
     public function getLabel(): ?View
     {
@@ -158,7 +156,7 @@ class ForgeComponent
         return null;
     }
 
-    public function class(...$classes)
+    public function class(string ...$classes): static
     {
         if ( ! empty($classes)) {
             foreach ($classes as $class) {
@@ -181,10 +179,8 @@ class ForgeComponent
 
     /**
      * Renders input label to html.
-     *
-     * @return string
      */
-    public function getInfos()
+    public function getInfos(): ?string
     {
         if ( ! empty($this->infos)) {
             $output = '';
@@ -210,10 +206,8 @@ class ForgeComponent
 
     /**
      * Set additional conditions that need to be met for component to be shown in the form.
-     *
-     * @param  mixed  $callback
      */
-    public function condition($callback): static
+    public function condition(Closure $callback): static
     {
         $return = $callback();
         $this->show = (bool) $return;
@@ -221,10 +215,24 @@ class ForgeComponent
         return $this;
     }
 
-    private function getClasses()
+    /**
+     * Get class list as string.
+     */
+    protected function getClasses(): ?string
     {
         $this->classes = array_unique($this->classes);
 
         return empty($this->classes) ? null : implode(' ', $this->classes);
+    }
+
+    /**
+     * Gets necessary datas for rendered component view.
+     */
+    protected function getViewData(): array
+    {
+        return array(
+            'component' => $this,
+            'classes' => $this->getClasses(),
+        );
     }
 }

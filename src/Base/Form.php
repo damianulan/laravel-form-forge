@@ -46,14 +46,6 @@ abstract class Form
     abstract public static function validation(Request $request, ?string $model_id = null): array;
 
     /**
-     * If you need you can set up conditions, that user must meet to use this Form.
-     */
-    public static function authorize(Request $request): bool
-    {
-        return true;
-    }
-
-    /**
      * Check and fix request data for date and float values.
      */
     public static function reformatRequest(Request $request): Request
@@ -199,10 +191,8 @@ abstract class Form
     /**
      * It is possible that form accepts EU float values with comma as decimal separator.
      * This method translates it to US format.
-     *
-     * @return bool
      */
-    private static function isEUFloat(?string $value)
+    private static function isEUFloat(?string $value): bool
     {
         if ($value) {
             if (str_contains($value, ',')) {

@@ -2,21 +2,13 @@
 
 namespace FormForge\Components;
 
+use Exception;
 use FormForge\Enums\Enum;
 use Illuminate\Support\Collection;
+use ReflectionClass;
 
 class Dictionary
 {
-    /**
-     * Declare array collections of options accessible to the public.
-     */
-    public $mail_encryption_methods = array(
-        'tls' => 'TLS',
-        'ssl' => 'SSL',
-        'starttls' => 'STARTTLS',
-        'null' => 'PLAIN',
-    );
-
     /**
      * Get data for select directly from model.
      */
@@ -103,17 +95,6 @@ class Dictionary
         return $options;
     }
 
-    public static function fromCatalog(string $index): ?Collection
-    {
-        $instance = new self();
-
-        if (isset($instance->{$index})) {
-            return self::fromAssocArray($instance->{$index});
-        }
-
-        return null;
-    }
-
     /**
      * Simple true/false select
      */
@@ -128,17 +109,39 @@ class Dictionary
     }
 
     /**
-     * Enum equivalents should be translated in fields.php
+     * Matching enum-like classes or proper Enum objects with readable labels.
+     * If your enum does not implement `label` attribute, you should provide it in the second parameter.
      *
-     * @param  mixed  $enum_class  - enum class namespace
+     * @param  string|object  $enum_class  - enum class namespace
+     * @param  array  $readables  - array of enum values with readable labels and keys matching given enum values
+     *
+     * @see damianulan/php-enumerable for perfect implementation.
      */
-    public static function fromEnum($enum_class): Collection
+    public static function fromEnum(string|object $enum_class, array $readables = array()): Collection
     {
         $options = new Collection();
-        $instance = new $enum_class();
-        if (class_exists($enum_class) && $instance instanceof Enum) {
-            foreach ($enum_class::values() as $case) {
-                $options->push(new Option($case, __('formforge::forms.enums.' . $case)));
+        if (is_object($enum_class)) {
+            $enum_class = get_class($enum_class);
+        }
+        if (class_exists($enum_class)) {
+            $reflection = new ReflectionClass($enum_class);
+
+            if ($reflection->hasMethod('cases')) {
+                foreach ($enum_class::cases() as $case) {
+                    $label = null;
+                    if (isset($readables[$case->value])) {
+                        $label = $readables[$case];
+                    } else {
+                        if (isset($case->label)) {
+                            $label = $case->label;
+                        } else {
+                            $label = $case->value;
+                        }
+                    }
+                    $options->push(new Option($case->value, $label));
+                }
+            } else {
+                throw new Exception('Enum class does not implement cases() method.');
             }
         }
 

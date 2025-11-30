@@ -11,6 +11,7 @@ use FormForge\Components\Input;
 use FormForge\Components\Select;
 use FormForge\Components\Textarea;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Macroable;
 
 /**
  * FormComponent to be collected by FormBuilder. Methods return input instructions (a field) and each represents field in form.
@@ -19,6 +20,8 @@ use Illuminate\Support\Collection;
  */
 class FormComponent
 {
+    use Macroable;
+
     /**
      * Returns input instruction for simple text type.
      *
@@ -129,12 +132,16 @@ class FormComponent
         $selected_values = array()
     ): Select {
         $values = array();
-        if ($relation && $model && $model->{$relation}) {
-            $values = $model->{$relation}->modelKeys() ?? array();
-        }
-
         if (count($selected_values)) {
             $values = $selected_values;
+        }
+
+        if ($relation && $model && $model->{$relation}) {
+            $values = $model->{$relation}->modelKeys() ?? array();
+        } else {
+            if ($model && empty($selected_values) && isset($model->{$name}) && is_array($model->{$name})) {
+                $values = $model->{$name} ?? array();
+            }
         }
 
         return (new Select($name, $options, $values))->multiple();
