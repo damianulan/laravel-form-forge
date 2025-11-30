@@ -4,6 +4,7 @@ namespace FormForge\Components;
 
 use FormForge\Enums\Enum;
 use Illuminate\Support\Collection;
+use ReflectionClass;
 
 class Dictionary
 {
@@ -110,25 +111,25 @@ class Dictionary
      * Matching enum-like classes or proper Enum objects with readable labels.
      * If your enum does not implement `label` attribute, you should provide it in the second parameter.
      *
-     * @param  string|object $enum_class - enum class namespace
-     * @param  array  $readables - array of enum values with readable labels and keys matching given enum values
+     * @param  string|object  $enum_class  - enum class namespace
+     * @param  array  $readables  - array of enum values with readable labels and keys matching given enum values
      */
-    public static function fromEnum(string|object $enum_class, array $readables = []): Collection
+    public static function fromEnum(string|object $enum_class, array $readables = array()): Collection
     {
         $options = new Collection();
-        if(is_object($enum_class)){
+        if (is_object($enum_class)) {
             $enum_class = get_class($enum_class);
         }
         if (class_exists($enum_class)) {
-            $reflection = new \ReflectionClass($enum_class);
+            $reflection = new ReflectionClass($enum_class);
 
-            if($reflection->hasMethod('tryFrom') && $reflection->hasMethod('cases')){
+            if ($reflection->hasMethod('tryFrom') && $reflection->hasMethod('cases')) {
                 foreach ($enum_class::cases() as $case) {
                     $label = null;
-                    if(isset($readables[$case->value])){
+                    if (isset($readables[$case->value])) {
                         $label = $readables[$case];
                     } else {
-                        if(isset($case->label)){
+                        if (isset($case->label)) {
                             $label = $case->label;
                         } else {
                             $label = $case->value;
