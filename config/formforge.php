@@ -33,10 +33,10 @@ return array(
     /**
      * Process uploaded files with reformatRequest method.
      */
-    'storage' => [
+    'storage' => array(
         'handling_files' => env('FORMFORGE_HANDLING_FILES', true),
         'path' => storage_path('app/public/uploads'),
-    ],
+    ),
 
     /**
      * Dispatches FormForge rendering events.

@@ -4,15 +4,14 @@ namespace FormForge\Traits;
 
 trait HasAttributes
 {
-
     /**
      * Request datas
      *
      * @var array
      */
-    protected $attributes = [];
+    protected $attributes = array();
 
-    public function __set(string $property, $value)
+    public function __set(string $property, $value): void
     {
         $this->setAttribute($property, $value);
     }
@@ -34,9 +33,9 @@ trait HasAttributes
         }
     }
 
-    public function setAttribute(string $property, $value)
+    public function setAttribute(string $property, $value): void
     {
-        if(empty($this->fillable) || in_array($property, $this->fillable)) {
+        if (empty($this->fillable) || in_array($property, $this->fillable)) {
             $this->attributes[$property] = $value;
         }
     }
@@ -50,5 +49,4 @@ trait HasAttributes
     {
         return isset($this->attributes[$property]);
     }
-
 }

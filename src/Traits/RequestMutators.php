@@ -8,24 +8,26 @@ trait RequestMutators
 {
     use HasAttributes;
 
-    public function mutate(array $attributes = []): static
+    public function mutate(array $attributes = array()): static
     {
-        foreach($attributes as $property => $value) {
+        foreach ($attributes as $property => $value) {
             $this->setAttribute($property, $value);
         }
 
         return $this;
     }
 
-    public function setAttribute(string $property, $value)
+    public function setAttribute(string $property, $value): void
     {
-        if(empty($this->fillable) || in_array($property, $this->fillable)) {
+        if (empty($this->fillable) || in_array($property, $this->fillable)) {
             $this->attributes[$property] = $this->reformatInput($property, $value);
         }
     }
 
     /**
      * Check and fix request data for date and float values.
+     *
+     * @param  mixed  $input
      */
     protected function reformatInput(string $property, $input)
     {
@@ -39,7 +41,7 @@ trait RequestMutators
             $input = 'on' === $input ? true : false;
         } else {
             if (empty($input)) {
-                if(is_array($input)) {
+                if (is_array($input)) {
                     $input = array();
                 } else {
                     $input = null;
