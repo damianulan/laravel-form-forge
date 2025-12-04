@@ -2,9 +2,11 @@
 
 namespace FormForge;
 
+use FormForge\Base\Form;
 use FormForge\Commands\FormMakeCommand;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Request;
 
 /**
  * @author Damian Ułan <damian.ulan@protonmail.com>
@@ -20,6 +22,10 @@ class FormForgeServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/formforge.php', 'formforge');
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+
+        $this->app->resolving(Form::class, function (Form $form) {
+            return $form->boot()->mutate(Request::all())->setDefinition()->booted();
+        });
     }
 
     /**

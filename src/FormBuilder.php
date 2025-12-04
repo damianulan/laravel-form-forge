@@ -46,8 +46,6 @@ class FormBuilder
 
     private array $buttons = array();
 
-    private Request $request;
-
     private bool $authorized = true;
 
     /**
@@ -63,10 +61,9 @@ class FormBuilder
      * @param  string|null  $id  - form html id
      * @return FormBuilder
      */
-    public function __construct(Request $request, string $method, ?string $action, ?string $id = null)
+    public function __construct(string $method, ?string $action, ?string $id = null)
     {
         $this->components = new ComponentCollection();
-        $this->request = $request;
         $this->method = Str::upper($method);
         $this->action = $action;
         $this->id = $id ?? Str::random(10);
@@ -81,9 +78,9 @@ class FormBuilder
      * @param  string|null  $action  - leave empty if you want to use the form in AJAX
      * @param  string|null  $id  - form's html id
      */
-    public static function boot(Request $request, string $method, ?string $action, ?string $id = null): self
+    public static function boot(string $method, ?string $action, ?string $id = null): self
     {
-        return new self($request, $method, $action, $id);
+        return new self($method, $action, $id);
     }
 
     /**
@@ -120,7 +117,7 @@ class FormBuilder
      */
     public function addSection(string $title, Closure $callback): self
     {
-        $fb = $callback(new FormBuilder($this->request, $this->method, $this->action, $this->id));
+        $fb = $callback(new FormBuilder($this->method, $this->action, $this->id));
 
         $section = new ForgeSection($title, $fb);
 
@@ -273,11 +270,6 @@ class FormBuilder
      */
     private function validate(): void
     {
-        $user = $this->request->user() ?? null;
-        if ( ! $user) {
-            $this->throwUnauthorized();
-        }
-
         // backtrace callable Form source
         // in order to locate authorization method
         $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 4);
