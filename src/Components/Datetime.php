@@ -24,7 +24,7 @@ class Datetime extends ForgeComponent
         $this->minDate = empty($minDate) ? null : $minDate;
         $this->maxDate = empty($maxDate) ? null : $maxDate;
 
-        if (request()->old($name) !== null) {
+        if (null !== request()->old($name)) {
             $this->value = date($this->getFormat(), strtotime(request()->old($name)));
         }
         if ( ! $this->value) {

@@ -63,8 +63,8 @@ trait RequestForms
                     $instance->{$property} = $value;
                 }
 
-                if(in_array($value, ['on', 'off'])){
-                    $value = $value === 'on' ? 1:0;
+                if (in_array($value, ['on', 'off'])) {
+                    $value = 'on' === $value ? 1 : 0;
                 }
 
                 if (isset($instance->casts, $instance->casts[$property])) {

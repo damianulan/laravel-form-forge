@@ -23,7 +23,7 @@ class Input extends ForgeComponent
         $this->name = empty($name) ? null : $name;
         $this->type = empty($type) ? null : $type;
         $this->value = $value;
-        if (request()->old($name) !== null) {
+        if (null !== request()->old($name)) {
             $this->value = request()->old($name);
         }
         $this->classes[] = 'form-control';
