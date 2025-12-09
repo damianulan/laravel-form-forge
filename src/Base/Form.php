@@ -47,7 +47,6 @@ abstract class Form
 
     public function booted(): static
     {
-        dd($this);
         return $this;
     }
 
@@ -57,12 +56,17 @@ abstract class Form
         return $this;
     }
 
+    public function setModel(Model $model): static
+    {
+        $this->model = $model;
+
+        return $this->mutate($model->toArray())->setDefinition();
+    }
+
     /**
      * Provide form components definition returning an instance of FormBuilder.
-     *
-     * @param  mixed  $model
      */
-    abstract public function definition(?Model $model = null): FormBuilder;
+    abstract public function definition(): FormBuilder;
 
     /**
      * Provide laravel validation rules.
@@ -96,20 +100,20 @@ abstract class Form
      * Use this method to validate form data. When bumped into error it automatically redirects back.
      * Override $backRoute and $backParams to customize redirection target.
      */
-    public function validate(?string $model_id = null): void
+    public function validate(): void
     {
-        $validator = $this->validator($model_id);
+        $validator = $this->validator();
 
         if ($validator->fails()) {
             if (static::$backRoute) {
                 $to = route(static::$backRoute, static::$backParams);
-                FormValidationFail::dispatch($this, $validator->messages());
+                FormValidationFail::dispatch(static::class, $validator->messages());
                 abort(Redirect::to($to)->withErrors($validator)->withInput());
             }
-            FormValidationFail::dispatch($this, $validator->messages());
+            FormValidationFail::dispatch(static::class, $validator->messages());
             abort(Redirect::back()->withErrors($validator)->withInput());
         } else {
-            FormValidationSuccess::dispatch($this, $validator->messages());
+            FormValidationSuccess::dispatch(static::class, $validator->messages());
         }
     }
 
