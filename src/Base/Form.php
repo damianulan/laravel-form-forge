@@ -36,6 +36,16 @@ abstract class Form
      */
     protected static array $backParams = array();
 
+    /**
+     * Provide form components definition returning an instance of FormBuilder.
+     */
+    abstract public function definition(): FormBuilder;
+
+    /**
+     * Provide laravel validation rules.
+     */
+    abstract public function validation(): array;
+
     public function boot(): static
     {
         return $this;
@@ -49,6 +59,7 @@ abstract class Form
     public function setDefinition(): static
     {
         $this->builder = $this->definition();
+
         return $this;
     }
 
@@ -58,16 +69,6 @@ abstract class Form
 
         return $this->mutate($model->toArray())->setDefinition();
     }
-
-    /**
-     * Provide form components definition returning an instance of FormBuilder.
-     */
-    abstract public function definition(): FormBuilder;
-
-    /**
-     * Provide laravel validation rules.
-     */
-    abstract public function validation(): array;
 
     public function boot(): static
     {
