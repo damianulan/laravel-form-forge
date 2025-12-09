@@ -27,9 +27,13 @@ abstract class ForgeComponent
     public array $infos = array();
 
     public array $dangers = array();
+
     public $required = false;
+
     public $disabled = false;
+
     public $readonly = false;
+
     public $show = true;
 
     /**

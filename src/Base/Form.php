@@ -2,14 +2,11 @@
 
 namespace FormForge\Base;
 
-use Carbon\Carbon;
-use Exception;
 use FormForge\Events\FormValidationFail;
 use FormForge\Events\FormValidationSuccess;
 use FormForge\FormBuilder;
 use FormForge\Traits\RequestMutators;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Validator as ValidatorInstance;
@@ -23,7 +20,6 @@ use Illuminate\Validation\Validator as ValidatorInstance;
  */
 abstract class Form
 {
-
     use RequestMutators;
 
     protected FormBuilder $builder;
@@ -72,6 +68,25 @@ abstract class Form
      * Provide laravel validation rules.
      */
     abstract public function validation(): array;
+
+    public function boot(): static
+    {
+        return $this;
+    }
+
+    public function booted(): static
+    {
+        dd($this);
+
+        return $this;
+    }
+
+    public function setDefinition(): static
+    {
+        $this->builder = $this->definition();
+
+        return $this;
+    }
 
     /**
      * Use this method to validate form data. It returns an array with result and message stack.
@@ -125,6 +140,11 @@ abstract class Form
         return Validator::make($this->attributes, $this->validation(), $this->messages(), $this->attributes());
     }
 
+    public function getDefinition(): FormBuilder
+    {
+        return $this->builder;
+    }
+
     /**
      * Custom laravel validation messages.
      */
@@ -146,10 +166,4 @@ abstract class Form
 
         return $attributes;
     }
-
-    public function getDefinition(): FormBuilder
-    {
-        return $this->builder;
-    }
-
 }
