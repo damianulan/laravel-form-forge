@@ -25,6 +25,8 @@ abstract class Form
 
     protected ?Model $model = null;
 
+    protected bool $booted = false;
+
     /**
      * custom route key to redirect back to after form validation
      */
@@ -52,6 +54,7 @@ abstract class Form
 
     public function booted(): static
     {
+        $this->booted = true;
         return $this;
     }
 
@@ -65,7 +68,7 @@ abstract class Form
     public function setModel(Model $model): static
     {
         $this->model = $model;
-
+        //dd($this->mutate($model->toArray())->setDefinition());
         return $this->mutate($model->toArray())->setDefinition();
     }
 
@@ -107,6 +110,26 @@ abstract class Form
             }
             abort(Redirect::back()->withErrors($validator)->withInput());
         }
+    }
+
+    /**
+     * Check whether form fails declared validation
+     *
+     * @return bool
+     */
+    public function fails(): bool
+    {
+        return $this->validator()->fails();
+    }
+
+    /**
+     * Check whether form passes declared validation
+     *
+     * @return bool
+     */
+    public function passes(): bool
+    {
+        return $this->validator()->passes();
     }
 
     /**

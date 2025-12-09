@@ -29,6 +29,7 @@ class FormComponent
      */
     public static function text(string $name, $model = null): Input
     {
+        // TODO getValue with enum detection as $model->{$name}
         $value = $model->{$name} ?? null;
 
         return new Input($name, 'text', $value);
