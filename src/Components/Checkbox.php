@@ -15,6 +15,10 @@ class Checkbox extends ForgeComponent
         $this->name = empty($name) ? null : $name;
         $this->type = empty($type) ? null : $type;
         $this->checked = $checked;
+
+        if (request()->old($name) !== null){
+            $this->checked = request()->old($name)==='on' ? true:false;
+        }
     }
 
     final public function default(bool $checked)
