@@ -16,7 +16,7 @@ class Dictionary
         string $model,
         string $attribute,
         string $method = 'all',
-        array $exclude = array()
+        array $exclude = []
     ): Collection {
         $options = new Collection();
 
@@ -117,7 +117,7 @@ class Dictionary
      *
      * @see damianulan/php-enumerable for perfect implementation.
      */
-    public static function fromEnum(string|object $enum_class, array $readables = array()): Collection
+    public static function fromEnum(string|object $enum_class, array $readables = []): Collection
     {
         $options = new Collection();
         if (is_object($enum_class)) {
