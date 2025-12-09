@@ -70,25 +70,6 @@ abstract class Form
         return $this->mutate($model->toArray())->setDefinition();
     }
 
-    public function boot(): static
-    {
-        return $this;
-    }
-
-    public function booted(): static
-    {
-        dd($this);
-
-        return $this;
-    }
-
-    public function setDefinition(): static
-    {
-        $this->builder = $this->definition();
-
-        return $this;
-    }
-
     /**
      * Use this method to validate form data. It returns an array with result and message stack.
      */
