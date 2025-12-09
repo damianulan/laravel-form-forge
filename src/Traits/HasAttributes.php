@@ -49,4 +49,14 @@ trait HasAttributes
     {
         return isset($this->attributes[$property]);
     }
+
+    /**
+     * Gets all attributes.
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->attributes;
+    }
 }

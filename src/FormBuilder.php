@@ -179,13 +179,13 @@ class FormBuilder
      * Callback accepts FormBuilder $builder as argument.
      *
      * @param  bool  $condition  - when false, callback won't be executed
-     * @param  Closure  $callback  - function($builder)
+     * @param  Closure  $then  - function($builder)
      */
-    public function onCondition(bool $condition, Closure $callback): self
+    public function when(bool $condition, Closure $then): self
     {
         $instance = $this;
         if ($condition) {
-            $callback($instance);
+            $then($instance);
         }
 
         return $instance;

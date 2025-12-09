@@ -198,7 +198,7 @@ abstract class ForgeComponent
     /**
      * Set additional conditions that need to be met for component to be shown in the form.
      */
-    public function condition(Closure $callback): static
+    public function when(Closure $callback): static
     {
         $return = $callback();
         $this->show = (bool) $return;

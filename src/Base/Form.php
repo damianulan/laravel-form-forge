@@ -3,7 +3,6 @@
 namespace FormForge\Base;
 
 use FormForge\Events\FormValidationFail;
-use FormForge\Events\FormValidationSuccess;
 use FormForge\FormBuilder;
 use FormForge\Traits\RequestMutators;
 use Illuminate\Database\Eloquent\Model;
@@ -85,7 +84,6 @@ abstract class Form
                 'messages' => $validator->messages(),
             ];
         }
-        FormValidationSuccess::dispatch($this, $validator->messages());
 
         return [
             'status' => 'ok',
@@ -102,15 +100,12 @@ abstract class Form
         $validator = $this->validator();
 
         if ($validator->fails()) {
+            FormValidationFail::dispatch(static::class, $validator->messages());
             if (static::$backRoute) {
                 $to = route(static::$backRoute, static::$backParams);
-                FormValidationFail::dispatch(static::class, $validator->messages());
                 abort(Redirect::to($to)->withErrors($validator)->withInput());
             }
-            FormValidationFail::dispatch(static::class, $validator->messages());
             abort(Redirect::back()->withErrors($validator)->withInput());
-        } else {
-            FormValidationSuccess::dispatch(static::class, $validator->messages());
         }
     }
 
@@ -119,7 +114,7 @@ abstract class Form
      */
     public function validator(): ValidatorInstance
     {
-        return Validator::make($this->attributes, $this->validation(), $this->messages(), $this->attributes());
+        return Validator::make($this->all(), $this->validation(), $this->messages(), $this->attributes());
     }
 
     public function getDefinition(): FormBuilder
