@@ -8,7 +8,7 @@ trait RequestMutators
 {
     use HasAttributes;
 
-    public function mutate(array $attributes = array(), $override = false): static
+    public function mutate(array $attributes = [], $override = false): static
     {
         foreach ($attributes as $property => $value) {
             if ( ! $override || ! $this->hasAttribute($property)) {
@@ -39,12 +39,12 @@ trait RequestMutators
             }
         } elseif (is_string($input) && self::isEUFloat($input)) {
             $input = str_replace(',', '.', $input);
-        } elseif (in_array($input, array('on', 'off'))) {
+        } elseif (in_array($input, ['on', 'off'])) {
             $input = 'on' === $input ? true : false;
         } else {
             if (empty($input)) {
                 if (is_array($input)) {
-                    $input = array();
+                    $input = [];
                 } else {
                     $input = null;
                 }

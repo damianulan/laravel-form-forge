@@ -22,11 +22,11 @@ abstract class ForgeComponent
 
     public string $type;
 
-    public array $classes = array();
+    public array $classes = [];
 
-    public array $infos = array();
+    public array $infos = [];
 
-    public array $dangers = array();
+    public array $dangers = [];
 
     public $required = false;
 
@@ -136,12 +136,12 @@ abstract class ForgeComponent
     public function getLabel(): ?View
     {
         if ( ! empty($this->label) && ! empty($this->name)) {
-            return view('formforge::components.label', array(
+            return view('formforge::components.label', [
                 'label' => $this->label,
                 'name' => $this->name,
                 'required' => $this->required,
                 'key' => $this->key,
-            ));
+            ]);
         }
 
         return null;
@@ -221,9 +221,9 @@ abstract class ForgeComponent
      */
     protected function getViewData(): array
     {
-        return array(
+        return [
             'component' => $this,
             'classes' => $this->getClasses(),
-        );
+        ];
     }
 }

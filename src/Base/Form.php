@@ -34,7 +34,7 @@ abstract class Form
     /**
      * custom route params to redirect back to after form validation
      */
-    protected static array $backParams = array();
+    protected static array $backParams = [];
 
     /**
      * Provide form components definition returning an instance of FormBuilder.
@@ -80,17 +80,17 @@ abstract class Form
         if ($validator->fails()) {
             FormValidationFail::dispatch($this, $validator->messages());
 
-            return array(
+            return [
                 'status' => 'error',
                 'messages' => $validator->messages(),
-            );
+            ];
         }
         FormValidationSuccess::dispatch($this, $validator->messages());
 
-        return array(
+        return [
             'status' => 'ok',
             'messages' => $validator->messages(),
-        );
+        ];
     }
 
     /**
@@ -132,7 +132,7 @@ abstract class Form
      */
     protected function messages(): array
     {
-        return array();
+        return [];
     }
 
     /**
@@ -140,7 +140,7 @@ abstract class Form
      */
     protected function attributes(): array
     {
-        $attributes = array();
+        $attributes = [];
 
         foreach ($this->builder->getComponents() as $component) {
             $attributes[$component->name] = $component->label;

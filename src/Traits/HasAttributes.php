@@ -9,7 +9,7 @@ trait HasAttributes
      *
      * @var array
      */
-    protected $attributes = array();
+    protected $attributes = [];
 
     public function __set(string $property, $value): void
     {

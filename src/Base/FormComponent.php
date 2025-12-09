@@ -114,7 +114,7 @@ class FormComponent
             }
         }
 
-        return new Select($name, $options, array($value));
+        return new Select($name, $options, [$value]);
     }
 
     /**
@@ -129,18 +129,18 @@ class FormComponent
         $model = null,
         ?Collection $options = null,
         $relation = null,
-        $selected_values = array()
+        $selected_values = []
     ): Select {
-        $values = array();
+        $values = [];
         if (count($selected_values)) {
             $values = $selected_values;
         }
 
         if ($relation && $model && $model->{$relation}) {
-            $values = $model->{$relation}->modelKeys() ?? array();
+            $values = $model->{$relation}->modelKeys() ?? [];
         } else {
             if ($model && empty($selected_values) && isset($model->{$name}) && is_array($model->{$name})) {
-                $values = $model->{$name} ?? array();
+                $values = $model->{$name} ?? [];
             }
         }
 
@@ -222,10 +222,10 @@ class FormComponent
     {
         $from = $name . '_from';
         $to = $name . '_to';
-        $values = array(
+        $values = [
             'from' => $model->{$from} ?? null,
             'to' => $model->{$to} ?? null,
-        );
+        ];
 
         return new Daterange($name, 'date', $values);
     }
@@ -286,7 +286,7 @@ class FormComponent
      * @param  mixed  $model
      * @param  array  $accepted_types  - accepted mime types according to html5 spec
      */
-    public static function file(string $name, $model = null, array $accepted_types = array()): File
+    public static function file(string $name, $model = null, array $accepted_types = []): File
     {
         $value = false;
         if (isset($model->{$name}) && ! empty($model->{$name})) {
