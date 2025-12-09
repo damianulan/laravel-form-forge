@@ -8,10 +8,10 @@ trait RequestMutators
 {
     use HasAttributes;
 
-    public function mutate(array $attributes = [], $override = false): static
+    public function mutate(array $attributes = array(), $override = false): static
     {
-        foreach($attributes as $property => $value) {
-            if(!$override || !$this->hasAttribute($property)) {
+        foreach ($attributes as $property => $value) {
+            if ( ! $override || ! $this->hasAttribute($property)) {
                 $this->setAttribute($property, $value);
             }
         }
