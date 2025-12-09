@@ -65,8 +65,8 @@ class FormMakeCommand extends GeneratorCommand
      */
     protected function getOptions(): array
     {
-        return array(
-            array('force', 'f', InputOption::VALUE_NONE, 'Create the class even if the form definition already exists'),
-        );
+        return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the form definition already exists'],
+        ];
     }
 }

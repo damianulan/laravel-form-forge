@@ -10,14 +10,15 @@ class File extends ForgeComponent
 
     public bool $hasValue = false;
 
-    private array $accept = array();
+    private array $accept = [];
 
-    public function __construct(string $name, bool $hasValue)
+    public function __construct(string $name, bool $hasValue, array $accept = [])
     {
         $this->name = empty($name) ? null : $name;
         $this->classes[] = 'form-control';
         $this->classes[] = 'formforge-control';
         $this->hasValue = $hasValue;
+        $this->accept = $accept;
     }
 
     public function setExt(array $accepts)

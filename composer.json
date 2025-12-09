@@ -1,11 +1,12 @@
 {
   "name": "damianulan/laravel-form-forge",
   "type": "library",
-  "description": "FormForge form builder Laravel package",
+  "description": "UI Form builder laravel package. For building forms with ease.",
   "keywords": [
     "laravel",
     "form",
     "builder",
+    "ui",
     "forge"
   ],
   "license": "MIT",
@@ -36,7 +37,10 @@
   "autoload-dev": {
     "psr-4": {
       "FormForge\\Tests\\": "tests"
-    }
+    },
+    "files": [
+        "src/helper.php"
+    ]
   },
   "scripts": {
     "test": "vendor/bin/phpunit",

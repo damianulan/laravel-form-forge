@@ -31,33 +31,33 @@ class FormForgeServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'formforge');
 
-        $this->publishes(array(
+        $this->publishes([
             __DIR__ . '/../lang' => $this->app->langPath('vendor/formforge'),
-        ), 'formforge-langs');
+        ], 'formforge-langs');
 
-        $this->publishes(array(
+        $this->publishes([
             __DIR__ . '/../config/formforge.php' => config_path('formforge.php'),
-        ), 'formforge-config');
+        ], 'formforge-config');
 
-        $this->publishes(array(
+        $this->publishes([
             __DIR__ . '/../resources/views' => resource_path('views/vendor/formforge'),
-        ), 'formforge-views');
+        ], 'formforge-views');
 
-        $this->publishes(array(
+        $this->publishes([
             __DIR__ . '/../resources/style' => resource_path('vendor/formforge/style'),
             __DIR__ . '/../resources/js' => resource_path('vendor/formforge/js'),
-        ), 'formforge-resources');
+        ], 'formforge-resources');
 
-        $this->publishes(array(
+        $this->publishes([
             __DIR__ . '/../stubs' => base_path('stubs'),
             __DIR__ . '/../config/formforge.php' => config_path('formforge.php'),
             __DIR__ . '/../resources/style' => resource_path('vendor/formforge/style'),
             __DIR__ . '/../resources/js' => resource_path('vendor/formforge/js'),
-        ), 'formforge');
+        ], 'formforge');
 
-        $this->commands(array(
+        $this->commands([
             FormMakeCommand::class,
-        ));
+        ]);
 
         $this->registerBladeDirectives();
     }

@@ -19,31 +19,55 @@ abstract class ForgeComponent
 
     public string $type;
 
-    public ?string $value = null;
+    public array $classes = [];
 
-    public ?string $template = null;
+    public array $infos = [];
 
-    public ?string $label = null;
+    public array $dangers = [];
 
-    public ?string $placeholder = null;
+    protected $attributes = [
+        'required' => false,
+        'disabled' => false,
+        'readonly' => false,
+        'show' => true,
+    ];
 
-    public ?string $key = null;
+    public function __isset(string $property): bool
+    {
+        return isset($this->attributes[$property]);
+    }
 
-    public array $classes = array();
+    public function __unset(string $property): void
+    {
+        if ($this->hasAttribute($property)) {
+            unset($this->attributes[$property]);
+        }
+    }
 
-    public bool $required = false;
+    public function __get(string $property)
+    {
+        return $this->getAttribute($property);
+    }
 
-    public bool $disabled = false;
+    public function __set(string $property, $value): void
+    {
+        $this->setAttribute($property, $value);
+    }
 
-    public bool $readonly = false;
+    public function getAttribute(string $property)
+    {
+        return $this->attributes[$property] ?? null;
+    }
 
-    public bool $show = true;
+    public function setAttribute(string $property, $value): void
+    {
+        $this->attributes[$property] = $value;
+    }
 
-    public string $autocomplete = '';
-
-    public array $infos = array();
-
-    public array $dangers = array();
+    public function hasAttribute(string $property): bool
+    {
+        return isset($this->attributes[$property]);
+    }
 
     /**
      * Renders the html representation of the Component.
@@ -145,12 +169,12 @@ abstract class ForgeComponent
     public function getLabel(): ?View
     {
         if ( ! empty($this->label) && ! empty($this->name)) {
-            return view('formforge::components.label', array(
+            return view('formforge::components.label', [
                 'label' => $this->label,
                 'name' => $this->name,
                 'required' => $this->required,
                 'key' => $this->key,
-            ));
+            ]);
         }
 
         return null;
@@ -230,9 +254,9 @@ abstract class ForgeComponent
      */
     protected function getViewData(): array
     {
-        return array(
+        return [
             'component' => $this,
             'classes' => $this->getClasses(),
-        );
+        ];
     }
 }
