@@ -1,8 +1,8 @@
 <?php
 
-return array(
+return [
 
-    'placeholders' => array(
+    'placeholders' => [
         'choose_daterange_from' => 'Wybierz datę od',
         'choose_daterange_to' => 'Wybierz datę do',
         'choose_date' => 'Wybierz datę',
@@ -14,12 +14,12 @@ return array(
 
         'enter_number' => 'Wprowadź liczbę...',
         'enter_float' => 'Wprowadź liczbę do dwóch miejsc dziesiętnych...',
-    ),
+    ],
 
-    'exception' => array(
+    'exception' => [
         'unauthorized' => 'Nie posiadasz wystarczających uprawnień do wyświetlenia tego formularza. Jeśli uważasz, że to błąd, skontaktuj się z administratorem systemu.',
-    ),
+    ],
 
     'yes' => 'Tak',
     'no' => 'Nie',
-);
+];

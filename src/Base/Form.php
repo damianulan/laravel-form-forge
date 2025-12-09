@@ -29,7 +29,7 @@ abstract class Form
     /**
      * custom route params to redirect back to after form validation
      */
-    protected static array $backParams = array();
+    protected static array $backParams = [];
 
     /**
      * Provide form components definition returning an instance of FormBuilder.
@@ -57,14 +57,14 @@ abstract class Form
                 }
             } elseif (is_string($value) && self::isEUFloat($value)) {
                 $value = str_replace(',', '.', $value);
-            } elseif (in_array($value, array('on', 'off'))) {
+            } elseif (in_array($value, ['on', 'off'])) {
                 $value = 'on' === $value ? true : false;
             } else {
                 if (empty($value)) {
                     $value = null;
                 }
             }
-            $request->merge(array($property => $value));
+            $request->merge([$property => $value]);
         }
 
         return $request;
@@ -81,17 +81,17 @@ abstract class Form
         if ($validator->fails()) {
             FormValidationFail::dispatch(static::class, $validator->messages());
 
-            return array(
+            return [
                 'status' => 'error',
                 'messages' => $validator->messages(),
-            );
+            ];
         }
         FormValidationSuccess::dispatch(static::class, $validator->messages());
 
-        return array(
+        return [
             'status' => 'ok',
             'messages' => $validator->messages(),
-        );
+        ];
     }
 
     /**
@@ -135,7 +135,7 @@ abstract class Form
      */
     protected static function messages(): array
     {
-        return array();
+        return [];
     }
 
     /**
@@ -143,7 +143,7 @@ abstract class Form
      */
     protected static function attributes(): array
     {
-        $attributes = array();
+        $attributes = [];
 
         $builder = static::definition(request());
         if ($builder) {
