@@ -64,7 +64,7 @@ abstract class Form
 
     public function setDefinition(bool $force = false): static
     {
-        if($force || !$this->builder) {
+        if($force || !isset($this->builder)) {
             $this->builder = $this->definition();
         }
 
@@ -155,7 +155,7 @@ abstract class Form
 
     public function getDefinition(): FormBuilder
     {
-        if(!$this->builder){
+        if(!isset($this->builder)){
             $this->builder = $this->definition();
         }
         return $this->builder;

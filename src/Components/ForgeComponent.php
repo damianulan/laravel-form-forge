@@ -18,6 +18,10 @@ abstract class ForgeComponent
 {
     use HasAttributes;
 
+    protected $attributes = [];
+
+    protected $fillable = [];
+
     public string $name;
 
     public string $type;
