@@ -11,9 +11,11 @@ use FormForge\Components\ForgeSection;
 use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
+use FormForge\Helpers\Config;
 use FormForge\Support\ComponentCollection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Collects components to render bootstrap form.
@@ -60,7 +62,7 @@ class FormBuilder
      * @param  string|null  $id  - form html id
      * @return FormBuilder
      */
-    public function __construct(string $method, ?string $action, ?string $id = null)
+    public function __construct(string $method, ?string $action = null, ?string $id = null)
     {
         $this->components = new ComponentCollection();
         $this->method = Str::upper($method);
@@ -68,6 +70,12 @@ class FormBuilder
         $this->id = $id ?? Str::random(10);
         $this->template = ForgeTemplate::get(config('formforge.default'));
         $this->validate();
+
+        if(Config::debugging()){
+            if(!$this->action){
+                Log::debug('FormForge '.$this->form.' definition is missing an action parameter.');
+            }
+        }
     }
 
     /**
@@ -77,8 +85,11 @@ class FormBuilder
      * @param  string|null  $action  - leave empty if you want to use the form in AJAX
      * @param  string|null  $id  - form's html id
      */
-    public static function boot(string $method, ?string $action, ?string $id = null): self
+    public static function boot(?string $method = null, ?string $action = null, ?string $id = null): self
     {
+        if(!$method) {
+            $method = 'POST';
+        }
         return new self($method, $action, $id);
     }
 
@@ -257,7 +268,7 @@ class FormBuilder
     }
 
     /**
-     * Get form class namespac, from where this form builder was called.
+     * Get form class namespace, from where this form builder was called.
      */
     public function getFormName(): string
     {

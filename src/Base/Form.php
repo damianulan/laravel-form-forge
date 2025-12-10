@@ -21,6 +21,10 @@ abstract class Form
 {
     use RequestMutators;
 
+    protected $attributes = [];
+
+    protected $fillable = [];
+
     protected FormBuilder $builder;
 
     protected ?Model $model = null;
@@ -58,18 +62,23 @@ abstract class Form
         return $this;
     }
 
-    public function setDefinition(): static
+    public function setDefinition(bool $force = false): static
     {
-        $this->builder = $this->definition();
+        if($force || !$this->builder) {
+            $this->builder = $this->definition();
+        }
 
         return $this;
     }
 
-    public function setModel(Model $model): static
+    public function setModel(?Model $model = null): static
     {
-        $this->model = $model;
-        //dd($this->mutate($model->toArray())->setDefinition());
-        return $this->mutate($model->toArray())->setDefinition();
+        if($model){
+            $this->model = $model;
+            return $this->mutate($model->toArray())->setDefinition(true);
+        }
+
+        return $this;
     }
 
     /**
@@ -80,7 +89,9 @@ abstract class Form
         $validator = $this->validator();
 
         if ($validator->fails()) {
-            FormValidationFail::dispatch($this, $validator->messages());
+            if (Config::dispatchesEvents()) {
+                FormValidationFail::dispatch($this, $validator->messages());
+            }
 
             return [
                 'status' => 'error',
@@ -103,7 +114,9 @@ abstract class Form
         $validator = $this->validator();
 
         if ($validator->fails()) {
-            FormValidationFail::dispatch(static::class, $validator->messages());
+            if (Config::dispatchesEvents()) {
+                FormValidationFail::dispatch($this, $validator->messages());
+            }
             if (static::$backRoute) {
                 $to = route(static::$backRoute, static::$backParams);
                 abort(Redirect::to($to)->withErrors($validator)->withInput());
@@ -142,6 +155,9 @@ abstract class Form
 
     public function getDefinition(): FormBuilder
     {
+        if(!$this->builder){
+            $this->builder = $this->definition();
+        }
         return $this->builder;
     }
 

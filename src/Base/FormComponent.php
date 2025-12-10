@@ -29,8 +29,7 @@ class FormComponent
      */
     public static function text(string $name, $model = null): Input
     {
-        // TODO getValue with enum detection as $model->{$name}
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return new Input($name, 'text', $value);
     }
@@ -42,7 +41,7 @@ class FormComponent
      */
     public static function numeric(string $name, $model = null): Input
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return (new Input($name, 'text', $value))->numeric();
     }
@@ -54,7 +53,7 @@ class FormComponent
      */
     public static function decimal(string $name, $model = null): Input
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return (new Input($name, 'text', $value))->decimal();
     }
@@ -66,7 +65,7 @@ class FormComponent
      */
     public static function password(string $name, $model = null): Input
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return new Input($name, 'password', $value);
     }
@@ -82,7 +81,7 @@ class FormComponent
         $model = null,
         $val = null
     ): Input {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
         if ( ! $value && $val) {
             $value = $val;
         }
@@ -102,11 +101,8 @@ class FormComponent
         ?Collection $options = null,
         $selected_value = null
     ): Select {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
-        if (is_object($value)) {
-            $value = $value->value;
-        }
         if ( ! is_null($selected_value)) {
             if ( ! is_array($selected_value)) {
                 $value = $selected_value;
@@ -150,12 +146,13 @@ class FormComponent
 
     /**
      * Returns simple div container with hidden input.
+     * Great for custom js-based rich text editors.
      *
      * @param  mixed  $model
      */
     public static function container(string $name, $model = null): Container
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return new Container($name, $value);
     }
@@ -167,7 +164,7 @@ class FormComponent
      */
     public static function textarea(string $name, $model = null): Textarea
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return new Textarea($name, $value);
     }
@@ -181,7 +178,7 @@ class FormComponent
      */
     public static function datetime(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return new Datetime($name, 'datetime', $value, $minDate, $maxDate);
     }
@@ -195,7 +192,7 @@ class FormComponent
      */
     public static function time(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
@@ -209,7 +206,7 @@ class FormComponent
      */
     public static function date(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
@@ -224,8 +221,8 @@ class FormComponent
         $from = $name . '_from';
         $to = $name . '_to';
         $values = [
-            'from' => $model->{$from} ?? null,
-            'to' => $model->{$to} ?? null,
+            'from' => self::getValue($from, $model),
+            'to' => self::getValue($to, $model),
         ];
 
         return new Daterange($name, 'date', $values);
@@ -240,7 +237,7 @@ class FormComponent
      */
     public static function birthdate(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
@@ -252,7 +249,7 @@ class FormComponent
      */
     public static function radio(string $name, $model = null): Checkbox
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return new Checkbox($name, 'radio', $value);
     }
@@ -264,7 +261,7 @@ class FormComponent
      */
     public static function checkbox(string $name, $model = null): Checkbox
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return new Checkbox($name, 'checkbox', $value);
     }
@@ -276,7 +273,7 @@ class FormComponent
      */
     public static function switch(string $name, $model = null): Checkbox
     {
-        $value = $model->{$name} ?? null;
+        $value = self::getValue($name, $model);
 
         return new Checkbox($name, 'switch', $value);
     }
@@ -295,5 +292,18 @@ class FormComponent
         }
 
         return new File($name, $value, $accepted_types);
+    }
+
+    protected static function getValue(string $name, $model = null)
+    {
+        $value = $model->{$name} ?? null;
+
+        if($value){
+            if(($value instanceof \UnitEnum) || ($value instanceof \Enumerable\Enum)){
+                $value = $value->value;
+            }
+        }
+
+        return $value;
     }
 }

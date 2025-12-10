@@ -4,13 +4,6 @@ namespace FormForge\Traits;
 
 trait HasAttributes
 {
-    /**
-     * Request datas
-     *
-     * @var array
-     */
-    protected $attributes = [];
-
     public function __set(string $property, $value): void
     {
         $this->setAttribute($property, $value);
