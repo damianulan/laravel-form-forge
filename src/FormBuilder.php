@@ -237,12 +237,6 @@ class FormBuilder
      */
     public function render(): View
     {
-        if(Config::debugging()){
-            if(!$this->action){
-                Log::debug('FormForge '.$this->form.' definition is missing an action parameter.');
-            }
-        }
-
         if (config('formforge.dispatches_events')) {
             FormRendering::dispatch($this->form, $this->method, $this->components);
         }
