@@ -44,7 +44,7 @@ abstract class Form
     /**
      * Provide form components definition returning an instance of FormBuilder.
      */
-    abstract public function definition(): FormBuilder;
+    abstract public function definition(FormBuilder $builder): FormBuilder;
 
     /**
      * Provide laravel validation rules.
@@ -65,7 +65,10 @@ abstract class Form
     public function setDefinition(bool $force = false): static
     {
         if($force || !isset($this->builder)) {
-            $this->builder = $this->definition();
+            $builder = (new FormBuilder())
+                ->setFormName(static::class);
+
+            $this->builder = $this->definition($builder);
         }
 
         return $this;

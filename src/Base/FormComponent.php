@@ -12,6 +12,7 @@ use FormForge\Components\Select;
 use FormForge\Components\Textarea;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * FormComponent to be collected by FormBuilder. Methods return input instructions (a field) and each represents field in form.
@@ -27,9 +28,12 @@ class FormComponent
      *
      * @param  mixed  $model
      */
-    public static function text(string $name, $model = null): Input
+    public static function text(string $name, Model|string|null $default = null): Input
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return new Input($name, 'text', $value);
     }
@@ -39,9 +43,12 @@ class FormComponent
      *
      * @param  mixed  $model
      */
-    public static function numeric(string $name, $model = null): Input
+    public static function numeric(string $name, Model|int|float|string|null $default = null): Input
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return (new Input($name, 'text', $value))->numeric();
     }
@@ -51,9 +58,12 @@ class FormComponent
      *
      * @param  mixed  $model
      */
-    public static function decimal(string $name, $model = null): Input
+    public static function decimal(string $name, Model|float|string|null $default = null): Input
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return (new Input($name, 'text', $value))->decimal();
     }
@@ -63,9 +73,12 @@ class FormComponent
      *
      * @param  mixed  $model
      */
-    public static function password(string $name, $model = null): Input
+    public static function password(string $name, Model|string|null $default = null): Input
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return new Input($name, 'password', $value);
     }
@@ -78,12 +91,11 @@ class FormComponent
      */
     public static function hidden(
         string $name,
-        $model = null,
-        $val = null
+        Model|string|int|null $default = null
     ): Input {
-        $value = self::getValue($name, $model);
-        if ( ! $value && $val) {
-            $value = $val;
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
         }
 
         return new Input($name, 'hidden', $value);
@@ -97,18 +109,12 @@ class FormComponent
      */
     public static function select(
         string $name,
-        $model = null,
+        Model|string|null $default = null,
         ?Collection $options = null,
-        $selected_value = null
     ): Select {
-        $value = self::getValue($name, $model);
-
-        if ( ! is_null($selected_value)) {
-            if ( ! is_array($selected_value)) {
-                $value = $selected_value;
-            } else {
-                $value = reset($selected_value);
-            }
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
         }
 
         return new Select($name, $options, [$value]);
@@ -123,25 +129,22 @@ class FormComponent
      */
     public static function multiselect(
         string $name,
-        $model = null,
-        ?Collection $options = null,
-        $relation = null,
-        $selected_values = []
+        Model|array|Collection|null $default = null,
+        ?Collection $options = null
     ): Select {
         $values = [];
-        if (count($selected_values)) {
-            $values = $selected_values;
+        if($default instanceof Model){
+            $values = self::getObjectValue($name, $default);
         }
-
-        if ($relation && $model && $model->{$relation}) {
-            $values = $model->{$relation}->modelKeys() ?? [];
+        else if($default instanceof Collection){
+            $values = $default->toArray();
         } else {
-            if ($model && empty($selected_values) && isset($model->{$name}) && is_array($model->{$name})) {
-                $values = $model->{$name} ?? [];
+            if($default){
+                $values = $default;
             }
         }
 
-        return (new Select($name, $options, $values))->multiple();
+        return (new Select($name, $options, $values ?? []))->multiple();
     }
 
     /**
@@ -150,9 +153,12 @@ class FormComponent
      *
      * @param  mixed  $model
      */
-    public static function container(string $name, $model = null): Container
+    public static function container(string $name, $default = null): Container
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return new Container($name, $value);
     }
@@ -162,9 +168,12 @@ class FormComponent
      *
      * @param  mixed  $model
      */
-    public static function textarea(string $name, $model = null): Textarea
+    public static function textarea(string $name, Model|string|null $default = null): Textarea
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return new Textarea($name, $value);
     }
@@ -176,9 +185,12 @@ class FormComponent
      * @param  string|null  $minDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      * @param  string|null  $maxDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      */
-    public static function datetime(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
+    public static function datetime(string $name, Model|string|null $default = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return new Datetime($name, 'datetime', $value, $minDate, $maxDate);
     }
@@ -190,9 +202,12 @@ class FormComponent
      * @param  string|null  $minDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      * @param  string|null  $maxDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      */
-    public static function time(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
+    public static function time(string $name, Model|string|null $default = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
@@ -204,9 +219,12 @@ class FormComponent
      * @param  string|null  $minDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      * @param  string|null  $maxDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      */
-    public static function date(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
+    public static function date(string $name, Model|string|null $default = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
@@ -216,14 +234,23 @@ class FormComponent
      *
      * @param  mixed  $model
      */
-    public static function daterange(string $name, $model = null): Daterange
+    public static function daterange(string $name, Model|array|null $default = null): Daterange
     {
         $from = $name . '_from';
         $to = $name . '_to';
-        $values = [
-            'from' => self::getValue($from, $model),
-            'to' => self::getValue($to, $model),
-        ];
+        $values = [];
+        if($default instanceof Model){
+            $values = [
+                'from' => self::getObjectValue($from, $default),
+                'to' => self::getObjectValue($to, $default),
+            ];
+        }
+        else if(is_array($default)){
+            $values = [
+                'from' => $default['from'] ?? null,
+                'to' => $default['to'] ?? null,
+            ];
+        }
 
         return new Daterange($name, 'date', $values);
     }
@@ -235,9 +262,12 @@ class FormComponent
      * @param  string|null  $minDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      * @param  string|null  $maxDate  - format: Y-m-d or Y-m-d H:i:s or H:i:s
      */
-    public static function birthdate(string $name, $model = null, ?string $minDate = null, ?string $maxDate = null): Datetime
+    public static function birthdate(string $name, Model|string|null $default = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return new Datetime($name, __FUNCTION__, $value, $minDate, $maxDate);
     }
@@ -247,9 +277,12 @@ class FormComponent
      *
      * @param  mixed  $model
      */
-    public static function radio(string $name, $model = null): Checkbox
+    public static function radio(string $name, Model|bool|null $default = null): Checkbox
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return new Checkbox($name, 'radio', $value);
     }
@@ -259,9 +292,12 @@ class FormComponent
      *
      * @param  mixed  $model
      */
-    public static function checkbox(string $name, $model = null): Checkbox
+    public static function checkbox(string $name, Model|bool|null $default = null): Checkbox
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return new Checkbox($name, 'checkbox', $value);
     }
@@ -271,9 +307,12 @@ class FormComponent
      *
      * @param  mixed  $model
      */
-    public static function switch(string $name, $model = null): Checkbox
+    public static function switch(string $name, Model|bool|null $default = null): Checkbox
     {
-        $value = self::getValue($name, $model);
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
 
         return new Checkbox($name, 'switch', $value);
     }
@@ -294,7 +333,7 @@ class FormComponent
         return new File($name, $value, $accepted_types);
     }
 
-    protected static function getValue(string $name, $model = null)
+    protected static function getObjectValue(string $name, ?Model $model = null)
     {
         $value = $model->{$name} ?? null;
 

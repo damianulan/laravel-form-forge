@@ -4,10 +4,7 @@ namespace FormForge;
 
 use Closure;
 use FormForge\Base\ForgeTemplate;
-use FormForge\Base\Form;
 use FormForge\Components\Button;
-use FormForge\Components\ForgeComponent;
-use FormForge\Components\ForgeSection;
 use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
@@ -16,6 +13,7 @@ use FormForge\Support\ComponentCollection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
+use FormForge\Components\ForgeComponent;
 
 /**
  * Collects components to render bootstrap form.
@@ -29,9 +27,9 @@ class FormBuilder
     public ?Button $submit = null;
 
     /**
-     * Form id
+     * Form html id
      */
-    private ?string $id;
+    private string $id;
 
     private ?string $title;
 
@@ -56,41 +54,13 @@ class FormBuilder
 
     /**
      * Form internal constructor - in order to call FormBuilder instance use FormBuilder::boot() method instead.
-     *
-     * @param  string  $method  - as of 'POST', 'PUT', 'GET', 'DELETE' etc.
-     * @param  string|null  $action  - leave empty if you want to use the form in AJAX
-     * @param  string|null  $id  - form html id
-     * @return FormBuilder
      */
-    public function __construct(string $method, ?string $action = null, ?string $id = null)
+    public function __construct()
     {
         $this->components = new ComponentCollection();
-        $this->method = Str::upper($method);
-        $this->action = $action;
-        $this->id = $id ?? Str::random(10);
+        $this->method = 'POST';
+        $this->id = Str::random(10);
         $this->template = ForgeTemplate::get(config('formforge.default'));
-        $this->validate();
-
-        if(Config::debugging()){
-            if(!$this->action){
-                Log::debug('FormForge '.$this->form.' definition is missing an action parameter.');
-            }
-        }
-    }
-
-    /**
-     * Form constructor
-     *
-     * @param  string  $method  - as of 'POST', 'PUT', 'GET', 'DELETE' etc.
-     * @param  string|null  $action  - leave empty if you want to use the form in AJAX
-     * @param  string|null  $id  - form's html id
-     */
-    public static function boot(?string $method = null, ?string $action = null, ?string $id = null): self
-    {
-        if(!$method) {
-            $method = 'POST';
-        }
-        return new self($method, $action, $id);
     }
 
     /**
@@ -103,6 +73,80 @@ class FormBuilder
         if ( ! empty($classes)) {
             foreach ($classes as $class) {
                 $this->classes[] = $class;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set HTML form id
+     *
+     * @param string $id
+     * @return self
+     */
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * Set form method
+     *
+     * @param string $method
+     * @return self
+     */
+    public function setMethod(string $method): self
+    {
+        $method = Str::upper($method);
+
+        if(!in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])){
+            throw new InvalidFormMethod($method);
+        }
+        $this->method = $method;
+        return $this;
+    }
+
+    public function setAction(string $action): self
+    {
+        $this->action = $action;
+        return $this;
+    }
+
+    /**
+     * Change default template for the form.
+     */
+    public function setTemplate(string $template): self
+    {
+        $instance = ForgeTemplate::get($template);
+
+        $this->template = $instance ?? $this->template;
+
+        return $this;
+    }
+
+    /**
+     * Add basic HTML form submit button.
+     * When clicked, it executes form validation and submits the form.
+     */
+    public function addSubmit(string $class = 'btn-primary'): self
+    {
+        $this->submit = new Button(__('formforge::components.buttons.save'), 'submit', null, $class);
+
+        return $this;
+    }
+
+    /**
+     * Add button at the bottom of the form.
+     */
+    public function addButton(Button $button): self
+    {
+        if ($button) {
+            if ($button->isSubmit()) {
+                $this->submit = $button;
+            } else {
+                $this->buttons[$button->title] = $button;
             }
         }
 
@@ -127,7 +171,7 @@ class FormBuilder
      */
     public function addSection(string $title, Closure $callback): self
     {
-        $fb = $callback(new FormBuilder($this->method, $this->action, $this->id));
+        $fb = $callback(new FormBuilder($this->request, $this->method, $this->action, $this->id));
 
         $section = new ForgeSection($title, $fb);
 
@@ -136,54 +180,6 @@ class FormBuilder
         return $this;
     }
 
-    /**
-     * Add button at the bottom of the form.
-     */
-    public function addButton(Button $button): self
-    {
-        if ($button) {
-            if ($button->isSubmit()) {
-                $this->submit = $button;
-            } else {
-                $this->buttons[$button->title] = $button;
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove added input component from the form.
-     */
-    public function remove(string $name): self
-    {
-        $this->components->forget($name);
-
-        return $this;
-    }
-
-    /**
-     * Change default template for the form.
-     */
-    public function template(string $template): self
-    {
-        $instance = ForgeTemplate::get($template);
-
-        $this->template = $instance ?? $this->template;
-
-        return $this;
-    }
-
-    /**
-     * Add basic HTML form submit button.
-     * When clicked, it executes form validation and submits the form.
-     */
-    public function addSubmit(string $class = 'btn-primary'): self
-    {
-        $this->submit = new Button(__('formforge::components.buttons.save'), 'submit', null, $class);
-
-        return $this;
-    }
 
     /**
      * Allows to modify your FormBuilder instance based on given condition.
@@ -221,7 +217,7 @@ class FormBuilder
     /**
      * Add form header.
      */
-    public function addTitle(string $title): self
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -241,6 +237,12 @@ class FormBuilder
      */
     public function render(): View
     {
+        if(Config::debugging()){
+            if(!$this->action){
+                Log::debug('FormForge '.$this->form.' definition is missing an action parameter.');
+            }
+        }
+
         if (config('formforge.dispatches_events')) {
             FormRendering::dispatch($this->form, $this->method, $this->components);
         }
@@ -275,23 +277,10 @@ class FormBuilder
         return $this->form;
     }
 
-    /**
-     * Detect form object
-     */
-    private function validate(): void
+    public function setFormName(string $class): self
     {
-        // backtrace callable Form source
-        // in order to locate authorization method
-        $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 4);
-        $namespace = $trace[3]['class'];
-
-        // check source
-        $instance = new $namespace();
-        if ( ! ($instance instanceof Form)) {
-            $this->throwUnauthorized();
-        }
-
-        $this->form = $namespace;
+        $this->form = $class;
+        return $this;
     }
 
     private function getClasses()

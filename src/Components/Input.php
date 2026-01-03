@@ -18,7 +18,7 @@ class Input extends ForgeComponent
 
     public string $numeric_type = 'integer';
 
-    public function __construct(string $name, string $type, ?string $value)
+    public function __construct(string $name, string $type, ?string $value = null)
     {
         $this->name = empty($name) ? null : $name;
         $this->type = empty($type) ? null : $type;

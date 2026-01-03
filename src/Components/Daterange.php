@@ -18,8 +18,8 @@ class Daterange extends ForgeComponent
     {
         $this->name = empty($name) ? null : $name;
         $this->components = [
-            (new Datetime($name . '_from', $type, $values['from']))->placeholder(__('formforge::forms.placeholders.choose_daterange_from')),
-            (new Datetime($name . '_to', $type, $values['to']))->placeholder(__('formforge::forms.placeholders.choose_daterange_to')),
+            (new Datetime($name . '_from', $type, $values['from'] ?? null))->placeholder(__('formforge::forms.placeholders.choose_daterange_from')),
+            (new Datetime($name . '_to', $type, $values['to'] ?? null))->placeholder(__('formforge::forms.placeholders.choose_daterange_to')),
         ];
     }
 
