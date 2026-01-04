@@ -12,7 +12,6 @@ use FormForge\Helpers\Config;
 use FormForge\Support\ComponentCollection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\Log;
 use FormForge\Components\ForgeComponent;
 
 /**
@@ -31,11 +30,11 @@ class FormBuilder
      */
     private string $id;
 
-    private ?string $title;
+    private ?string $title = null;
 
     private string $method;
 
-    private ?string $action;
+    private ?string $action = null;
 
     private string $template;
 
@@ -271,12 +270,23 @@ class FormBuilder
         return $this->form;
     }
 
+    /**
+     * Register static class name for this instance.
+     *
+     * @param string $class
+     * @return self
+     */
     public function setFormName(string $class): self
     {
         $this->form = $class;
         return $this;
     }
 
+    /**
+     * Get HTML classlist
+     *
+     * @return void
+     */
     private function getClasses()
     {
         return empty($this->classes) ? null : implode(' ', $this->classes);

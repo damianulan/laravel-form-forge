@@ -7,6 +7,8 @@ use FormForge\FormBuilder;
 use FormForge\Traits\RequestMutators;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request as RequestFacade;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Validator as ValidatorInstance;
 
@@ -51,6 +53,49 @@ abstract class Form
      */
     abstract public function validation(): array;
 
+    /**
+     * Boot with attributes located in the request
+     *
+     * @param \Illuminate\Http\Request|null $request
+     * @return static
+     */
+    public static function bootWithRequest(? Request $request = null): static
+    {
+        $inputs = [];
+        if($request){
+            $inputs = $request->all();
+        }
+        else {
+            $inputs = RequestFacade::all();
+        }
+
+        return (new static())->boot()->mutate($inputs)->setDefinition()->booted();
+    }
+
+    /**
+     * Boot with attributes passed in an assoc array.
+     *
+     * @param array $attributes
+     * @return static
+     */
+    public static function bootWithAttributes(array $attributes = []): static
+    {
+        return (new static())->boot()->mutate($attributes)->setDefinition()->booted();
+    }
+
+    /**
+     * Boot with attributes from a model.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @return static
+     */
+    public static function bootWithModel(Model $model): static
+    {
+        $instance = (new static())->boot();
+        $instance->model = $model;
+        return $instance->mutate($model->toArray())->setDefinition()->booted();
+    }
+
     public function boot(): static
     {
         return $this;
@@ -74,6 +119,12 @@ abstract class Form
         return $this;
     }
 
+    /**
+     * Set model to form instance. This method gets all model's attributes and assigns them to this form instance as its own attributes.
+     *
+     * @param \Illuminate\Database\Eloquent\Model|null $model
+     * @return static
+     */
     public function setModel(?Model $model = null): static
     {
         if($model){
@@ -159,7 +210,7 @@ abstract class Form
     public function getDefinition(): FormBuilder
     {
         if(!isset($this->builder)){
-            $this->builder = $this->definition();
+            $this->builder = $this->definition(new FormBuilder);
         }
         return $this->builder;
     }
