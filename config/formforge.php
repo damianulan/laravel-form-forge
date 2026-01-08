@@ -47,11 +47,17 @@ return [
      * If you need to fill your form request model instance with personstamps,
      * declare columns to fill with Auth::user()->id automatically.
      * Remember to also keep them in your model's $fillable array.
+     *
+     * You can add personstamps to your tables when migrating: `$table->personstamps();`
      */
     'personstamps' => [
-        'created_by',
-        'updated_by',
-        'deleted_by',
+        'fields' => [
+            'created_by',
+            'updated_by',
+            'deleted_by',
+        ],
+        'type' => 'integer',
+        'table' => 'users', // set null if you don't want to index when calling $table->personstamps() in your migrations
     ],
 
 ];

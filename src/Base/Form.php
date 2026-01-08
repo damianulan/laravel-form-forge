@@ -84,7 +84,7 @@ abstract class Form
     }
 
     /**
-     * Boot with attributes from a model.
+     * Boot with attributes from a model and current request attributes in that order.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      * @return static
@@ -93,7 +93,10 @@ abstract class Form
     {
         $instance = (new static())->boot();
         $instance->model = $model;
-        return $instance->mutate($model->toArray())->setDefinition()->booted();
+        return $instance->mutate($model->toArray())
+                        ->mutate(RequestFacade::all(), true)
+                        ->setDefinition()
+                        ->booted();
     }
 
     public function boot(): static
@@ -121,6 +124,7 @@ abstract class Form
 
     /**
      * Set model to form instance. This method gets all model's attributes and assigns them to this form instance as its own attributes.
+     * It does not override existing attributes assigned with request nor else.
      *
      * @param \Illuminate\Database\Eloquent\Model|null $model
      * @return static

@@ -6,6 +6,62 @@
 
 Form forge is a form builder package for Laravel. It allows you to create forms with a simple and intuitive interface. FormForge provides Model autofill and laravel validation support.
 
+## Getting Started
+
+### Installation
+
+You can install the package via composer in your laravel project:
+
+```
+composer require damianulan/laravel-form-forge
+```
+
+The package will automatically register itself.
+
+Next step is to publish necessary vendor assets.
+
+```
+php artisan vendor:publish --tag=formforge
+```
+
+Optionally you can publish all other assets (for modification purposes).
+
+```
+php artisan vendor:publish --tag=formforge-langs
+php artisan vendor:publish --tag=formforge-views
+```
+
+### Resources
+
+After publishing vendor assets, resource files will be available in `resources/vendor/formforge` directory. In order for package to work properly, please include `@import` base style file `_formforge.scss` in your projects main scss file and then rerun your npm build process.
+Check out `_variables.scss` file to see what variables are available for customization.
+
+To properly include package scripts, just add `@formForgeScripts` to your footer before main js bundle file.
+
+```html
+@formForgeScripts
+<script src="{{ asset('themes/js/app.js') }}"></script>
+```
+But if you want to make some changes in package scripts, in your js bundle attach script files from `resources/vendor/formforge/js` directory. You will then need to install dependent packages like `popper.js` and `flatpickr` manually.
+
+Before declaring form forge scripts, you need to declare global variables.
+```js
+    const choose = '{{ __('Choose results') }}';
+    const no_results = '{{ __('No results found') }}';
+
+    const datetime_format = '{{ __('Y-m-d H:i:s') }}';
+    const time_format = '{{ __('Y-m-d') }}';
+    const date_format = '{{ __('H:i') }}';
+```
+
+### Upgrading
+
+When upgrading to new version, remember to manually update package resources. Please run after `composer update` command, when upgrading this package, in order to overwrite package resources:
+
+```
+php artisan vendor:publish --tag=formforge-resources --force
+```
+
 ### Usage & Examples
 
 Create a class with your form definition. You need only one definition for both creating and editing operations.
@@ -69,62 +125,6 @@ public function update(Request $request, $id, CampaignEditForm $form)
 ```
 
 See [EXAMPLES](docs/EXAMPLES.md) documentation for more examples containing full process of form creation.
-
-## Getting Started
-
-### Installation
-
-You can install the package via composer in your laravel project:
-
-```
-composer require damianulan/laravel-form-forge
-```
-
-The package will automatically register itself.
-
-Next step is to publish necessary vendor assets.
-
-```
-php artisan vendor:publish --tag=formforge
-```
-
-Optionally you can publish all other assets (for modification purposes).
-
-```
-php artisan vendor:publish --tag=formforge-langs
-php artisan vendor:publish --tag=formforge-views
-```
-
-### Resources
-
-After publishing vendor assets, resource files will be available in `resources/vendor/formforge` directory. In order for package to work properly, please include `@import` base style file `_formforge.scss` in your projects main scss file and then rerun your npm build process.
-Check out `_variables.scss` file to see what variables are available for customization.
-
-To properly include package scripts, just add `@formForgeScripts` to your footer before main js bundle file.
-
-```html
-@formForgeScripts
-<script src="{{ asset('themes/js/app.js') }}"></script>
-```
-But if you want to make some changes in package scripts, in your js bundle attach script files from `resources/vendor/formforge/js` directory. You will then need to install dependent packages like `popper.js` and `flatpickr` manually.
-
-Before declaring form forge scripts, you need to declare global variables.
-```js
-    const choose = '{{ __('Choose results') }}';
-    const no_results = '{{ __('No results found') }}';
-
-    const datetime_format = '{{ __('Y-m-d H:i:s') }}';
-    const time_format = '{{ __('Y-m-d') }}';
-    const date_format = '{{ __('H:i') }}';
-```
-
-### Upgrading
-
-When upgrading to new version, remember to manually update package resources. Please run after `composer update` command, when upgrading this package, in order to overwrite package resources:
-
-```
-php artisan vendor:publish --tag=formforge-resources --force
-```
 
 ### Localization
 

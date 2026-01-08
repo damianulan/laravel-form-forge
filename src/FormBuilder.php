@@ -155,7 +155,7 @@ class FormBuilder
     /**
      * Add new input component to the form.
      */
-    public function add(ForgeComponent $component, ?Closure $condition = null): self
+    public function add(?ForgeComponent $component, ?Closure $condition = null): self
     {
         $cond = is_null($condition) || $condition() ? true : false;
         if ($component && true === $component->show && $cond) {

@@ -5,6 +5,7 @@ namespace FormForge\Traits;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request as RequestFacade;
 
 /**
  * Use this trait in your model to be able to automatically fill it based on request data.
@@ -24,19 +25,26 @@ trait RequestForms
     protected $storagePath = 'uploads';
 
     /**
-     * Retrieve model data from request
+     * Retrieves model attributes from request and assigns them to the instance.
      *
      * @param  mixed  $id
      */
-    public static function fillFromRequest(Request $request, $id = null): static
+    public static function fillFromRequest($modelKey = null, ?Request $request = null): static
     {
         $instance = null;
-        if (is_null($id)) {
+        if (is_null($modelKey)) {
             $instance = new static();
         } else {
-            $instance = static::find($id);
+            $instance = static::find($modelKey);
         }
-        foreach ($request->all() as $property => $value) {
+        $inputs = array();
+        if ($request) {
+            $inputs = $request->all();
+        } else {
+            $inputs = RequestFacade::all();
+        }
+
+        foreach ($inputs as $property => $value) {
             if (in_array($property, $instance->fillable)) {
                 // FILE
                 if ($value instanceof UploadedFile) {
@@ -75,11 +83,11 @@ trait RequestForms
             }
         }
 
-        $personstamps = config('formforge.personstamps');
+        $personstamps = config('formforge.personstamps.fields');
 
         if ($personstamps && ! empty($personstamps)) {
             foreach ($personstamps as $property) {
-                if (in_array('property', $instance->fillable)) {
+                if (in_array('property', $instance->fillable) || empty($instance->fillable)) {
                     $instance->property = Auth::user()->id;
                 }
             }

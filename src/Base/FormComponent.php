@@ -102,6 +102,28 @@ class FormComponent
     }
 
     /**
+     * Returns hidden input best for.
+     * If value is empty, it will not be rendered.
+     *
+     * @param  mixed  $model
+     * @param  mixed  $val
+     */
+    public static function hiddenId(
+        string $name = 'id',
+        Model|string|int|null $default = null
+    ): ?Input {
+        $value = $default;
+        if($default instanceof Model){
+            $value = self::getObjectValue($name, $default);
+        }
+        if(!empty($value)){
+            return new Input($name, 'hidden', $value);
+        }
+
+        return null;
+    }
+
+    /**
      * Returns single select type instruction pregenerated with chosen.js.
      *
      * @param  mixed  $model

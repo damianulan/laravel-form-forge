@@ -7,6 +7,7 @@ use FormForge\Commands\FormMakeCommand;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
+use FormForge\MacroFactory;
 
 /**
  * @author Damian Ułan <damian.ulan@protonmail.com>
@@ -64,6 +65,7 @@ class FormForgeServiceProvider extends ServiceProvider
         ]);
 
         $this->registerBladeDirectives();
+        MacroFactory::load();
     }
 
     public function registerBladeDirectives(): void
