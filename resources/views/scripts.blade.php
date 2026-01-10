@@ -6,4 +6,3 @@
     const time_format = '{{ config('formforge.time_format') }}';
     const datetime_format = '{{ config('formforge.datetime_format') }}';
 </script>
-<script src="{{ url('js/formforge.js') }}"></script>

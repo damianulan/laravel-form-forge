@@ -22,8 +22,6 @@ class FormForgeServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/formforge.php', 'formforge');
-        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
-
         $this->app->resolving(Form::class, fn (Form $form) => $form->boot()->mutate(Request::all())->setDefinition()->booted());
     }
 

@@ -16,7 +16,7 @@ class ForgeTemplate
         $templates = config('formforge.templates');
 
         if ( ! in_array($template, array_keys($templates))) {
-            throw new TemplateNotExists();
+            throw new TemplateNotExists($template);
         }
 
         return $templates;

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Request as RequestFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Validator as ValidatorInstance;
+use FormForge\Helpers\Config;
 
 /**
  * Base class for full Form template.
