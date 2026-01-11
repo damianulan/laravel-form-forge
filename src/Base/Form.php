@@ -77,12 +77,13 @@ abstract class Form
      * Boot with attributes passed in an assoc array and current request attributes in that order.
      *
      * @param array $attributes
+     * @param bool $withRequest - take request inputs under account
      * @return static
      */
-    public static function bootWithAttributes(array $attributes = []): static
+    public static function bootWithAttributes(array $attributes = [], bool $withRequest = true): static
     {
         return (new static())->boot()->mutate($attributes)
-                        ->mutate(RequestFacade::all(), true)
+                        ->mutate($withRequest ? RequestFacade::all():[], true)
                         ->setDefinition()
                         ->booted();
     }
@@ -91,14 +92,15 @@ abstract class Form
      * Boot with attributes from a model and current request attributes in that order.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
+     * @param bool $withRequest - take request inputs under account
      * @return static
      */
-    public static function bootWithModel(Model $model): static
+    public static function bootWithModel(Model $model, bool $withRequest = true): static
     {
         $instance = (new static())->boot();
         $instance->model = $model;
         return $instance->mutate($model->toArray())
-                        ->mutate(RequestFacade::all(), true)
+                        ->mutate($withRequest ? RequestFacade::all():[], true)
                         ->setDefinition()
                         ->booted();
     }
