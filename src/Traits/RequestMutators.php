@@ -39,10 +39,10 @@ trait RequestMutators
             }
         } elseif (is_string($input) && self::isEUFloat($input)) {
             $input = str_replace(',', '.', $input);
-        } elseif (in_array($input, ['on', 'off'])) {
-            $input = 'on' === $input ? true : false;
+        } elseif (in_array($input, ['on', 'off'], true)) {
+            $input = ('on' === $input) ? true : false;
         } else {
-            if (empty($input)) {
+            if (empty($input) && $input !== 0 && $input !== false) {
                 if (is_array($input)) {
                     $input = [];
                 } else {
