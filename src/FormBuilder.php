@@ -8,7 +8,7 @@ use FormForge\Components\Button;
 use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
-use FormForge\Helpers\Config;
+use FormForge\Components\ForgeSection;
 use FormForge\Support\ComponentCollection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -60,6 +60,15 @@ class FormBuilder
         $this->method = 'POST';
         $this->id = Str::random(10);
         $this->template = ForgeTemplate::get(config('formforge.default'));
+    }
+
+    protected static function recreate(self $instance): self
+    {
+        $new = new static();
+        $new->id = $instance->id;
+        $new->action = $instance->action;
+
+        return $new;
     }
 
     /**
@@ -170,7 +179,7 @@ class FormBuilder
      */
     public function addSection(string $title, Closure $callback): self
     {
-        $fb = $callback(new FormBuilder($this->request, $this->method, $this->action, $this->id));
+        $fb = $callback(self::recreate($this));
 
         $section = new ForgeSection($title, $fb);
 
