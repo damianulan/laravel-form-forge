@@ -74,14 +74,17 @@ abstract class Form
     }
 
     /**
-     * Boot with attributes passed in an assoc array.
+     * Boot with attributes passed in an assoc array and current request attributes in that order.
      *
      * @param array $attributes
      * @return static
      */
     public static function bootWithAttributes(array $attributes = []): static
     {
-        return (new static())->boot()->mutate($attributes)->setDefinition()->booted();
+        return (new static())->boot()->mutate($attributes)
+                        ->mutate(RequestFacade::all(), true)
+                        ->setDefinition()
+                        ->booted();
     }
 
     /**
