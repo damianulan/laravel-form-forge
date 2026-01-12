@@ -62,6 +62,7 @@ class FormForgeServiceProvider extends ServiceProvider
             FormMakeCommand::class,
         ]);
 
+        $this->overridePurifierConfig();
         $this->registerBladeDirectives();
         MacroFactory::load();
     }
@@ -69,5 +70,16 @@ class FormForgeServiceProvider extends ServiceProvider
     public function registerBladeDirectives(): void
     {
         Blade::directive('formForgeScripts', fn () => view('formforge::scripts'));
+    }
+
+    public function overridePurifierConfig(): void
+    {
+        $settings = array_merge(config('purifier.settings'), array(
+            'formforge_config' => config('formforge.mews_purifier_setting'),
+        ));
+
+        config(array(
+            'purifier.settings' => $settings,
+        ));
     }
 }
