@@ -1,6 +1,6 @@
 <?php
 
-namespace FormForge\Support;
+namespace FormForge\Support\Collections;
 
 use FormForge\Components\ForgeComponent;
 use FormForge\Components\ForgeSection;

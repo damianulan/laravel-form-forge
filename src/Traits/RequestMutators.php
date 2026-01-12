@@ -6,19 +6,6 @@ use Carbon\Carbon;
 
 trait RequestMutators
 {
-    use HasAttributes;
-
-    public function mutate(array $attributes = [], $override = false): static
-    {
-        foreach ($attributes as $property => $value) {
-            if ( ! $override || ! $this->hasAttribute($property)) {
-                $this->setAttribute($property, $value);
-            }
-        }
-
-        return $this;
-    }
-
     public function setAttribute(string $property, $value): void
     {
         if (empty($this->fillable) || in_array($property, $this->fillable)) {

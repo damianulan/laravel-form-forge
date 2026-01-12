@@ -3,7 +3,7 @@
 namespace FormForge\Components;
 
 use Closure;
-use FormForge\Traits\HasAttributes;
+use FormForge\Support\Dtos\Dto;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use ReflectionClass;
@@ -14,10 +14,8 @@ use ReflectionClass;
  * @author Damian Ułan <damian.ulan@protonmail.com>
  * @copyright 2025
  */
-abstract class ForgeComponent
+abstract class ForgeComponent extends Dto
 {
-    use HasAttributes;
-
     protected $attributes = [];
 
     protected $fillable = [];

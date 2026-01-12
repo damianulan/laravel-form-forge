@@ -9,7 +9,7 @@ use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
 use FormForge\Components\ForgeSection;
-use FormForge\Support\ComponentCollection;
+use FormForge\Support\Collections\ComponentCollection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use FormForge\Components\ForgeComponent;

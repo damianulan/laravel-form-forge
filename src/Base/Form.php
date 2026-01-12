@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Validator as ValidatorInstance;
 use FormForge\Helpers\Config;
+use FormForge\Support\Dtos\Dto;
 
 /**
  * Base class for full Form template.
@@ -20,13 +21,9 @@ use FormForge\Helpers\Config;
  * @copyright 2025 damianulan
  * @license MIT
  */
-abstract class Form
+abstract class Form extends Dto
 {
     use RequestMutators;
-
-    protected $attributes = [];
-
-    protected $fillable = [];
 
     protected FormBuilder $builder;
 
@@ -70,7 +67,7 @@ abstract class Form
             $inputs = RequestFacade::all();
         }
 
-        return (new static())->boot()->mutate($inputs)->setDefinition()->booted();
+        return (new static())->boot()->fill($inputs)->setDefinition()->booted();
     }
 
     /**
@@ -82,8 +79,8 @@ abstract class Form
      */
     public static function bootWithAttributes(array $attributes = [], bool $withRequest = true): static
     {
-        return (new static())->boot()->mutate($attributes)
-                        ->mutate($withRequest ? RequestFacade::all():[], true)
+        return (new static())->boot()->fill($attributes)
+                        ->fill($withRequest ? RequestFacade::all():[], true)
                         ->setDefinition()
                         ->booted();
     }
@@ -99,8 +96,8 @@ abstract class Form
     {
         $instance = (new static())->boot();
         $instance->model = $model;
-        return $instance->mutate($model->toArray())
-                        ->mutate($withRequest ? RequestFacade::all():[], true)
+        return $instance->fill($model->toArray())
+                        ->fill($withRequest ? RequestFacade::all():[], true)
                         ->setDefinition()
                         ->booted();
     }
@@ -139,7 +136,7 @@ abstract class Form
     {
         if($model){
             $this->model = $model;
-            return $this->mutate($model->toArray())->setDefinition(true);
+            return $this->fill($model->toArray())->setDefinition(true);
         }
 
         return $this;
