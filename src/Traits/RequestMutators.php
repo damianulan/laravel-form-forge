@@ -3,6 +3,7 @@
 namespace FormForge\Traits;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 trait RequestMutators
 {
@@ -21,13 +22,19 @@ trait RequestMutators
     protected function reformatInput(string $property, $input)
     {
         if (is_string($input) && self::isDate($input)) {
-            if (str_contains($property, '_from') || str_contains($property, '_to')) {
+            if (Str::contains($property, '_from') || Str::contains($property, '_to')) {
                 $input = self::formatDateSpan($property, $input);
             }
-        } elseif (is_string($input) && self::isEUFloat($input)) {
+        } elseif (is_string($input) && is_numeric($input) && self::isEUFloat($input)) {
             $input = str_replace(',', '.', $input);
         } elseif (in_array($input, ['on', 'off'], true)) {
             $input = ('on' === $input) ? true : false;
+        } elseif (is_string($input) && is_numeric($input)) {
+            if(Str::contains($input, '.')){
+                $input = floatval($input);
+            } else {
+                $input = intval($input);
+            }
         } else {
             if (empty($input) && $input !== 0 && $input !== false) {
                 if (is_array($input)) {
