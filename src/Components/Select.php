@@ -26,12 +26,13 @@ class Select extends ForgeComponent
             $this->values = $selected_values;
         }
         $this->options = $options;
+        $this->classes[] = 'formforge-control';
     }
 
     public function multiple()
     {
         $this->multiple = true;
-        $this->classes[] = 'formforge-control select-multiple';
+        $this->classes[] = 'select-multiple';
 
         return $this;
     }
