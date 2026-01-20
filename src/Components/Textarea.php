@@ -18,9 +18,10 @@ class Textarea extends ForgeComponent
     {
         $this->name = empty($name) ? null : $name;
         $this->value = $value;
-        if (request()->old($name) !== null) {
+        if (null !== request()->old($name)) {
             $this->value = request()->old($name);
         }
+        $this->purifyValue();
         $this->classes[] = 'form-control';
         $this->classes[] = 'formforge-control';
         $this->classes[] = 'formforge-textarea';

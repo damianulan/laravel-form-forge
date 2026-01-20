@@ -28,6 +28,7 @@ trait RequestForms
      * Retrieves model attributes from request and assigns them to the instance.
      *
      * @param  mixed  $id
+     * @param  null|mixed  $modelKey
      */
     public static function fillFromRequest($modelKey = null, ?Request $request = null): static
     {
@@ -37,7 +38,7 @@ trait RequestForms
         } else {
             $instance = static::find($modelKey);
         }
-        $inputs = array();
+        $inputs = [];
         if ($request) {
             $inputs = $request->all();
         } else {
@@ -71,8 +72,8 @@ trait RequestForms
                     $instance->{$property} = $value;
                 }
 
-                if(in_array($value, ['on', 'off'])){
-                    $value = $value === 'on' ? 1:0;
+                if (in_array($value, ['on', 'off'])) {
+                    $value = 'on' === $value ? 1 : 0;
                 }
 
                 if (isset($instance->casts, $instance->casts[$property])) {

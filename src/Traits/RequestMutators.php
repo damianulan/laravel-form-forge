@@ -3,22 +3,10 @@
 namespace FormForge\Traits;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 trait RequestMutators
 {
-    use HasAttributes;
-
-    public function mutate(array $attributes = [], $override = false): static
-    {
-        foreach ($attributes as $property => $value) {
-            if ( ! $override || ! $this->hasAttribute($property)) {
-                $this->setAttribute($property, $value);
-            }
-        }
-
-        return $this;
-    }
-
     public function setAttribute(string $property, $value): void
     {
         if (empty($this->fillable) || in_array($property, $this->fillable)) {
@@ -34,15 +22,21 @@ trait RequestMutators
     protected function reformatInput(string $property, $input)
     {
         if (is_string($input) && self::isDate($input)) {
-            if (str_contains($property, '_from') || str_contains($property, '_to')) {
+            if (Str::contains($property, '_from') || Str::contains($property, '_to')) {
                 $input = self::formatDateSpan($property, $input);
             }
-        } elseif (is_string($input) && self::isEUFloat($input)) {
+        } elseif (is_string($input) && is_numeric($input) && self::isEUFloat($input)) {
             $input = str_replace(',', '.', $input);
-        } elseif (in_array($input, ['on', 'off'])) {
-            $input = 'on' === $input ? true : false;
+        } elseif (in_array($input, ['on', 'off'], true)) {
+            $input = ('on' === $input) ? true : false;
+        } elseif (is_string($input) && is_numeric($input)) {
+            if (Str::contains($input, '.')) {
+                $input = (float) $input;
+            } else {
+                $input = (int) $input;
+            }
         } else {
-            if (empty($input)) {
+            if (empty($input) && 0 !== $input && false !== $input) {
                 if (is_array($input)) {
                     $input = [];
                 } else {

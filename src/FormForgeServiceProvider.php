@@ -7,7 +7,6 @@ use FormForge\Commands\FormMakeCommand;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
-use FormForge\MacroFactory;
 
 /**
  * @author Damian Ułan <damian.ulan@protonmail.com>
@@ -22,7 +21,7 @@ class FormForgeServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/formforge.php', 'formforge');
-        $this->app->resolving(Form::class, fn (Form $form) => $form->boot()->mutate(Request::all())->setDefinition()->booted());
+        $this->app->resolving(Form::class, fn (Form $form) => $form->boot()->fill(Request::all())->setDefinition()->booted());
     }
 
     /**
@@ -62,6 +61,7 @@ class FormForgeServiceProvider extends ServiceProvider
             FormMakeCommand::class,
         ]);
 
+        $this->overridePurifierConfig();
         $this->registerBladeDirectives();
         MacroFactory::load();
     }
@@ -69,5 +69,16 @@ class FormForgeServiceProvider extends ServiceProvider
     public function registerBladeDirectives(): void
     {
         Blade::directive('formForgeScripts', fn () => view('formforge::scripts'));
+    }
+
+    public function overridePurifierConfig(): void
+    {
+        $settings = array_merge(config('purifier.settings'), [
+            'formforge_config' => config('formforge.mews_purifier_setting'),
+        ]);
+
+        config([
+            'purifier.settings' => $settings,
+        ]);
     }
 }

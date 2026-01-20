@@ -3,7 +3,7 @@
 namespace FormForge\Components;
 
 use FormForge\FormBuilder;
-use FormForge\Support\ComponentCollection;
+use FormForge\Support\Collections\ComponentCollection;
 use Illuminate\Support\Str;
 
 class ForgeSection

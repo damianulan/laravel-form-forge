@@ -1,9 +1,13 @@
 <?php
 
-namespace FormForge\Traits;
+namespace FormForge\Support\Dtos;
 
-trait HasAttributes
+abstract class Dto
 {
+    protected $attributes = [];
+
+    protected $fillable = [];
+
     public function __set(string $property, $value): void
     {
         $this->setAttribute($property, $value);
@@ -26,6 +30,17 @@ trait HasAttributes
         }
     }
 
+    public function fill(array $attributes = [], $override = false): static
+    {
+        foreach ($attributes as $property => $value) {
+            if ( ! $override || ! $this->hasAttribute($property)) {
+                $this->setAttribute($property, $value);
+            }
+        }
+
+        return $this;
+    }
+
     public function setAttribute(string $property, $value): void
     {
         if (empty($this->fillable) || in_array($property, $this->fillable)) {
@@ -45,8 +60,6 @@ trait HasAttributes
 
     /**
      * Gets all attributes.
-     *
-     * @return array
      */
     public function all(): array
     {

@@ -3,7 +3,7 @@
 namespace FormForge\Components;
 
 use Closure;
-use FormForge\Traits\HasAttributes;
+use FormForge\Support\Dtos\Dto;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use ReflectionClass;
@@ -14,14 +14,8 @@ use ReflectionClass;
  * @author Damian Ułan <damian.ulan@protonmail.com>
  * @copyright 2025
  */
-abstract class ForgeComponent
+abstract class ForgeComponent extends Dto
 {
-    use HasAttributes;
-
-    protected $attributes = [];
-
-    protected $fillable = [];
-
     public string $name;
 
     public string $type;
@@ -39,6 +33,10 @@ abstract class ForgeComponent
     public $readonly = false;
 
     public $show = true;
+
+    protected $attributes = [];
+
+    protected $fillable = [];
 
     /**
      * Renders the html representation of the Component.
@@ -102,6 +100,18 @@ abstract class ForgeComponent
     public function value(string $value): static
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Clean HTML input value with purifier, leaving only safe HTML.
+     */
+    public function purifyValue(): void
+    {
+        if ( ! empty($this->value)) {
+            $this->value = purify_html($this->value);
+        }
 
         return $this;
     }

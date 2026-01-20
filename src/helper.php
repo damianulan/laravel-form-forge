@@ -1,12 +1,19 @@
 <?php
 
-if(!function_exists('clean_html')){
-    function clean_html(?string $input): string
+use Mews\Purifier\Facades\Purifier;
+
+if ( ! function_exists('purify_html')) {
+
+    /**
+     * Uses mews/purifier custom setup to clean HTML input off of possible XSS vulnerabilities
+     * Best suited for cleaning before placing in rich text editors
+     */
+    function purify_html(?string $input): string
     {
-        $output = '';
-        if($input){
-            $output = $input;
+        if ($input) {
+            return Purifier::clean($input, 'formforge_config');
         }
-        return $output;
+
+        return '';
     }
 }
