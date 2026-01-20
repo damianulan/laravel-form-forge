@@ -1,6 +1,5 @@
 # FormForge Components Common Methods and Tools
 
-
 ## Macros
 You are able to add your own components to the form, by creating macros to FormBuilder class.
 It should return instance of ForgeComponent instance.
