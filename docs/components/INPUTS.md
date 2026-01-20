@@ -3,9 +3,9 @@
 ## Usage
 Simple text input with placeholder and label.
 ```php
-FormBuilder::boot($request, $method, $route, 'edit_form')
-    ->class('campaign-create-form')
-    ->add(FormComponent::text('name', $model)->label('Label for text input')->placeholder('Enter a name...')->required());
+return $builder->setId(is_null($this->model) ? 'form_create' : 'form_edit')
+    ->class('create-form')
+    ->add(FormComponent::text('name', $this->name)->label('Label for text input')->placeholder('Enter a name...')->required());
 ```
 
 More textual inputs:

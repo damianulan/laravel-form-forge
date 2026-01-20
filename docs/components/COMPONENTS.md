@@ -44,6 +44,10 @@ In your component, override as many methods and properties as you need.
 
 At last, add your component to the form builder instance:
 ```php
-FormBuilder::boot($request, $method, $route, 'edit_form')
-    ->add(FormComponent::myComponent('name', $model)->label('Label for text input')->placeholder('Enter a name...')->required());
+$method = 'POST';
+$route = route('/');
+return $builder->setId(is_null($this->model) ? 'form_create' : 'form_edit')
+        ->setMethod($method)
+        ->setAction($route)
+        ->add(FormComponent::myComponent('name', $model)->label('Label for text input')->placeholder('Enter a name...')->required());
 ```

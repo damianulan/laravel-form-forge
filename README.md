@@ -54,13 +54,15 @@ Before declaring form forge scripts, you need to declare global variables.
     const date_format = '{{ __('H:i') }}';
 ```
 
-### Upgrading
+### Upgrading to v2
 
-When upgrading to new version, remember to manually update package resources. Please run after `composer update` command, when upgrading this package, in order to overwrite package resources:
+Whenever upgrading to any new version, remember to manually update package resources. Please run after `composer update` command, when upgrading this package, in order to overwrite package resources:
 
 ```
 php artisan vendor:publish --tag=formforge-resources --force
 ```
+
+Upgrading to v2 will also require you to update your form definitions, according to the new syntax. Please check examples in [EXAMPLES](docs/EXAMPLES.md) this version of documentation.
 
 ### Usage & Examples
 
