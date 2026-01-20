@@ -18,10 +18,11 @@ class Config
 
     public static function personstampsFieldType(): string
     {
-        $setting = config('formforge.personstamps.type','bigInteger');
-        if(Str::contains($setting, 'uuid', true)){
+        $setting = config('formforge.personstamps.type', 'bigInteger');
+        if (Str::contains($setting, 'uuid', true)) {
             return 'foreignUuid';
         }
+
         return 'foreignId';
     }
 }

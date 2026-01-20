@@ -18,7 +18,7 @@ class Textarea extends ForgeComponent
     {
         $this->name = empty($name) ? null : $name;
         $this->value = $value;
-        if (request()->old($name) !== null) {
+        if (null !== request()->old($name)) {
             $this->value = request()->old($name);
         }
         $this->purifyValue();

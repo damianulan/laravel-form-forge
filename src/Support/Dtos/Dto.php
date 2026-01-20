@@ -8,17 +8,6 @@ abstract class Dto
 
     protected $fillable = [];
 
-    public function fill(array $attributes = [], $override = false): static
-    {
-        foreach ($attributes as $property => $value) {
-            if ( ! $override || ! $this->hasAttribute($property)) {
-                $this->setAttribute($property, $value);
-            }
-        }
-
-        return $this;
-    }
-
     public function __set(string $property, $value): void
     {
         $this->setAttribute($property, $value);
@@ -41,6 +30,17 @@ abstract class Dto
         }
     }
 
+    public function fill(array $attributes = [], $override = false): static
+    {
+        foreach ($attributes as $property => $value) {
+            if ( ! $override || ! $this->hasAttribute($property)) {
+                $this->setAttribute($property, $value);
+            }
+        }
+
+        return $this;
+    }
+
     public function setAttribute(string $property, $value): void
     {
         if (empty($this->fillable) || in_array($property, $this->fillable)) {
@@ -60,8 +60,6 @@ abstract class Dto
 
     /**
      * Gets all attributes.
-     *
-     * @return array
      */
     public function all(): array
     {

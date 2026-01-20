@@ -5,14 +5,14 @@ namespace FormForge;
 use Closure;
 use FormForge\Base\ForgeTemplate;
 use FormForge\Components\Button;
+use FormForge\Components\ForgeComponent;
+use FormForge\Components\ForgeSection;
 use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
-use FormForge\Components\ForgeSection;
 use FormForge\Support\Collections\ComponentCollection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use FormForge\Components\ForgeComponent;
 
 /**
  * Collects components to render bootstrap form.
@@ -62,15 +62,6 @@ class FormBuilder
         $this->template = ForgeTemplate::get(config('formforge.default'));
     }
 
-    protected static function recreate(self $instance): self
-    {
-        $new = new static();
-        $new->id = $instance->id;
-        $new->action = $instance->action;
-
-        return $new;
-    }
-
     /**
      * Add cutom class to the form HTML representation.
      *
@@ -89,36 +80,33 @@ class FormBuilder
 
     /**
      * Set HTML form id
-     *
-     * @param string $id
-     * @return self
      */
     public function setId(string $id): self
     {
         $this->id = $id;
+
         return $this;
     }
 
     /**
      * Set form method
-     *
-     * @param string $method
-     * @return self
      */
     public function setMethod(string $method): self
     {
         $method = Str::upper($method);
 
-        if(!in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])){
+        if ( ! in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
             throw new InvalidFormMethod($method);
         }
         $this->method = $method;
+
         return $this;
     }
 
     public function setAction(string $action): self
     {
         $this->action = $action;
+
         return $this;
     }
 
@@ -187,7 +175,6 @@ class FormBuilder
 
         return $this;
     }
-
 
     /**
      * Allows to modify your FormBuilder instance based on given condition.
@@ -281,22 +268,27 @@ class FormBuilder
 
     /**
      * Register static class name for this instance.
-     *
-     * @param string $class
-     * @return self
      */
     public function setFormName(string $class): self
     {
         $this->form = $class;
+
         return $this;
+    }
+
+    protected static function recreate(self $instance): self
+    {
+        $new = new static();
+        $new->id = $instance->id;
+        $new->action = $instance->action;
+
+        return $new;
     }
 
     /**
      * Get HTML classlist
-     *
-     * @return void
      */
-    private function getClasses()
+    private function getClasses(): void
     {
         return empty($this->classes) ? null : implode(' ', $this->classes);
     }

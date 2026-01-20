@@ -7,7 +7,6 @@ use FormForge\Commands\FormMakeCommand;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
-use FormForge\MacroFactory;
 
 /**
  * @author Damian Ułan <damian.ulan@protonmail.com>
@@ -74,12 +73,12 @@ class FormForgeServiceProvider extends ServiceProvider
 
     public function overridePurifierConfig(): void
     {
-        $settings = array_merge(config('purifier.settings'), array(
+        $settings = array_merge(config('purifier.settings'), [
             'formforge_config' => config('formforge.mews_purifier_setting'),
-        ));
+        ]);
 
-        config(array(
+        config([
             'purifier.settings' => $settings,
-        ));
+        ]);
     }
 }

@@ -16,10 +16,6 @@ use ReflectionClass;
  */
 abstract class ForgeComponent extends Dto
 {
-    protected $attributes = [];
-
-    protected $fillable = [];
-
     public string $name;
 
     public string $type;
@@ -37,6 +33,10 @@ abstract class ForgeComponent extends Dto
     public $readonly = false;
 
     public $show = true;
+
+    protected $attributes = [];
+
+    protected $fillable = [];
 
     /**
      * Renders the html representation of the Component.
@@ -106,14 +106,13 @@ abstract class ForgeComponent extends Dto
 
     /**
      * Clean HTML input value with purifier, leaving only safe HTML.
-     *
-     * @return void
      */
-    public function purifyValue()
+    public function purifyValue(): void
     {
-        if(!empty($this->value)){
+        if ( ! empty($this->value)) {
             $this->value = purify_html($this->value);
         }
+
         return $this;
     }
 

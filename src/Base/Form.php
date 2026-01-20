@@ -4,15 +4,15 @@ namespace FormForge\Base;
 
 use FormForge\Events\FormValidationFail;
 use FormForge\FormBuilder;
-use FormForge\Traits\RequestMutators;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request as RequestFacade;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Validator as ValidatorInstance;
 use FormForge\Helpers\Config;
 use FormForge\Support\Dtos\Dto;
+use FormForge\Traits\RequestMutators;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request as RequestFacade;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator as ValidatorInstance;
 
 /**
  * Base class for full Form template.
@@ -53,17 +53,13 @@ abstract class Form extends Dto
 
     /**
      * Boot with attributes located in the request
-     *
-     * @param \Illuminate\Http\Request|null $request
-     * @return static
      */
-    public static function bootWithRequest(? Request $request = null): static
+    public static function bootWithRequest(?Request $request = null): static
     {
         $inputs = [];
-        if($request){
+        if ($request) {
             $inputs = $request->all();
-        }
-        else {
+        } else {
             $inputs = RequestFacade::all();
         }
 
@@ -73,33 +69,30 @@ abstract class Form extends Dto
     /**
      * Boot with attributes passed in an assoc array and current request attributes in that order.
      *
-     * @param array $attributes
-     * @param bool $withRequest - take request inputs under account
-     * @return static
+     * @param  bool  $withRequest  - take request inputs under account
      */
     public static function bootWithAttributes(array $attributes = [], bool $withRequest = true): static
     {
         return (new static())->boot()->fill($attributes)
-                        ->fill($withRequest ? RequestFacade::all():[], true)
-                        ->setDefinition()
-                        ->booted();
+            ->fill($withRequest ? RequestFacade::all() : [], true)
+            ->setDefinition()
+            ->booted();
     }
 
     /**
      * Boot with attributes from a model and current request attributes in that order.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param bool $withRequest - take request inputs under account
-     * @return static
+     * @param  bool  $withRequest  - take request inputs under account
      */
     public static function bootWithModel(Model $model, bool $withRequest = true): static
     {
         $instance = (new static())->boot();
         $instance->model = $model;
+
         return $instance->fill($model->toArray())
-                        ->fill($withRequest ? RequestFacade::all():[], true)
-                        ->setDefinition()
-                        ->booted();
+            ->fill($withRequest ? RequestFacade::all() : [], true)
+            ->setDefinition()
+            ->booted();
     }
 
     public function boot(): static
@@ -110,12 +103,13 @@ abstract class Form extends Dto
     public function booted(): static
     {
         $this->booted = true;
+
         return $this;
     }
 
     public function setDefinition(bool $force = false): static
     {
-        if($force || !isset($this->builder)) {
+        if ($force || ! isset($this->builder)) {
             $builder = (new FormBuilder())
                 ->setFormName(static::class);
 
@@ -128,14 +122,12 @@ abstract class Form extends Dto
     /**
      * Set model to form instance. This method gets all model's attributes and assigns them to this form instance as its own attributes.
      * It does not override existing attributes assigned with request nor else.
-     *
-     * @param \Illuminate\Database\Eloquent\Model|null $model
-     * @return static
      */
     public function setModel(?Model $model = null): static
     {
-        if($model){
+        if ($model) {
             $this->model = $model;
+
             return $this->fill($model->toArray())->setDefinition(true);
         }
 
@@ -188,8 +180,6 @@ abstract class Form extends Dto
 
     /**
      * Check whether form fails declared validation
-     *
-     * @return bool
      */
     public function fails(): bool
     {
@@ -198,8 +188,6 @@ abstract class Form extends Dto
 
     /**
      * Check whether form passes declared validation
-     *
-     * @return bool
      */
     public function passes(): bool
     {
@@ -216,9 +204,10 @@ abstract class Form extends Dto
 
     public function getDefinition(): FormBuilder
     {
-        if(!isset($this->builder)){
-            $this->builder = $this->definition(new FormBuilder);
+        if ( ! isset($this->builder)) {
+            $this->builder = $this->definition(new FormBuilder());
         }
+
         return $this->builder;
     }
 

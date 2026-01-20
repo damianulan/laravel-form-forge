@@ -30,13 +30,13 @@ trait RequestMutators
         } elseif (in_array($input, ['on', 'off'], true)) {
             $input = ('on' === $input) ? true : false;
         } elseif (is_string($input) && is_numeric($input)) {
-            if(Str::contains($input, '.')){
-                $input = floatval($input);
+            if (Str::contains($input, '.')) {
+                $input = (float) $input;
             } else {
-                $input = intval($input);
+                $input = (int) $input;
             }
         } else {
-            if (empty($input) && $input !== 0 && $input !== false) {
+            if (empty($input) && 0 !== $input && false !== $input) {
                 if (is_array($input)) {
                     $input = [];
                 } else {

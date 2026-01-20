@@ -2,6 +2,7 @@
 
 namespace FormForge\Base;
 
+use Enumerable\Enum;
 use FormForge\Components\Checkbox;
 use FormForge\Components\Container;
 use FormForge\Components\Daterange;
@@ -10,9 +11,10 @@ use FormForge\Components\File;
 use FormForge\Components\Input;
 use FormForge\Components\Select;
 use FormForge\Components\Textarea;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Database\Eloquent\Model;
+use UnitEnum;
 
 /**
  * FormComponent to be collected by FormBuilder. Methods return input instructions (a field) and each represents field in form.
@@ -31,7 +33,7 @@ class FormComponent
     public static function text(string $name, Model|string|null $default = null): Input
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -46,7 +48,7 @@ class FormComponent
     public static function numeric(string $name, Model|int|float|string|null $default = null): Input
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -61,7 +63,7 @@ class FormComponent
     public static function decimal(string $name, Model|float|string|null $default = null): Input
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -76,7 +78,7 @@ class FormComponent
     public static function password(string $name, Model|string|null $default = null): Input
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -94,7 +96,7 @@ class FormComponent
         Model|string|int|null $default = null
     ): Input {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -113,10 +115,10 @@ class FormComponent
         Model|string|int|null $default = null
     ): ?Input {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
-        if(!empty($value)){
+        if ( ! empty($value)) {
             return new Input($name, 'hidden', $value);
         }
 
@@ -135,7 +137,7 @@ class FormComponent
         ?Collection $options = null,
     ): Select {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -155,13 +157,12 @@ class FormComponent
         ?Collection $options = null
     ): Select {
         $values = [];
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $values = self::getObjectValue($name, $default);
-        }
-        else if($default instanceof Collection){
+        } elseif ($default instanceof Collection) {
             $values = $default->toArray();
         } else {
-            if($default){
+            if ($default) {
                 $values = $default;
             }
         }
@@ -174,11 +175,12 @@ class FormComponent
      * Great for custom js-based rich text editors.
      *
      * @param  mixed  $model
+     * @param  null|mixed  $default
      */
     public static function container(string $name, $default = null): Container
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -193,7 +195,7 @@ class FormComponent
     public static function textarea(string $name, Model|string|null $default = null): Textarea
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -210,7 +212,7 @@ class FormComponent
     public static function datetime(string $name, Model|string|null $default = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -227,7 +229,7 @@ class FormComponent
     public static function time(string $name, Model|string|null $default = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -244,7 +246,7 @@ class FormComponent
     public static function date(string $name, Model|string|null $default = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -261,13 +263,12 @@ class FormComponent
         $from = $name . '_from';
         $to = $name . '_to';
         $values = [];
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $values = [
                 'from' => self::getObjectValue($from, $default),
                 'to' => self::getObjectValue($to, $default),
             ];
-        }
-        else if(is_array($default)){
+        } elseif (is_array($default)) {
             $values = [
                 'from' => $default['from'] ?? null,
                 'to' => $default['to'] ?? null,
@@ -287,7 +288,7 @@ class FormComponent
     public static function birthdate(string $name, Model|string|null $default = null, ?string $minDate = null, ?string $maxDate = null): Datetime
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -302,7 +303,7 @@ class FormComponent
     public static function radio(string $name, Model|bool|null $default = null): Checkbox
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -317,7 +318,7 @@ class FormComponent
     public static function checkbox(string $name, Model|bool|null $default = null): Checkbox
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -332,7 +333,7 @@ class FormComponent
     public static function switch(string $name, Model|bool|null $default = null): Checkbox
     {
         $value = $default;
-        if($default instanceof Model){
+        if ($default instanceof Model) {
             $value = self::getObjectValue($name, $default);
         }
 
@@ -359,8 +360,8 @@ class FormComponent
     {
         $value = $model->{$name} ?? null;
 
-        if($value){
-            if(($value instanceof \UnitEnum) || ($value instanceof \Enumerable\Enum)){
+        if ($value) {
+            if (($value instanceof UnitEnum) || ($value instanceof Enum)) {
                 $value = $value->value;
             }
         }

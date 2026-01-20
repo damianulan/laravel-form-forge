@@ -2,7 +2,6 @@
 
 use Mews\Purifier\Facades\Purifier;
 
-
 if ( ! function_exists('purify_html')) {
 
     /**
