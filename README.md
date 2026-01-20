@@ -28,13 +28,18 @@ Optionally you can publish all other assets (for modification purposes).
 
 ```
 php artisan vendor:publish --tag=formforge-langs
-php artisan vendor:publish --tag=formforge-views
 ```
 
 ### Resources
 
+```
+php artisan vendor:publish --tag=formforge-resources
+```
+
 After publishing vendor assets, resource files will be available in `resources/vendor/formforge` directory. In order for package to work properly, please include `@import` base style file `_formforge.scss` in your projects main scss file and then rerun your npm build process.
 Check out `_variables.scss` file to see what variables are available for customization.
+
+The same you should do for `form.js` file copied from `resources/vendor/formforge/js` directory.
 
 To properly include package scripts, just add `@formForgeScripts` to your footer before main js bundle file.
 
@@ -42,9 +47,7 @@ To properly include package scripts, just add `@formForgeScripts` to your footer
 @formForgeScripts
 <script src="{{ asset('themes/js/app.js') }}"></script>
 ```
-But if you want to make some changes in package scripts, in your js bundle attach script files from `resources/vendor/formforge/js` directory. You will then need to install dependent packages like `popper.js` and `flatpickr` manually.
-
-Before declaring form forge scripts, you need to declare global variables.
+It includes declaring global variables.
 ```js
     const choose = '{{ __('Choose results') }}';
     const no_results = '{{ __('No results found') }}';
@@ -78,7 +81,7 @@ Then modify your form by adding components you need.
 
 ```php
 // Form definition - $model should be an Eloquent model instance
-public static function definition(Request $request, $model = null): FormBuilder
+public function definition(FormBuilder $builder): FormBuilder
 {
     $route = null;
     $method = 'POST';
@@ -88,16 +91,18 @@ public static function definition(Request $request, $model = null): FormBuilder
         $title = 'Form title when editing';
     }
 
-    return FormBuilder::boot($request, $method, $route, 'form_html_id')
+    return $builder->setId(is_null($this->model) ? 'form_create' : 'form_edit')
+        ->setMethod($method)
+        ->setAction($route)
         ->template('horizontal') // modify form layout template -- it is 'horizontal' by default
         ->class('custom-form-classes')
-        ->add(FormComponent::hidden('id', $model))
-        ->add(FormComponent::select('template_id', $model, Dictionary::fromModel(Model::class, 'attribute'))->required()) // form element branded as required
-        ->add(FormComponent::text('name', $model)->label('Name field label')->required())
-        ->add(FormComponent::textarea('description', $model))
-        ->add(FormComponent::datetime('deadline', $model)->info())
-        ->add(FormComponent::decimal('expected', $model)->info('Here give explanation under questionmark icon'))
-        ->add(FormComponent::switch('draft', $model)->default(false))
+        ->add(FormComponent::hidden('id', $this->id))
+        ->add(FormComponent::select('template_id', $this->template_id, Dictionary::fromModel(Model::class, 'attribute'))->required()) // form element branded as required
+        ->add(FormComponent::text('name', $this->name)->label('Name field label')->required())
+        ->add(FormComponent::textarea('description', $this->description))
+        ->add(FormComponent::datetime('deadline', $this->deadline)->info())
+        ->add(FormComponent::decimal('expected', $this->expected)->info('Here give explanation under questionmark icon'))
+        ->add(FormComponent::switch('draft', $this->draft)->default(false))
         ->addTitle($title) // optional
         ->addSubmit(); // completely optional - when using ajax you'd want to
 }
@@ -108,15 +113,11 @@ Storing example:
 ```php
 public function update(Request $request, $id, CampaignEditForm $form)
 {
-    // fix html5 niuances in request
-    $request = $form::reformatRequest($request);
-
     // validates request with rules declared in form class
-    // if you dont want it to automatically redirect, use ::validateJson method instead
-    $form::validate($request, $id);
+    $form->validate();
 
     // automatically fills model from request
-    // !! assign RequestForms trait to your model !!
+    // assign RequestForms trait to your model
     $model = Model::fillFromRequest($request, $id);
 
     if ($model && $model->update()) {
