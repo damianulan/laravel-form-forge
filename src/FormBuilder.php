@@ -251,6 +251,16 @@ class FormBuilder
     }
 
     /**
+     * render form view with all components.
+     */
+    public function scripts(): View
+    {
+        return view('formforge::form_script', [
+            'id' => $this->id,
+        ]);
+    }
+
+    /**
      * Get all form components.
      */
     public function getComponents(): ComponentCollection
@@ -288,7 +298,7 @@ class FormBuilder
     /**
      * Get HTML classlist
      */
-    private function getClasses(): void
+    private function getClasses()
     {
         return empty($this->classes) ? null : implode(' ', $this->classes);
     }

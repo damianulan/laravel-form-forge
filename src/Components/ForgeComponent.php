@@ -107,7 +107,7 @@ abstract class ForgeComponent extends Dto
     /**
      * Clean HTML input value with purifier, leaving only safe HTML.
      */
-    public function purifyValue(): void
+    public function purifyValue(): static
     {
         if ( ! empty($this->value)) {
             $this->value = purify_html($this->value);

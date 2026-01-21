@@ -44,10 +44,10 @@ The same you should do for `form.js` file copied from `resources/vendor/formforg
 To properly include package scripts, just add `@formForgeScripts` to your footer before main js bundle file.
 
 ```html
-@formForgeScripts
+@formForgeScripts <!-- keep this at the top of your scripts -->
 <script src="{{ asset('themes/js/app.js') }}"></script>
 ```
-It includes declaring global variables.
+It includes declaring global localization variables used in forms.
 ```js
     const choose = '{{ __('Choose results') }}';
     const no_results = '{{ __('No results found') }}';
@@ -58,14 +58,13 @@ It includes declaring global variables.
 ```
 
 ### Upgrading to v1.2 (major update)
-
 Whenever upgrading to any new version, remember to manually update package resources. Please run after `composer update` command, when upgrading this package, in order to overwrite package resources:
 
 ```
 php artisan vendor:publish --tag=formforge-resources --force
 ```
-
-Upgrading to v1.2 will also require you to update your form definitions, according to the new syntax. Please check examples in [EXAMPLES](docs/EXAMPLES.md) this version of documentation.
+> [!IMPORTANT]
+> Upgrading to v1.2 will require to update your form definitions, according to the new syntax. Please check examples in [EXAMPLES](docs/EXAMPLES.md) this version of documentation.
 
 ### Usage & Examples
 
@@ -125,6 +124,20 @@ public function update(Request $request, $id, CampaignEditForm $form)
     }
     return redirect()->back()->with('error', 'error message');
 }
+```
+
+In your blade template you can simply render the form:
+
+```html
+{{ $form->title() }} <!-- optional -->
+<div class="container-fluid">
+    {{ $form->render() }}
+</div>
+
+<!-- push scripts to the bottom of the page -->
+@push('scripts')
+    {{ $form->scripts() }}
+@endpush
 ```
 
 See [EXAMPLES](docs/EXAMPLES.md) documentation for more examples containing full process of form creation.

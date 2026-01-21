@@ -109,9 +109,16 @@ public function edit(Request $request, Model $model, ExemplaryForm $form)
 
 Then, in your blade template you can simply render the form:
 
-```php
-{{ $form->title() }} // optional
-{{ $form->render() }}
+```html
+{{ $form->title() }} <!-- optional -->
+<div class="container-fluid">
+    {{ $form->render() }}
+</div>
+
+<!-- push scripts to the bottom of the page -->
+@push('scripts')
+    {{ $form->scripts() }}
+@endpush
 ```
 
 Storing example:

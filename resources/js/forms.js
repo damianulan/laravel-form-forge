@@ -2,6 +2,8 @@ require("chosen-js");
 import flatpickr from "flatpickr";
 import tippy from "tippy.js";
 
+$.formForgeInitialized = true;
+
 // build flatpickr objects
 $.buildFlatpickr = function () {
     const dateTimePickerOptions = {
@@ -103,7 +105,7 @@ $.buildFlatpickr = function () {
 
 // build chosen objects
 $.buildChosen = function () {
-    $("select.formforge-control").chosen({
+    $("select.formforge-control:not(.custom-chosen)").chosen({
         disable_search_threshold: 5,
         placeholder_text: choose,
         no_results_text: no_results,

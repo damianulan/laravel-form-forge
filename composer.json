@@ -1,7 +1,7 @@
 {
   "name": "damianulan/laravel-form-forge",
   "type": "library",
-  "description": "UI Form builder laravel package. For building forms with ease.",
+  "description": "UI Form builder laravel package with custom components based on chosen.js and flatpickr.io. For building forms with PHP builder classes.",
   "keywords": [
     "laravel",
     "form",
@@ -32,15 +32,15 @@
   "autoload": {
     "psr-4": {
       "FormForge\\": "src"
-    }
+    },
+    "files": [
+      "src/helpers.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
       "FormForge\\Tests\\": "tests"
-    },
-    "files": [
-        "src/helper.php"
-    ]
+    }
   },
   "scripts": {
     "test": "vendor/bin/phpunit",
