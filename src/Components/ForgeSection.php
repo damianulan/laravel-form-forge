@@ -2,11 +2,12 @@
 
 namespace FormForge\Components;
 
+use FormForge\Contracts\RenderableSection;
 use FormForge\FormBuilder;
 use FormForge\Support\Collections\ComponentCollection;
 use Illuminate\Support\Str;
 
-class ForgeSection
+class ForgeSection implements RenderableSection
 {
     protected $id;
 

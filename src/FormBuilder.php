@@ -7,6 +7,7 @@ use FormForge\Base\ForgeTemplate;
 use FormForge\Components\Button;
 use FormForge\Components\ForgeComponent;
 use FormForge\Components\ForgeSection;
+use FormForge\Contracts\RenderableComponent;
 use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
@@ -152,7 +153,7 @@ class FormBuilder
     /**
      * Add new input component to the form.
      */
-    public function add(?ForgeComponent $component, ?Closure $condition = null): self
+    public function add(?RenderableComponent $component, ?Closure $condition = null): self
     {
         $cond = is_null($condition) || $condition() ? true : false;
         if ($component && true === $component->show && $cond) {
