@@ -88,6 +88,11 @@ class FormBuilder
         return $this;
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     /**
      * Set form method
      */
