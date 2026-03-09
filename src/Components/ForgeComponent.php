@@ -39,6 +39,8 @@ abstract class ForgeComponent extends Dto implements RenderableComponent
 
     protected $fillable = [];
 
+    public $cols = 6;
+
     /**
      * Renders the html representation of the Component.
      */
@@ -206,6 +208,16 @@ abstract class ForgeComponent extends Dto implements RenderableComponent
     public function autocomplete(string $type): static
     {
         $this->autocomplete = $type;
+
+        return $this;
+    }
+
+    /**
+     * For grid template - sets number of columns taken by this component.
+     */
+    public function col(int $cols): static
+    {
+        $this->cols = $cols;
 
         return $this;
     }
