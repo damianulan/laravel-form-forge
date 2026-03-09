@@ -3,7 +3,7 @@
     {{ $component->render() }}
 @else
     <div class="col-md-{{ $component->cols }} col-xs-12 form-group formforge-component">
-        <div class="formforge-input-row">
+        <div class="formforge-input-row m-0">
             <div class="form-label">
                 {{ $component->getLabel() }}
             </div>
