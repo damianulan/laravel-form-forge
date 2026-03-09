@@ -5,14 +5,14 @@ namespace FormForge;
 use Closure;
 use FormForge\Base\ForgeTemplate;
 use FormForge\Components\Button;
-use FormForge\Components\ForgeComponent;
 use FormForge\Components\ForgeSection;
+use FormForge\Contracts\RenderableComponent;
 use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
 use FormForge\Support\Collections\ComponentCollection;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Str;
-use Illuminate\View\View;
 
 /**
  * Collects components to render bootstrap form.
@@ -88,6 +88,11 @@ class FormBuilder
         return $this;
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     /**
      * Set form method
      */
@@ -152,7 +157,7 @@ class FormBuilder
     /**
      * Add new input component to the form.
      */
-    public function add(?ForgeComponent $component, ?Closure $condition = null): self
+    public function add(?RenderableComponent $component, ?Closure $condition = null): self
     {
         $cond = is_null($condition) || $condition() ? true : false;
         if ($component && true === $component->show && $cond) {
@@ -230,7 +235,7 @@ class FormBuilder
     /**
      * render form view with all components.
      */
-    public function render(): View
+    public function render(): Renderable
     {
         if (config('formforge.dispatches_events')) {
             FormRendering::dispatch($this->form, $this->method, $this->components);
@@ -253,7 +258,7 @@ class FormBuilder
     /**
      * render form view with all components.
      */
-    public function scripts(): View
+    public function scripts(): Renderable
     {
         return view('formforge::form_script', [
             'id' => $this->id,

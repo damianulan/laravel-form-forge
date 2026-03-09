@@ -245,77 +245,93 @@
 .numInputWrapper {
     position: relative;
     height: auto;
-}
-.numInputWrapper input,
-.numInputWrapper span {
-    display: inline-block;
-}
-.numInputWrapper input {
-    width: 100%;
-}
-.numInputWrapper input::-ms-clear {
-    display: none;
-}
-.numInputWrapper input::-webkit-outer-spin-button,
-.numInputWrapper input::-webkit-inner-spin-button {
-    margin: 0;
-    -webkit-appearance: none;
-}
-.numInputWrapper span {
-    position: absolute;
-    right: 0;
-    width: 14px;
-    padding: 0 4px 0 2px;
-    height: 50%;
-    line-height: 50%;
-    opacity: 0;
-    cursor: pointer;
-    border: 1px solid rgba(72, 72, 72, 0.15);
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-.numInputWrapper span:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
-.numInputWrapper span:active {
-    background: rgba(0, 0, 0, 0.2);
-}
-.numInputWrapper span:after {
-    display: block;
-    content: "";
-    position: absolute;
-}
-.numInputWrapper span.arrowUp {
-    top: 0;
-    border-bottom: 0;
-}
-.numInputWrapper span.arrowUp:after {
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-bottom: 4px solid rgba(72, 72, 72, 0.6);
-    top: 26%;
-}
-.numInputWrapper span.arrowDown {
-    top: 50%;
-}
-.numInputWrapper span.arrowDown:after {
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid rgba(72, 72, 72, 0.6);
-    top: 40%;
-}
-.numInputWrapper span svg {
-    width: inherit;
-    height: auto;
-}
-.numInputWrapper span svg path {
-    fill: rgba(90, 97, 113, 0.5);
-}
-.numInputWrapper:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-.numInputWrapper:hover span {
-    opacity: 1;
+
+    input,
+    span {
+        display: inline-block;
+    }
+
+    input {
+        width: 100%;
+
+        &::-ms-clear {
+            display: none;
+        }
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            margin: 0;
+            -webkit-appearance: none;
+        }
+    }
+
+    span {
+        position: absolute;
+        right: 0;
+        width: 14px;
+        padding: 0 4px 0 2px;
+        height: 50%;
+        line-height: 50%;
+        opacity: 0;
+        cursor: pointer;
+        border: 1px solid rgba(72, 72, 72, 0.15);
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        &:active {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        &:after {
+            display: block;
+            content: "";
+            position: absolute;
+        }
+
+        &.arrowUp {
+            top: 0;
+            border-bottom: 0;
+
+            &:after {
+                border-left: 4px solid transparent;
+                border-right: 4px solid transparent;
+                border-bottom: 4px solid rgba(72, 72, 72, 0.6);
+                top: 26%;
+            }
+        }
+
+        &.arrowDown {
+            top: 50%;
+
+            &:after {
+                border-left: 4px solid transparent;
+                border-right: 4px solid transparent;
+                border-top: 4px solid rgba(72, 72, 72, 0.6);
+                top: 40%;
+            }
+        }
+
+        svg {
+            width: inherit;
+            height: auto;
+
+            path {
+                fill: rgba(90, 97, 113, 0.5);
+            }
+        }
+    }
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.05);
+
+        span {
+            opacity: 1;
+        }
+    }
 }
 .flatpickr-current-month {
     font-size: 135%;
@@ -332,97 +348,107 @@
     text-align: center;
     -webkit-transform: translate3d(0px, 0px, 0px);
     transform: translate3d(0px, 0px, 0px);
-}
-.flatpickr-current-month span.cur-month {
-    font-family: inherit;
-    font-weight: 700;
-    color: inherit;
-    display: inline-block;
-    margin-left: 0.5ch;
-    padding: 0;
-}
-.flatpickr-current-month span.cur-month:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-.flatpickr-current-month .numInputWrapper {
-    width: 6ch;
-    width: 7ch\0;
-    display: inline-block;
-}
-.flatpickr-current-month .numInputWrapper span.arrowUp:after {
-    border-bottom-color: $primary;
-}
-.flatpickr-current-month .numInputWrapper span.arrowDown:after {
-    border-top-color: $primary;
-}
-.flatpickr-current-month input.cur-year {
-    background: transparent;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    color: inherit;
-    cursor: text;
-    padding: 0 0 0 0.5ch;
-    margin: 0;
-    display: inline-block;
-    font-size: inherit;
-    font-family: inherit;
-    font-weight: 300;
-    line-height: inherit;
-    height: auto;
-    border: 0;
-    border-radius: 0;
-    vertical-align: initial;
-    -webkit-appearance: textfield;
-    -moz-appearance: textfield;
-    appearance: textfield;
-}
-.flatpickr-current-month input.cur-year:focus {
-    outline: 0;
-}
-.flatpickr-current-month input.cur-year[disabled],
-.flatpickr-current-month input.cur-year[disabled]:hover {
-    font-size: 100%;
-    color: rgba(90, 97, 113, 0.5);
-    background: transparent;
-    pointer-events: none;
-}
-.flatpickr-current-month .flatpickr-monthDropdown-months {
-    appearance: menulist;
-    background: $border-color;
-    border: none;
-    border-radius: 0;
-    box-sizing: border-box;
-    color: inherit;
-    cursor: pointer;
-    font-size: inherit;
-    font-family: inherit;
-    font-weight: 300;
-    height: auto;
-    line-height: inherit;
-    margin: -1px 0 0 0;
-    outline: none;
-    padding: 0 0 0 0.5ch;
-    position: relative;
-    vertical-align: initial;
-    -webkit-box-sizing: border-box;
-    -webkit-appearance: menulist;
-    -moz-appearance: menulist;
-    width: auto;
-}
-.flatpickr-current-month .flatpickr-monthDropdown-months:focus,
-.flatpickr-current-month .flatpickr-monthDropdown-months:active {
-    outline: none;
-}
-.flatpickr-current-month .flatpickr-monthDropdown-months:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-.flatpickr-current-month
-    .flatpickr-monthDropdown-months
-    .flatpickr-monthDropdown-month {
-    background-color: $border-color;
-    outline: none;
-    padding: 0;
-    font-size: 0.85rem;
+
+    span.cur-month {
+        font-family: inherit;
+        font-weight: 700;
+        color: inherit;
+        display: inline-block;
+        margin-left: 0.5ch;
+        padding: 0;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+    }
+
+    .numInputWrapper {
+        width: 6ch;
+        width: 7ch\0;
+        display: inline-block;
+
+        span.arrowUp:after {
+            border-bottom-color: $primary;
+        }
+
+        span.arrowDown:after {
+            border-top-color: $primary;
+        }
+    }
+
+    input.cur-year {
+        background: transparent;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        color: inherit;
+        cursor: text;
+        padding: 0 0 0 0.5ch;
+        margin: 0;
+        display: inline-block;
+        font-size: inherit;
+        font-family: inherit;
+        font-weight: 300;
+        line-height: inherit;
+        height: auto;
+        border: 0;
+        border-radius: 0;
+        vertical-align: initial;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+
+        &:focus {
+            outline: 0;
+        }
+
+        &[disabled],
+        &[disabled]:hover {
+            font-size: 100%;
+            color: rgba(90, 97, 113, 0.5);
+            background: transparent;
+            pointer-events: none;
+        }
+    }
+
+    .flatpickr-monthDropdown-months {
+        appearance: menulist;
+        background: $border-color;
+        border: none;
+        border-radius: 0;
+        box-sizing: border-box;
+        color: inherit;
+        cursor: pointer;
+        font-size: inherit;
+        font-family: inherit;
+        font-weight: 300;
+        height: auto;
+        line-height: inherit;
+        margin: -1px 0 0 0;
+        outline: none;
+        padding: 0 0 0 0.5ch;
+        position: relative;
+        vertical-align: initial;
+        -webkit-box-sizing: border-box;
+        -webkit-appearance: menulist;
+        -moz-appearance: menulist;
+        width: auto;
+
+        &:focus,
+        &:active {
+            outline: none;
+        }
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .flatpickr-monthDropdown-month {
+            background-color: $border-color;
+            outline: none;
+            padding: 0;
+            font-size: 0.85rem;
+        }
+    }
 }
 .flatpickr-weekdays {
     background: $border-color;
@@ -699,92 +725,105 @@ span.flatpickr-weekday {
     display: flex;
     background: #fff;
     border-radius: 0 0 5px 5px;
-}
-.flatpickr-time:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-.flatpickr-time .numInputWrapper {
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    width: 40%;
-    height: 40px;
-    float: left;
-}
-.flatpickr-time .numInputWrapper span.arrowUp:after {
-    border-bottom-color: #484848;
-}
-.flatpickr-time .numInputWrapper span.arrowDown:after {
-    border-top-color: #484848;
-}
-.flatpickr-time.hasSeconds .numInputWrapper {
-    width: 26%;
-}
-.flatpickr-time.time24hr .numInputWrapper {
-    width: 49%;
-}
-.flatpickr-time input {
-    background: transparent;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    border: 0;
-    border-radius: 0;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    height: inherit;
-    line-height: inherit;
-    color: #484848;
-    font-size: 14px;
-    position: relative;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-appearance: textfield;
-    -moz-appearance: textfield;
-    appearance: textfield;
-}
-.flatpickr-time input.flatpickr-hour {
-    font-weight: bold;
-}
-.flatpickr-time input.flatpickr-minute,
-.flatpickr-time input.flatpickr-second {
-    font-weight: 400;
-}
-.flatpickr-time input:focus {
-    outline: 0;
-    border: 0;
-}
-.flatpickr-time .flatpickr-time-separator,
-.flatpickr-time .flatpickr-am-pm {
-    height: inherit;
-    float: left;
-    line-height: inherit;
-    color: #484848;
-    font-weight: bold;
-    width: 2%;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-}
-.flatpickr-time .flatpickr-am-pm {
-    outline: 0;
-    width: 18%;
-    cursor: pointer;
-    text-align: center;
-    font-weight: 400;
-}
-.flatpickr-time input:hover,
-.flatpickr-time .flatpickr-am-pm:hover,
-.flatpickr-time input:focus,
-.flatpickr-time .flatpickr-am-pm:focus {
-    background: #eaeaea;
+
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .numInputWrapper {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        width: 40%;
+        height: 40px;
+        float: left;
+
+        span.arrowUp:after {
+            border-bottom-color: #484848;
+        }
+
+        span.arrowDown:after {
+            border-top-color: #484848;
+        }
+    }
+
+    &.hasSeconds .numInputWrapper {
+        width: 26%;
+    }
+
+    &.time24hr .numInputWrapper {
+        width: 49%;
+    }
+
+    input {
+        background: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border: 0;
+        border-radius: 0;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        height: inherit;
+        line-height: inherit;
+        color: #484848;
+        font-size: 14px;
+        position: relative;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+
+        &.flatpickr-hour {
+            font-weight: bold;
+        }
+
+        &.flatpickr-minute,
+        &.flatpickr-second {
+            font-weight: 400;
+        }
+
+        &:focus {
+            outline: 0;
+            border: 0;
+        }
+    }
+
+    .flatpickr-time-separator,
+    .flatpickr-am-pm {
+        height: inherit;
+        float: left;
+        line-height: inherit;
+        color: #484848;
+        font-weight: bold;
+        width: 2%;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-align-self: center;
+        -ms-flex-item-align: center;
+        align-self: center;
+    }
+
+    .flatpickr-am-pm {
+        outline: 0;
+        width: 18%;
+        cursor: pointer;
+        text-align: center;
+        font-weight: 400;
+    }
+
+    input:hover,
+    .flatpickr-am-pm:hover,
+    input:focus,
+    .flatpickr-am-pm:focus {
+        background: #eaeaea;
+    }
 }
 .flatpickr-input[readonly] {
     cursor: pointer;
@@ -819,8 +858,8 @@ span.flatpickr-day.selected {
 
 .flatpickr-current-month {
     display: flex;
-}
 
-.flatpickr-current-month .numInputWrapper {
-    margin-left: auto;
+    .numInputWrapper {
+        margin-left: auto;
+    }
 }

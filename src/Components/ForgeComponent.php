@@ -3,9 +3,10 @@
 namespace FormForge\Components;
 
 use Closure;
+use FormForge\Contracts\RenderableComponent;
 use FormForge\Support\Dtos\Dto;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Str;
-use Illuminate\View\View;
 use ReflectionClass;
 
 /**
@@ -14,7 +15,7 @@ use ReflectionClass;
  * @author Damian Ułan <damian.ulan@protonmail.com>
  * @copyright 2025
  */
-abstract class ForgeComponent extends Dto
+abstract class ForgeComponent extends Dto implements RenderableComponent
 {
     public string $name;
 
@@ -41,7 +42,7 @@ abstract class ForgeComponent extends Dto
     /**
      * Renders the html representation of the Component.
      */
-    public function render(): View
+    public function render(): Renderable
     {
         $template = $this->template ?? Str::lower((new ReflectionClass($this))->getShortName());
 
@@ -147,7 +148,7 @@ abstract class ForgeComponent extends Dto
     /**
      * Renders input label to html.
      */
-    public function getLabel(): ?View
+    public function getLabel(): ?Renderable
     {
         if ( ! empty($this->label) && ! empty($this->name)) {
             return view('formforge::components.label', [
