@@ -10,7 +10,7 @@ class Textarea extends ForgeComponent
 
     public ?int $rows = null;
 
-    public ?int $cols = null;
+    public ?int $area_cols = null;
 
     public bool $resize = true;
 
@@ -34,9 +34,9 @@ class Textarea extends ForgeComponent
         return $this;
     }
 
-    public function cols(int $value)
+    public function area_cols(int $value)
     {
-        $this->cols = $value;
+        $this->area_cols = $value;
 
         return $this;
     }

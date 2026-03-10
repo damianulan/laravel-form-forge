@@ -1,6 +1,6 @@
 <textarea class="{{ $classes ? $classes:'' }}@error($component->name) is-invalid @enderror" style="{{ !$component->resize ? 'resize:none;':'' }}"
 id="id_{{ $component->name }}" name="{{ $component->name }}" placeholder="{{ $component->placeholder ? $component->placeholder:'' }}"
-{{ !empty($component->cols) ? ' cols="'.$component->cols."'":'' }} {{ !empty($component->rows) ? ' rows="'.$component->rows."'":'' }} {{ !empty($component->autocomplete) ? ' autocomplete="'.$component->autocomplete."'":'' }}
+{{ !empty($component->area_cols) ? ' cols="'.$component->area_cols."'":'' }} {{ !empty($component->rows) ? ' rows="'.$component->rows."'":'' }} {{ !empty($component->autocomplete) ? ' autocomplete="'.$component->autocomplete."'":'' }}
 {{ $component->readonly ? ' readonly':'' }}{{ $component->disabled ? ' disabled':'' }}
 >{!! $component->value ?? '' !!}</textarea>
 @error($component->name)
