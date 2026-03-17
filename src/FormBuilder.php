@@ -33,7 +33,7 @@ class FormBuilder
 
     private ?string $title = null;
 
-    private string $method;
+    private ?string $method;
 
     private ?string $action = null;
 
