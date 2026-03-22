@@ -3,7 +3,6 @@
 namespace FormForge\Components;
 
 use Exception;
-use FormForge\Enums\Enum;
 use Illuminate\Support\Collection;
 use ReflectionClass;
 

@@ -4,8 +4,10 @@
 
 @include('formforge::pre')
 <form id="{{ $id ? $id:'' }}" action="{{ $action ? $action:'' }}" method="{{ $nominal }}" class="col-md-12 formforge-form formforge-{{ $template }}{{ $classes ? ' '.$classes:''  }}" enctype="multipart/form-data">
-    @method($method)
-    @csrf
+    @if($nominal !== 'GET')
+        @method($method)
+        @csrf
+    @endif
     <div class="row align-items-center">
         @foreach ($components as $component)
             @if($component instanceof \FormForge\Components\ForgeComponent)

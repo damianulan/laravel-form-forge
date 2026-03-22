@@ -3,6 +3,7 @@
 namespace FormForge\Base;
 
 use FormForge\Exceptions\TemplateNotExists;
+use FormForge\Enums\ForgeTemplate as Template;
 
 class ForgeTemplate
 {
@@ -13,7 +14,7 @@ class ForgeTemplate
 
     public static function getConfig(string $template): array
     {
-        $templates = config('formforge.templates');
+        $templates = array_map(fn ($template) => $template->value, Template::cases());
 
         if ( ! in_array($template, array_keys($templates))) {
             throw new TemplateNotExists($template);
@@ -24,9 +25,9 @@ class ForgeTemplate
 
     public static function get(string $template): string
     {
-        $templates = config('formforge.templates');
+        $templates = Template::tryFrom($template);
 
-        if ( ! in_array($template, array_keys($templates))) {
+        if ( ! $templates) {
             throw new TemplateNotExists($template);
         }
 

@@ -13,6 +13,7 @@ use FormForge\Exceptions\FormUnauthorized;
 use FormForge\Support\Collections\ComponentCollection;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Str;
+use FormForge\Enums\ForgeTemplate as Template;
 
 /**
  * Collects components to render bootstrap form.
@@ -32,7 +33,7 @@ class FormBuilder
 
     private ?string $title = null;
 
-    private string $method;
+    private ?string $method;
 
     private ?string $action = null;
 
@@ -118,8 +119,11 @@ class FormBuilder
     /**
      * Change default template for the form.
      */
-    public function setTemplate(string $template): self
+    public function setTemplate(string|Template $template): self
     {
+        if($template instanceof Template) {
+            $instance = $template->value;
+        }
         $instance = ForgeTemplate::get($template);
 
         $this->template = $instance ?? $this->template;

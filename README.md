@@ -1,174 +1,646 @@
 # Laravel FormForge
 
-[![Static Badge](https://img.shields.io/badge/made_with-Laravel-red?style=for-the-badge)](https://laravel.com/docs/11.x/releases) &nbsp; [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE) &nbsp; [![Static Badge](https://img.shields.io/badge/maintainer-damianulan-blue?style=for-the-badge)](https://damianulan.me)
+[![Laravel](https://img.shields.io/badge/made_with-Laravel-red?style=for-the-badge)](https://laravel.com)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](LICENSE)
 
-### Description
+Laravel FormForge is a PHP-first form builder for Laravel applications.
 
-Form forge is a form builder package for Laravel. It allows you to create forms with a simple and intuitive interface. FormForge provides Model autofill and laravel validation support.
+It lets you define forms as classes, build fields in PHP, render Bootstrap-friendly markup from Blade, validate with standard Laravel rules, and optionally hydrate Eloquent models from request data.
 
-## Getting Started
+## Contents
 
-### Installation
+- [Why FormForge](#why-formforge)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Published Assets and Resources](#published-assets-and-resources)
+- [Front-End Requirements](#front-end-requirements)
+- [Quick Start](#quick-start)
+- [Rendering in Blade](#rendering-in-blade)
+- [Validation](#validation)
+- [Hydrating Models From Request Data](#hydrating-models-from-request-data)
+- [Form Lifecycle](#form-lifecycle)
+- [FormBuilder API](#formbuilder-api)
+- [Component Overview](#component-overview)
+- [Buttons](#buttons)
+- [Configuration](#configuration)
+- [Events](#events)
+- [Documentation Map](#documentation-map)
 
-You can install the package via composer in your laravel project:
+## Why FormForge
 
-```
+FormForge is designed for applications where forms are part of your backend domain layer, not just loose Blade markup.
+
+It is useful when you want:
+
+- reusable form classes for create and edit flows,
+- one place for field definitions and validation rules,
+- request and model autofill behavior,
+- consistent rendering across many forms,
+- select, date, tooltip, and file helpers out of the box,
+- a package that still feels close to normal Laravel conventions.
+
+## Requirements
+
+- PHP `^8.3`
+- `illuminate/support` `^9.0|^10.0|^11.0|^12.0`
+- `mews/purifier` `^3.4`
+
+## Installation
+
+Install the package:
+
+```bash
 composer require damianulan/laravel-form-forge
 ```
 
-The package will automatically register itself.
+Laravel package discovery registers the service provider automatically.
 
-Next step is to publish necessary vendor assets.
+Publish everything:
 
-```
+```bash
 php artisan vendor:publish --tag=formforge
 ```
 
-Optionally you can publish all other assets (for modification purposes).
+Or publish only the parts you need:
 
-```
+```bash
+php artisan vendor:publish --tag=formforge-config
 php artisan vendor:publish --tag=formforge-langs
-```
-
-### Resources
-
-```
+php artisan vendor:publish --tag=formforge-views
 php artisan vendor:publish --tag=formforge-resources
 ```
 
-After publishing vendor assets, resource files will be available in `resources/vendor/formforge` directory. In order for package to work properly, please include `@import` base style file `_formforge.scss` in your projects main scss file and then rerun your npm build process.
-Check out `_variables.scss` file to see what variables are available for customization.
+## Published Assets and Resources
 
-The same you should do for `form.js` file copied from `resources/vendor/formforge/js` directory.
+Publishing `formforge` or `formforge-resources` copies package front-end files to:
 
-To properly include package scripts, just add `@formForgeScripts` to your footer before main js bundle file.
+- `resources/vendor/formforge/style`
+- `resources/vendor/formforge/js`
 
-```html
-@formForgeScripts <!-- keep this at the top of your scripts -->
+Publishing `formforge-config` creates:
+
+- `config/formforge.php`
+
+Publishing `formforge-views` creates:
+
+- `resources/views/vendor/formforge`
+
+Publishing `formforge-langs` creates:
+
+- `lang/vendor/formforge`
+
+The `formforge` tag also publishes the package stub to `stubs/form.stub`.
+
+## Front-End Requirements
+
+FormForge renders server-side HTML, but some components expect front-end helpers for the final experience.
+
+The shipped assets integrate with:
+
+- jQuery
+- `chosen-js`
+- `flatpickr`
+- `tippy.js`
+- Bootstrap-style markup/classes
+- Bootstrap Icons for tooltip icons
+
+Include the package stylesheet in your main stylesheet:
+
+```scss
+@import "resources/vendor/formforge/style/_formforge";
+```
+
+You can customize package variables in:
+
+```text
+resources/vendor/formforge/style/_variables.scss
+```
+
+Before your main JS bundle, print the package runtime variables:
+
+```blade
+@formForgeScripts
 <script src="{{ asset('themes/js/app.js') }}"></script>
 ```
-It includes declaring global localization variables used in forms.
-```js
-    const choose = '{{ __('Choose results') }}';
-    const no_results = '{{ __('No results found') }}';
 
-    const datetime_format = '{{ __('Y-m-d H:i:s') }}';
-    const time_format = '{{ __('Y-m-d') }}';
-    const date_format = '{{ __('H:i') }}';
+This injects localized values used by the package JavaScript, including:
+
+- select placeholders,
+- select "no results" text,
+- configured date format,
+- configured time format,
+- configured datetime format.
+
+After publishing or updating package resources, rebuild your front-end assets.
+
+## Quick Start
+
+Generate a form class:
+
+```bash
+php artisan make:form CampaignForm
 ```
 
-### Upgrading to v1.2 (major update)
-Whenever upgrading to any new version, remember to manually update package resources. Please run after `composer update` command, when upgrading this package, in order to overwrite package resources:
+Generated form classes live in `App\Forms` and extend `FormForge\Base\Form`.
 
-```
-php artisan vendor:publish --tag=formforge-resources --force
-```
-> [!IMPORTANT]
-> Upgrading to v1.2 will require to update your form definitions, according to the new syntax. Please check examples in [EXAMPLES](docs/EXAMPLES.md) this version of documentation.
-
-### Usage & Examples
-
-Create a class with your form definition. You need only one definition for both creating and editing operations.
-In order to create a form use following artisan command:
-
-```
-php artisan make:form ExemplaryForm
-```
-
-Then modify your form by adding components you need.
-... finally it should look like this:
+Example form:
 
 ```php
-// Form definition - $model should be an Eloquent model instance
-public function definition(FormBuilder $builder): FormBuilder
+<?php
+
+namespace App\Forms;
+
+use App\Models\Campaign;
+use App\Models\ObjectiveTemplate;
+use FormForge\Base\Form;
+use FormForge\Base\FormComponent;
+use FormForge\Components\Button;
+use FormForge\Components\Dictionary;
+use FormForge\FormBuilder;
+
+class CampaignForm extends Form
 {
-    $route = null;
-    $method = 'POST';
-    $title = 'Form title when creating';
-    if (!is_null($model)) {
-        $method = 'PUT';
-        $title = 'Form title when editing';
+    public function definition(FormBuilder $builder): FormBuilder
+    {
+        $isEdit = $this->model instanceof Campaign;
+
+        return $builder
+            ->setId($isEdit ? 'campaign_edit_form' : 'campaign_create_form')
+            ->setMethod($isEdit ? 'PUT' : 'POST')
+            ->setAction($isEdit
+                ? route('campaigns.update', $this->model)
+                : route('campaigns.store'))
+            ->setTemplate('horizontal')
+            ->setTitle($isEdit ? 'Edit campaign' : 'Create campaign')
+            ->class('campaign-form')
+            ->add(FormComponent::hiddenId(default: $this->model))
+            ->add(
+                FormComponent::text('name', $this->model)
+                    ->label('Name')
+                    ->placeholder('Enter campaign name')
+                    ->required()
+                    ->maxlength(120)
+            )
+            ->add(
+                FormComponent::textarea('description', $this->model)
+                    ->label('Description')
+                    ->col(12)
+            )
+            ->add(
+                FormComponent::select(
+                    'template_id',
+                    $this->template_id,
+                    Dictionary::fromModel(ObjectiveTemplate::class, 'name')
+                )
+                    ->label('Template')
+                    ->required()
+                    ->noEmpty()
+            )
+            ->add(
+                FormComponent::datetime('deadline', $this->model)
+                    ->label('Deadline')
+                    ->info('Choose the deadline for this campaign')
+            )
+            ->add(
+                FormComponent::switch('draft', $this->model)
+                    ->label('Draft')
+                    ->default(false)
+            )
+            ->addButton(Button::back())
+            ->addSubmit();
     }
 
-    return $builder->setId(is_null($this->model) ? 'form_create' : 'form_edit')
-        ->setMethod($method)
-        ->setAction($route)
-        ->template('horizontal') // modify form layout template -- it is 'horizontal' by default
-        ->class('custom-form-classes')
-        ->add(FormComponent::hidden('id', $this->id))
-        ->add(FormComponent::select('template_id', $this->template_id, Dictionary::fromModel(Model::class, 'attribute'))->required()) // form element branded as required
-        ->add(FormComponent::text('name', $this->name)->label('Name field label')->required())
-        ->add(FormComponent::textarea('description', $this->description))
-        ->add(FormComponent::datetime('deadline', $this->deadline)->info())
-        ->add(FormComponent::decimal('expected', $this->expected)->info('Here give explanation under questionmark icon'))
-        ->add(FormComponent::switch('draft', $this->draft)->default(false))
-        ->addTitle($title) // optional
-        ->addSubmit(); // completely optional - when using ajax you'd want to
+    public function validation(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:120'],
+            'description' => ['nullable', 'string', 'max:1000'],
+            'template_id' => ['required', 'integer'],
+            'deadline' => ['nullable', 'date'],
+            'draft' => ['boolean'],
+        ];
+    }
 }
 ```
 
-Storing example:
+## Rendering in Blade
+
+In a controller:
 
 ```php
-public function update(Request $request, $id, CampaignEditForm $form)
+public function create()
 {
-    // validates request with rules declared in form class
-    $form->validate();
+    return view('campaigns.form', [
+        'form' => CampaignForm::bootWithRequest()->getDefinition(),
+    ]);
+}
 
-    // automatically fills model from request
-    // assign RequestForms trait to your model
-    $model = Model::fillFromRequest($request, $id);
-
-    if ($model && $model->update()) {
-        return redirect()->route('pages.forms.show', $id)->with('success', 'success message');
-    }
-    return redirect()->back()->with('error', 'error message');
+public function edit(Campaign $campaign)
+{
+    return view('campaigns.form', [
+        'form' => CampaignForm::bootWithModel($campaign)->getDefinition(),
+    ]);
 }
 ```
 
-In your blade template you can simply render the form:
+In Blade:
 
-```html
-{{ $form->title() }} <!-- optional -->
+```blade
+{{ $form->title() }}
+
 <div class="container-fluid">
     {{ $form->render() }}
 </div>
 
-<!-- push scripts to the bottom of the page -->
 @push('scripts')
     {{ $form->scripts() }}
 @endpush
 ```
 
-See [EXAMPLES](docs/EXAMPLES.md) documentation for more examples containing full process of form creation.
+`render()` outputs the form markup.
 
-### Localization
+`scripts()` outputs a small form-specific runtime view. It does not replace your compiled package JavaScript bundle.
 
-Currently package supports following languages:
+## Validation
 
-- English (en)
-- Polish (pl)
+Every form class must define:
 
-### Components
+- `definition(FormBuilder $builder): FormBuilder`
+- `validation(): array`
 
-- [Inputs](docs/components/INPUTS.md)
-- [Selects](docs/components/SELECT.md)
-- [Dates](docs/components/DATES.md)
-- [Checkboxes & radios](docs/components/CHECKBOXES.md)
-- [File](docs/components/FILE.md)
-- Textarea - simple textarea with option to manipulate cols and size. Assign a rich text editor to it by class for example on your own.
+Validate and redirect back on failure:
+
+```php
+$form->validate();
+```
+
+Get a structured response instead:
+
+```php
+$result = $form->validateJson();
+
+// [
+//     'status' => 'ok' | 'error',
+//     'messages' => ...
+// ]
+```
+
+Access the raw Laravel validator:
+
+```php
+$validator = $form->validator();
+
+$form->passes();
+$form->fails();
+```
+
+Override custom messages:
+
+```php
+protected function messages(): array
+{
+    return [
+        'name.required' => 'Campaign name is required.',
+    ];
+}
+```
+
+Override custom attributes when needed:
+
+```php
+protected function attributes(): array
+{
+    return [
+        'name' => 'campaign name',
+    ];
+}
+```
+
+By default, `attributes()` maps component names to component labels when possible.
+
+## Hydrating Models From Request Data
+
+If you want a model to fill itself from request data, use the `FormForge\Traits\RequestForms` trait:
+
+```php
+<?php
+
+namespace App\Models;
+
+use FormForge\Traits\RequestForms;
+use Illuminate\Database\Eloquent\Model;
+
+class Campaign extends Model
+{
+    use RequestForms;
+
+    protected $fillable = [
+        'name',
+        'description',
+        'deadline',
+        'draft',
+    ];
+}
+```
+
+Then in your controller:
+
+```php
+public function store(CampaignForm $form)
+{
+    $form->validate();
+
+    $campaign = Campaign::fillFromRequest();
+    $campaign->save();
+
+    return redirect()->route('campaigns.index');
+}
+
+public function update(Campaign $campaign, CampaignForm $form)
+{
+    $form->validate();
+
+    $campaign = Campaign::fillFromRequest($campaign->getKey());
+    $campaign->save();
+
+    return redirect()->route('campaigns.show', $campaign);
+}
+```
+
+What `fillFromRequest()` does:
+
+- fills only attributes allowed by `$fillable`,
+- stores uploaded files when file handling is enabled,
+- converts `'on'` and `'off'` values for checkbox-like inputs,
+- respects boolean casts,
+- can populate personstamp columns if configured.
+
+## Form Lifecycle
+
+The base form class supports three common boot flows.
+
+### `bootWithRequest()`
+
+Fill the form from the current request:
+
+```php
+$form = CampaignForm::bootWithRequest();
+```
+
+Or with an explicit request instance:
+
+```php
+$form = CampaignForm::bootWithRequest($request);
+```
+
+### `bootWithAttributes()`
+
+Fill the form from an array of attributes:
+
+```php
+$form = CampaignForm::bootWithAttributes([
+    'draft' => true,
+]);
+```
+
+By default, current request input is merged after those attributes. Disable that when needed:
+
+```php
+$form = CampaignForm::bootWithAttributes([
+    'draft' => true,
+], withRequest: false);
+```
+
+### `bootWithModel()`
+
+Fill the form from an Eloquent model:
+
+```php
+$form = CampaignForm::bootWithModel($campaign);
+```
+
+This is the most common edit-form flow.
+
+Current request input is merged after model attributes by default, so failed validation or partial edits can still repopulate the form correctly.
+
+### Container resolution
+
+If Laravel resolves the form from the container, the service provider automatically:
+
+- calls `boot()`,
+- fills the form with current request input,
+- builds the definition,
+- marks the form as booted.
+
+That means this works:
+
+```php
+public function store(CampaignForm $form)
+{
+    $form->validate();
+}
+```
+
+## FormBuilder API
+
+`FormForge\FormBuilder` collects form metadata, components, sections, and buttons.
+
+Common methods:
+
+- `setId(string $id)`
+- `setMethod(string $method)`
+- `setAction(string $action)`
+- `setTemplate(string|FormForge\Enums\ForgeTemplate $template)`
+- `setTitle(string $title)`
+- `class(string ...$classes)`
+- `add(?RenderableComponent $component, ?Closure $condition = null)`
+- `addSection(string $title, Closure $callback)`
+- `addSubmit(string $class = 'btn-primary')`
+- `addButton(Button $button)`
+- `authorize(Closure $callback)`
+- `when(bool $condition, Closure $then)`
+- `render()`
+- `scripts()`
+- `getComponents()`
+
+Conditional composition:
+
+```php
+return $builder
+    ->when($this->draft === true, function (FormBuilder $builder): void {
+        $builder->add(
+            FormComponent::text('draft_reason')
+                ->label('Draft reason')
+        );
+    });
+```
+
+Authorization:
+
+```php
+return $builder
+    ->authorize(fn () => auth()->user()?->can('campaigns.manage') ?? false)
+    ->addSubmit();
+```
+
+If authorization fails, the builder throws `FormForge\Exceptions\FormUnauthorized`.
+
+## Component Overview
+
+Component factories live on `FormForge\Base\FormComponent`.
+
+Available factories:
+
+- `text()`
+- `numeric()`
+- `decimal()`
+- `password()`
+- `hidden()`
+- `hiddenId()`
+- `select()`
+- `multiselect()`
+- `container()`
+- `textarea()`
+- `datetime()`
+- `time()`
+- `date()`
+- `daterange()`
+- `birthdate()`
+- `radio()`
+- `checkbox()`
+- `switch()`
+- `file()`
+
+Common fluent methods shared by most components:
+
+- `label()`
+- `key()`
+- `required()`
+- `disabled()`
+- `readonly()`
+- `placeholder()`
+- `value()`
+- `purifyValue()`
+- `class()`
+- `info()`
+- `autocomplete()`
+- `col()`
+- `when()`
+
+Example:
+
+```php
+FormComponent::text('title')
+    ->label('Title')
+    ->placeholder('Enter title')
+    ->required()
+    ->maxlength(255);
+
+FormComponent::decimal('budget')
+    ->label('Budget')
+    ->info('Use a decimal value such as 1000.00');
+
+FormComponent::date('starts_at')
+    ->label('Start date')
+    ->minDate(now()->format('Y-m-d'));
+
+FormComponent::multiselect(
+    'user_ids',
+    $selectedIds,
+    Dictionary::fromModel(\App\Models\User::class, 'name')
+)->label('Users');
+```
+
+For deeper component guides, see the docs listed below.
+
+## Buttons
+
+You can add explicit buttons or let the builder create the default submit button.
+
+Helpers on `FormForge\Components\Button`:
+
+- `submit()`
+- `back()`
+- `reset()`
+- `delete()`
+
+Example:
+
+```php
+use FormForge\Components\Button;
+
+return $builder
+    ->addButton(Button::back())
+    ->addButton(Button::reset())
+    ->addButton(Button::delete(href: route('campaigns.destroy', $this->model)))
+    ->addSubmit();
+```
+
+## Configuration
+
+The published config file is `config/formforge.php`.
+
+Main options:
+
+- `default`: default form template
+- `templates`: template-specific configuration placeholders
+- `date_format`
+- `time_format`
+- `datetime_format`
+- `storage.handling_files`
+- `storage.path`
+- `dispatches_events`
+- `personstamps.fields`
+- `personstamps.type`
+- `personstamps.table`
+- `mews_purifier_setting`
+
+Example:
+
+```php
+'default' => env('FORMFORGE_TEMPLATE', 'horizontal'),
+'date_format' => env('FORMFORGE_DATE_FORMAT', 'Y-m-d'),
+'time_format' => env('FORMFORGE_TIME_FORMAT', 'H:i'),
+'datetime_format' => env('FORMFORGE_DATETIME_FORMAT', 'Y-m-d H:i'),
+```
+
+Shipped templates:
+
+- `horizontal`
+- `vertical`
+- `2columns`
+- `grid`
+
+Set a form template per form:
+
+```php
+$builder->setTemplate('vertical');
+```
+
+## Events
+
+When `dispatches_events` is enabled, FormForge can dispatch events during rendering and validation failure flows.
+
+Available events:
+
+- `FormForge\Events\FormRendering`
+- `FormForge\Events\FormRendered`
+- `FormForge\Events\FormValidationFail`
+
+Use these when you need custom logging, analytics, auditing, or side effects around form rendering and validation behavior.
+
+## Documentation Map
+
+- [Examples](docs/EXAMPLES.md)
+- [Docs Index](docs/README.md)
+- [Common Component Methods](docs/components/COMPONENTS.md)
+- [Text and Numeric Inputs](docs/components/INPUTS.md)
+- [Selects and Option Dictionaries](docs/components/SELECTS.md)
+- [Dates and Time Inputs](docs/components/DATES.md)
+- [Checkboxes, Switches, and Radios](docs/components/CHECKBOXES.md)
+- [File Inputs](docs/components/FILE.md)
 - [Sections](docs/components/SECTIONS.md)
 
-See more in [COMPONENTS](docs/components/COMPONENTS.md) documentation.
+## License
 
-### Dependencies
-
-- Laravel ^11.0
-- PHP ^8.3
-- Bootstrap ^5.3
-- Bootstrap Icons ^1.10 - icons' support
-- jQuery ^3.6
-
-### Contact & Contributing
-
-Any question You can submit to **damian.ulan@protonmail.com**.
+This package is open-sourced software licensed under the [MIT license](LICENSE).
