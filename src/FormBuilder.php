@@ -7,13 +7,13 @@ use FormForge\Base\ForgeTemplate;
 use FormForge\Components\Button;
 use FormForge\Components\ForgeSection;
 use FormForge\Contracts\RenderableComponent;
+use FormForge\Enums\ForgeTemplate as Template;
 use FormForge\Events\FormRendered;
 use FormForge\Events\FormRendering;
 use FormForge\Exceptions\FormUnauthorized;
 use FormForge\Support\Collections\ComponentCollection;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Str;
-use FormForge\Enums\ForgeTemplate as Template;
 
 /**
  * Collects components to render bootstrap form.
@@ -121,7 +121,7 @@ class FormBuilder
      */
     public function setTemplate(string|Template $template): self
     {
-        if($template instanceof Template) {
+        if ($template instanceof Template) {
             $instance = $template->value;
         }
         $instance = ForgeTemplate::get($template);

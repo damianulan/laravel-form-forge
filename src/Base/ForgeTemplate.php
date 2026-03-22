@@ -2,8 +2,8 @@
 
 namespace FormForge\Base;
 
-use FormForge\Exceptions\TemplateNotExists;
 use FormForge\Enums\ForgeTemplate as Template;
+use FormForge\Exceptions\TemplateNotExists;
 
 class ForgeTemplate
 {

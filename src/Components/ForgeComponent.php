@@ -35,11 +35,11 @@ abstract class ForgeComponent extends Dto implements RenderableComponent
 
     public $show = true;
 
+    public $cols = 6;
+
     protected $attributes = [];
 
     protected $fillable = [];
-
-    public $cols = 6;
 
     /**
      * Renders the html representation of the Component.
