@@ -1,156 +1,230 @@
-# Laravel FormForge Examples
+# FormForge Examples
 
-### Base form generation process
+This guide shows the usual package workflow from form definition to rendering and saving.
 
-Create a class with your form definition. You need only one definition for both creating and editing operations.
+## Example Form Class
+
+Create one form class and reuse it for both create and edit operations.
 
 ```php
+<?php
+
+namespace App\Forms;
+
+use App\Models\Project;
+use App\Models\User;
 use FormForge\Base\Form;
-use FormForge\FormBuilder;
 use FormForge\Base\FormComponent;
+use FormForge\Components\Button;
 use FormForge\Components\Dictionary;
-use Illuminate\Http\Request;
+use FormForge\FormBuilder;
 
-class ExemplaryForm extends Form
+class ProjectForm extends Form
 {
-
-    // Form definition - $model should be an Eloquent model instance
     public function definition(FormBuilder $builder): FormBuilder
     {
-        $route = null;
-        $method = 'POST';
-        $title = 'Form title when creating';
-        if (!is_null($model)) {
-            $method = 'PUT';
-            $title = 'Form title when editing';
-        }
+        $isEdit = $this->model instanceof Project;
 
-        return $builder->setId(is_null($this->model) ? 'form_create' : 'form_edit')
-            ->setMethod($method)
-            ->setAction($route)
-            ->template('horizontal') // modify form layout template -- it is 'horizontal' by default
-            ->class('custom-form-classes')
-            ->add(FormComponent::hidden('id', $this->model)) // use this model if you filled a form with model instance or $this->$field_name which will be automatically filled with request
-            ->add(FormComponent::select('template_id', $this->model, Dictionary::fromModel(Model::class, 'attribute'))->required()) // form element branded as required
-            ->add(FormComponent::text('name', $this->model)->label('Name field label')->required())
-            ->add(FormComponent::textarea('description', $this->model))
-            ->add(FormComponent::datetime('deadline', $this->model)->info())
-            ->add(FormComponent::decimal('expected', $this->model)->info('Here give explanation under questionmark icon'))
-            ->add(FormComponent::switch('draft', $this->model)->default(false))
-            ->addTitle($title) // optional form header
-            ->addSubmit(); // completely optional - when using ajax you'd want to
+        return $builder
+            ->setId($isEdit ? 'project_edit_form' : 'project_create_form')
+            ->setMethod($isEdit ? 'PUT' : 'POST')
+            ->setAction($isEdit
+                ? route('projects.update', $this->model)
+                : route('projects.store'))
+            ->setTemplate('horizontal')
+            ->setTitle($isEdit ? 'Edit project' : 'Create project')
+            ->class('project-form')
+            ->add(FormComponent::hiddenId(default: $this->model))
+            ->add(
+                FormComponent::text('name', $this->model)
+                    ->label('Project name')
+                    ->placeholder('Enter project name')
+                    ->required()
+                    ->maxlength(120)
+            )
+            ->add(
+                FormComponent::textarea('description', $this->model)
+                    ->label('Description')
+                    ->col(12)
+            )
+            ->add(
+                FormComponent::select(
+                    'owner_id',
+                    $this->owner_id,
+                    Dictionary::fromModel(User::class, 'name')
+                )
+                    ->label('Owner')
+                    ->required()
+                    ->noEmpty()
+            )
+            ->add(
+                FormComponent::date('starts_at', $this->model)
+                    ->label('Start date')
+            )
+            ->add(
+                FormComponent::datetime('deadline', $this->model)
+                    ->label('Deadline')
+                    ->info('Optional final cutoff date and time')
+            )
+            ->add(
+                FormComponent::switch('active', $this->model)
+                    ->label('Active')
+                    ->default(true)
+            )
+            ->addButton(Button::back())
+            ->addSubmit();
     }
 
-    // add validation rules
     public function validation(): array
     {
         return [
-            'template_id' => 'required',
-            'name' => 'max:120|required',
-            'deadline' => 'nullable',
-            'description' => 'max:512|nullable',
-            'draft' => 'boolean',
+            'name' => ['required', 'string', 'max:120'],
+            'description' => ['nullable', 'string'],
+            'owner_id' => ['required', 'integer', 'exists:users,id'],
+            'starts_at' => ['nullable', 'date'],
+            'deadline' => ['nullable', 'date'],
+            'active' => ['boolean'],
+        ];
+    }
+
+    protected function messages(): array
+    {
+        return [
+            'owner_id.required' => 'Please choose a project owner.',
         ];
     }
 }
 ```
 
-Optionally you can override default validation process methods:
+## Rendering a Create Form
 
 ```php
-// customize validation messages -- see laravel docs
-protected function messages(): array
+public function create()
 {
-    return [];
-}
-
-// customize validation attributes if needed -- see laravel docs
-protected function attributes(): array
-{
-    $attributes = [];
-
-    $builder = $this->getDefinition();
-    if ($builder) {
-        foreach ($builder->getComponents() as $component) {
-            $attributes[$component->name] = $component->label;
-        }
-    }
-
-    return $attributes;
-}
-```
-
-Then in your controller, generate new form builder instance into your view:
-
-```php
-public function create(Request $request)
-{
-    return view('pages.forms.edit', [
-        'form' => ExemplaryForm::bootWithRequest($request)->getDefinition(),
-    ]);
-}
-
-public function edit(Request $request, Model $model)
-{
-    return view('pages.forms.edit', [
-        'form' => ExemplaryForm::bootWithModel($model)->getDefinition(),
-    ]);
-}
-
-// alternatively
-public function edit(Request $request, Model $model, ExemplaryForm $form)
-{
-    return view('pages.forms.edit', [
-        // using setModel allows you to access $this->model in your form definition
-        'form' => $form->setModel($model)->getDefinition(),
+    return view('projects.form', [
+        'form' => ProjectForm::bootWithRequest()->getDefinition(),
     ]);
 }
 ```
 
-Then, in your blade template you can simply render the form:
+## Rendering an Edit Form
 
-```html
-{{ $form->title() }} <!-- optional -->
+```php
+public function edit(Project $project)
+{
+    return view('projects.form', [
+        'form' => ProjectForm::bootWithModel($project)->getDefinition(),
+    ]);
+}
+```
+
+## Blade Template
+
+```blade
+{{ $form->title() }}
+
 <div class="container-fluid">
     {{ $form->render() }}
 </div>
 
-<!-- push scripts to the bottom of the page -->
 @push('scripts')
     {{ $form->scripts() }}
 @endpush
 ```
 
-Storing example:
+## Store Action
 
 ```php
-// form instance declared as parameter is automatically filled with props from request's inputs
-public function update(Request $request, $id, CampaignEditForm $form)
+public function store(ProjectForm $form)
 {
-
-    // validates request with rules declared in form class
     $form->validate();
 
-    // automatically fills model from request
-    // assign RequestForms trait to your model
-    $model = Model::fillFromRequest($request, $id);
+    $project = Project::fillFromRequest();
+    $project->save();
 
-    if ($model && $model->update()) {
-        return redirect()->route('pages.forms.show', $id)->with('success', 'success message');
-    }
-    return redirect()->back()->with('error', 'error message');
+    return redirect()->route('projects.index')
+        ->with('success', 'Project created.');
 }
 ```
 
-More Validation examples:
+## Update Action
+
 ```php
-// it automatically redirects back with errors, when failed
-$form->validate();
+public function update(Project $project, ProjectForm $form)
+{
+    $form->validate();
 
-// it returns a Laravel Validator instance
-$form->validator();
+    $project = Project::fillFromRequest($project->getKey());
+    $project->save();
 
-// checks if validation failed / passed
-$form->fails();
-$form->passes();
+    return redirect()->route('projects.show', $project)
+        ->with('success', 'Project updated.');
+}
 ```
+
+## Booting Variants
+
+### Boot from current request
+
+```php
+$form = ProjectForm::bootWithRequest();
+```
+
+### Boot from explicit attributes
+
+```php
+$form = ProjectForm::bootWithAttributes([
+    'active' => true,
+    'owner_id' => auth()->id(),
+]);
+```
+
+### Boot from model without merging current request input
+
+```php
+$form = ProjectForm::bootWithModel($project, withRequest: false);
+```
+
+## Conditional Fields
+
+You can add fields only when a condition matches:
+
+```php
+return $builder
+    ->add(
+        FormComponent::text('external_reference')
+            ->label('External reference'),
+        fn () => auth()->user()?->isAdmin() ?? false
+    );
+```
+
+Or use `when()` on the builder:
+
+```php
+return $builder
+    ->when($this->active === false, function (FormBuilder $builder): void {
+        $builder->add(
+            FormComponent::textarea('inactive_reason')
+                ->label('Reason for deactivation')
+        );
+    });
+```
+
+## Protected Forms
+
+If the entire form should be blocked for unauthorized users:
+
+```php
+return $builder
+    ->authorize(fn () => auth()->user()?->can('projects.manage') ?? false)
+    ->addSubmit();
+```
+
+This throws `FormForge\Exceptions\FormUnauthorized` when the callback returns `false`.
+
+## Notes
+
+- Use one form class per domain form, not one per route.
+- Prefer model-based booting for edit screens.
+- Keep validation rules inside the form class so definition and validation stay together.
+- Use `RequestForms` on models only when request-driven hydration matches your application rules.
